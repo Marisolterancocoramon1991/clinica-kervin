@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="header">
+    <img src="clinic-icon.png" alt="Icono de Clínica" class="clinic-icon">
+    <h1 class="header-title">¡Bienvenido a Clínica Virtual!</h1>
+  </div>
+
+  <div class="content-text">
+    <h2><b>Conéctate con profesionales de la salud desde tu hogar</b></h2>
+    <p>En Clínica Virtual, priorizamos la atención médica eficiente y accesible. Nuestro compromiso es ofrecerte la mejor experiencia de salud online.</p>
+  </div>
+
+  <div class="horizontal-section">
+    <div class="card">
+      <h2><b>Ingresar</b></h2>   
+      <p>Accede a tu cuenta como <b>Paciente</b> para gestionar tus consultas médicas o como <b>Médico</b> para administrar tu agenda y atender pacientes.</p>
+      <div class="login-ico-container">
+        <img src="login-ico.png" class="login-ico">
+      </div>     
+      <button (click)="navigateToLogin()" class="btn btn-primary">Ingresar</button>
+    </div>
+
+    <div class="card">
+      <img src="picture-spcialist-patient.jpg" class="login-ico" (click)="mensaje()">
+    </div>
+
+    <div class="card">
+      <h2><b>Registrarse</b></h2>  
+      <p>Únete a nuestra comunidad médica como <b>Médico</b> para ofrecer tus servicios online o regístrate como <b>Paciente</b> para obtener consultas médicas rápidas y seguras.</p>
+      <div class="login-ico-container">
+        <img src="registe-ico.png" class="login-ico">
+      </div>   
+      <button (click)="navigateToRegister()" class="btn btn-success">Registrarse</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="container">
+    <h1>Administración de Especialistas</h1>
+    
+    <!-- Menú de navegación -->
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="showRegistrarAdmin()">Registrar Admin</button>
+      <button class="btn btn-primary" (click)="showRegistrarMedico()">Registrar Médico</button>
+      <button class="btn btn-primary" (click)="showRegistrarPaciente()">Registrar Paciente</button>
+    </div>
+    
+    <!-- Componentes a mostrar -->
+    <div *ngIf="showAdmin">
+      <app-registrar-admin></app-registrar-admin>
+    </div>
+    <div *ngIf="showMedico">
+      <app-registrar-medico></app-registrar-medico>
+    </div>
+    <div *ngIf="showPaciente">
+      <app-registrar-paciente></app-registrar-paciente>
+    </div>
+    
+    <!-- Lista de médicos -->
+    <h2>Lista de Médicos</h2>
+  <button (click)="listSpecialist()" class="btn btn-primary">Listar Médicos</button>
+  <ul class="list-group mt-3">
+    <li *ngFor="let medico of medicos" class="list-group-item d-flex justify-content-between align-items-center">
+      {{ medico.nombre }} {{ medico.apellido }} - Especialidades: {{ medico.especialidades }}
+      <button class="btn btn-success" (click)="aceptarMedico(medico)">Aceptar</button>
+    </li>
+  </ul>
+  </div>
+  

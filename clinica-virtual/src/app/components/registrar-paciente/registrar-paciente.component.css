@@ -1,0 +1,60 @@
+.container {
+    padding: 20px;
+    background-color: #f8f9fa; /* Color de fondo */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.img-fluid {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #343a40; /* Color del título */
+}
+
+.form-control {
+    margin-bottom: 1.5rem; /* Espacio entre campos */
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da; /* Borde gris claro */
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Borde azul al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra azul al enfocar */
+}
+
+.btn-full-width {
+    width: 100%;
+    margin-top: 1.5rem; /* Espacio sobre el botón */
+    padding: 1rem 0.75rem;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    background-color: #007bff; /* Color de fondo */
+    border: none;
+    color: #fff; /* Color del texto */
+    transition: background-color 0.3s ease;
+}
+
+.btn-full-width:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
+
+.help-block {
+    color: #dc3545; /* Color del mensaje de error */
+    font-size: 0.9rem;
+    margin-top: 0.25rem; /* Espacio sobre el mensaje de error */
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px; /* Menos espacio en dispositivos móviles */
+    }
+    
+    .form-control {
+        margin-bottom: 1rem; /* Menos espacio entre campos */
+    }
+}

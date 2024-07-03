@@ -1,0 +1,62 @@
+/* estilos.css */
+.green-background {
+    background-color: #28a745; /* Verde */
+    color: white;
+  }
+  
+  .btn-green {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+  }
+  
+  .btn-green:hover {
+    background-color: #218838; /* Verde más oscuro al hacer hover */
+    border-color: #1e7e34;
+    color: white;
+  }
+  
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    color: #007bff; /* Azul primario */
+  }
+  
+  .btn-primary {
+    background-color: #007bff; /* Azul primario */
+    border-color: #007bff; /* Azul primario */
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3; /* Azul más oscuro al hacer hover */
+    border-color: #0056b3; /* Azul más oscuro al hacer hover */
+  }
+  
+  .list-group-item {
+    background-color: #f8f9fa; /* Fondo blanco/gris claro */
+    border-color: #ddd;
+  }
+  
+  .list-group-item:hover {
+    background-color: #e9ecef; /* Color más claro al hacer hover */
+  }
+  
+  .btn-success {
+    background-color: #28a745; /* Verde */
+    border-color: #28a745; /* Verde */
+  }
+  
+  .btn-success:hover {
+    background-color: #218838; /* Verde más oscuro al hacer hover */
+    border-color: #218838; /* Verde más oscuro al hacer hover */
+  }
+  

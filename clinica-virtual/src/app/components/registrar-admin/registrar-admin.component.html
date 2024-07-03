@@ -1,0 +1,85 @@
+<div class="container text-center mt-5">
+    <div>
+        <img src="admin-ico.png" alt="Imagen paciente" class="img-fluid rounded mb-4" width="100px">
+    </div>
+    
+    <h1>Administrador</h1>
+    
+    <div [formGroup]="registerForm" class="row justify-content-center mt-4">
+        <div class="col-md-5 mb-3">
+            <input formControlName = "nombreRegister" type="text" id="nombre" name="nombre" class="form-control mb-3" placeholder="nombre..." [(ngModel)]="nombre">
+            @if(registerForm.get('nombreRegister'); as aux) {
+                @if(aux.invalid && aux.touched) 
+                {   
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">Nombre Requerido</span>
+                    </div>
+                }
+            }
+            <input formControlName = "emailRegister" type="email" id="mail" name="mail" class="form-control mb-3" placeholder="mail..." [(ngModel)]="mail">
+            @if(registerForm.get('emailRegister'); as aux) {
+                @if(aux.invalid && (aux.dirty || aux.touched)) 
+                {
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">Correo Requerido o invalido</span>
+                    </div>
+                }
+            }
+            <input formControlName = "dniRegister" type="number" id="dni" name="dni" class="form-control mb-3" placeholder="dni..." [(ngModel)]="dni">
+            @if(registerForm.get('dniRegister'); as aux) {
+                @if(aux.invalid && aux.touched) 
+                {   
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">DNI Requerido</span>
+                    </div>
+                }
+            }
+        </div>
+        
+        <div class="col-md-5 mb-3">
+            <input formControlName = "apellidoRegister" type="text" id="apellido" name="apellido" class="form-control mb-3" placeholder="apellido..." [(ngModel)]="apellido">
+            @if(registerForm.get('apellidoRegister'); as aux) {
+                @if(aux.invalid && aux.touched) 
+                {   
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">Apellido Requerido</span>
+                    </div>
+                }
+            }
+            <input formControlName = "passwordRegister" type="password" id="password" name="password" class="form-control mb-3" placeholder="contraseña..." [(ngModel)]="password">
+            @if(registerForm.get('passwordRegister'); as aux) {
+                @if(aux.invalid && (aux.dirty || aux.touched)) 
+                {
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">Contraseña Requerida</span>
+                    </div>
+                }
+            }
+            <input formControlName = "edadRegister" type="number" id="edad" name="edad" class="form-control mb-3" placeholder="edad..." [(ngModel)]="edad">
+            @if(registerForm.get('edadRegister'); as aux) {
+                @if(aux.invalid && (aux.dirty || aux.touched)) 
+                {
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">Edad Requerida</span>
+                    </div>
+                }
+            }
+            
+        </div>
+
+        <div class="col-md-5 mb-3 text-center">
+             <p>Seleccione una imagen para su Perfil</p>
+            <!-- <label for="archivoPerfil" class="form-label">Seleccione una imagen para su Perfil</label> -->
+            <input formControlName = "archivoRegister" type="file" id="archivoPerfil" name="archivoPerfil" class="form-control mb-3" (change)="onFileChange($event)">
+            @if(registerForm.get('archivoRegister'); as aux) {
+                @if(aux.invalid && (aux.dirty || aux.touched)) 
+                {
+                    <div style="height: 2rem;">
+                        <span class="help-block text-danger">Foto de Perfil Requerida</span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <button (click)="registrarAdmin()" class="btn btn-dark btn-full-width">Registrarse</button>
+</div>

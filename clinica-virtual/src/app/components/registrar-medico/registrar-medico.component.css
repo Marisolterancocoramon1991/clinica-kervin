@@ -1,0 +1,87 @@
+.especialidades-scroll {
+    max-height: 200px; /* Altura máxima del contenedor */
+    overflow-y: auto; /* Habilitar scroll vertical si es necesario */
+    border: 1px solid #ccc; /* Borde opcional para visualización */
+    padding: 5px; /* Espaciado interior */
+  }
+  /* Estilos generales */
+.container {
+    font-family: Arial, sans-serif;
+    background-color: #f2f5f8;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  
+  h1 {
+    color: #007bff;
+  }
+  
+  .form-control {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+  }
+  
+  .form-check-input {
+    margin-right: 0.5rem;
+  }
+  
+  .btn {
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .btn-dark {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+  }
+  
+  .btn-dark:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .btn-full-width {
+    width: 100%;
+  }
+  
+  .help-block {
+    color: #dc3545;
+  }
+  
+  /* Estilos específicos para el formulario */
+  .especialidades-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+  }
+  
+  .especialidades-scroll .form-check {
+    margin-bottom: 0.5rem;
+  }
+  
+  .especialidades-scroll .form-check-label {
+    font-weight: normal;
+  }
+  
+  /* Otros estilos específicos según necesites */
+  
+  

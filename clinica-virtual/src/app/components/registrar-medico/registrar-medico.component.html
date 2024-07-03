@@ -1,0 +1,74 @@
+<div class="container text-center mt-5">
+    <div>
+        <img src="doctor-ico.png" alt="Imagen médico" class="img-fluid rounded mb-4" width="100px">
+    </div>
+    
+    <h1>Medico</h1>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="registrarMedico()" class="row justify-content-center mt-4">
+        <div class="col-md-5 mb-3">
+            <input formControlName="nombreRegister" type="text" id="nombre" class="form-control mb-3" placeholder="Nombre...">
+            <div *ngIf="registerForm.get('nombreRegister')?.invalid && registerForm.get('nombreRegister')?.touched">
+                <span class="help-block text-danger">Nombre Requerido</span>
+            </div>
+            
+            <input formControlName="emailRegister" type="email" id="mail" class="form-control mb-3" placeholder="Mail...">
+            <div *ngIf="registerForm.get('emailRegister')?.errors?.['required'] && (registerForm.get('emailRegister')?.dirty || registerForm.get('emailRegister')?.touched)">
+                <span class="help-block text-danger">Correo Requerido</span>
+            </div>
+            <div *ngIf="registerForm.get('emailRegister')?.errors?.['email'] && (registerForm.get('emailRegister')?.dirty || registerForm.get('emailRegister')?.touched)">
+                <span class="help-block text-danger">Correo inválido</span>
+            </div>
+            
+            <input formControlName="dniRegister" type="number" id="dni" class="form-control mb-3" placeholder="DNI...">
+            <div *ngIf="registerForm.get('dniRegister')?.invalid && registerForm.get('dniRegister')?.touched">
+                <span class="help-block text-danger">DNI Requerido</span>
+            </div>
+            
+            <label for="especialidad" class="form-label">Especialidades:</label>
+            <div class="especialidades-scroll">
+            <div *ngFor="let especialidad of especialidadesUno; let i = index" class="form-check">
+                <input class="form-check-input" type="checkbox" [id]="especialidad" [value]="especialidad" (change)="onEspecialidadCheckboxChange(especialidad, $event)">
+                <label class="form-check-label" [for]="especialidad">{{ especialidad }}</label>
+            </div>
+            </div>
+
+            <button class="btn btn-dark mt-3" (click)="toggleCustomEspecialidadInput()">Más</button>
+            
+            <div *ngIf="showCustomEspecialidadInput" class="mt-3">
+                <input formControlName="customEspecialidad" type="text" class="form-control mb-3" placeholder="Escribe tu especialidad...">
+                <button class="btn btn-dark" (click)="addCustomEspecialidad()">Agregar</button>
+                <button class="btn btn-light ml-2" (click)="clearCustomEspecialidadInput()">Cancelar</button>
+            </div>
+
+            <div *ngFor="let especialidad of especialidades; let i = index" class="mt-2">
+                <input type="text" class="form-control mb-3" [value]="especialidad" disabled>
+            </div>
+        </div>
+        
+        <div class="col-md-5 mb-3">
+            <input formControlName="apellidoRegister" type="text" id="apellido" class="form-control mb-3" placeholder="Apellido...">
+            <div *ngIf="registerForm.get('apellidoRegister')?.invalid && registerForm.get('apellidoRegister')?.touched">
+                <span class="help-block text-danger">Apellido Requerido</span>
+            </div>
+            
+            <input formControlName="passwordRegister" type="password" id="password" class="form-control mb-3" placeholder="Contraseña...">
+            <div *ngIf="registerForm.get('passwordRegister')?.invalid && (registerForm.get('passwordRegister')?.dirty || registerForm.get('passwordRegister')?.touched)">
+                <span class="help-block text-danger">Contraseña Requerida</span>
+            </div>
+            
+            <input formControlName="edadRegister" type="number" id="edad" class="form-control mb-3" placeholder="Edad...">
+            <div *ngIf="registerForm.get('edadRegister')?.invalid && (registerForm.get('edadRegister')?.dirty || registerForm.get('edadRegister')?.touched)">
+                <span class="help-block text-danger">Edad Requerida</span>
+            </div>
+            
+            <label for="archivoPerfil" class="form-label">Seleccione una imagen para su Perfil</label>
+            <input formControlName="archivoRegister" type="file" id="archivoPerfil" class="form-control mb-3" (change)="onFileChange($event)">
+            <div *ngIf="registerForm.get('archivoRegister')?.invalid && registerForm.get('archivoRegister')?.touched">
+                <span class="help-block text-danger">Foto de Perfil Requerida</span>
+            </div>
+        </div>
+    </form>
+    
+    <button type="submit" class="btn btn-dark btn-full-width" (click)="registrarMedico()">Registrarse</button>
+</div>

@@ -1,0 +1,29 @@
+<body class="fullBody">
+    <div class="container">
+      <div class="login-container">
+        <h2 class="text-center">Inicio de Sesión</h2>
+        <form>
+          <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Introduce tu correo">
+          </div>
+          <div class="form-group">
+            <label for="pwd">Contraseña:</label>
+            <input type="password" class="form-control" id="pwd" [(ngModel)]="password" name="password" placeholder="Introduce tu contraseña">
+          </div>
+          <div class="button-container">
+            <button type="button" id="botonlogin"   class="btn btn-primary btn-block" (click)="goToPag()">Login</button>
+            <p> </p> 
+            <button type="button" class="btn btn-primary btn-block" (click)="completeFieldsAdministrator()">Administrador</button>
+        
+            <button type="button" class="btn btn-primary btn-block" (click)="completeFieldsPatient()">Paciente</button>
+        
+            <button type="button" class="btn btn-primary btn-block" (click)="completeFieldsDoctor()">Doctor</button>
+       
+            <button type="button" id="botonEnter" class="btn btn-primary btn-block" (click)="gotoWelcome()">Regresar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  

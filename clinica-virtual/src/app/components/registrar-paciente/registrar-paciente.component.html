@@ -1,0 +1,66 @@
+<div class="container text-center mt-5">
+    <div>
+      <img src="patient-ico.png" alt="Imagen paciente" class="img-fluid rounded mb-4" width="100px">
+    </div>
+    
+    <h1>Paciente</h1>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="registrarPaciente()" class="row justify-content-center mt-4">
+      <div class="col-md-5 mb-3">
+        <input formControlName="nombreRegister" type="text" id="nombre" class="form-control" placeholder="Nombre...">
+        <div *ngIf="registerForm.get('nombreRegister')?.errors?.['required'] && registerForm.get('nombreRegister')?.touched" class="help-block">
+          Nombre requerido
+        </div>
+        
+        <input formControlName="emailRegister" type="email" id="mail" class="form-control" placeholder="Correo...">
+        <div *ngIf="registerForm.get('emailRegister')?.errors?.['required'] && (registerForm.get('emailRegister')?.dirty || registerForm.get('emailRegister')?.touched)" class="help-block">
+          no ha ingresado ningun correo
+        </div>
+        <div *ngIf="registerForm.get('emailRegister')?.errors?.['email'] && (registerForm.get('emailRegister')?.dirty || registerForm.get('emailRegister')?.touched)" class="help-block">
+          correo mal escrito 
+        </div>
+        
+        <input formControlName="dniRegister" type="number" id="dni" class="form-control" placeholder="DNI...">
+        <div *ngIf="registerForm.get('dniRegister')?.errors?.['required'] && registerForm.get('dniRegister')?.touched" class="help-block">
+          agregar DNI
+        </div>
+        
+        <label for="obraSocial" class="form-label">Obra Social:</label>
+        <select formControlName="obraSocial" id="obraSocial" class="form-select mb-3">
+          <option value="OBSBA">OBSBA</option>
+          <option value="Swis Medical">Swis Medical</option>
+          <option value="Medicus">Medicus</option>
+          <option value="OSDE">OSDE</option>
+          <option value="Sancor Salud">Sancor Salud</option>
+        </select>
+      </div>
+      
+      <div class="col-md-5 mb-3">
+        <input formControlName="apellidoRegister" type="text" id="apellido" class="form-control" placeholder="Apellido...">
+        <div *ngIf="registerForm.get('apellidoRegister')?.errors?.['required'] && registerForm.get('apellidoRegister')?.touched" class="help-block">
+          Agregar apellido 
+        </div>
+        
+        <input formControlName="passwordRegister" type="password" id="password" class="form-control" placeholder="Contraseña...">
+        <div *ngIf="registerForm.get('passwordRegister')?.errors?.['required'] && registerForm.get('passwordRegister')?.touched" class="help-block">
+          Agregar contraseña
+        </div>
+        
+        <input formControlName="edadRegister" type="number" id="edad" class="form-control" placeholder="Edad...">
+        <div *ngIf="registerForm.get('edadRegister')?.errors?.['required'] && registerForm.get('edadRegister')?.touched" class="help-block">
+          Agregar edad
+        </div>
+        
+        <label for="archivoPerfil" class="form-label">Seleccione Dos Imágenes para su Perfil</label>
+        <input formControlName="archivoRegister" type="file" id="archivoPerfil" class="form-control mb-3" (change)="onFileChange($event)" multiple>
+        <div *ngIf="registerForm.get('archivoRegister')?.invalid && (registerForm.get('archivoRegister')?.dirty || registerForm.get('archivoRegister')?.touched)" style="height: 2rem;">
+          <span class="help-block text-danger">Foto de Perfil Requerida</span>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-dark btn-full-width">Registrarse</button>
+    </form>
+  </div>
+  
+
+           
