@@ -1,0 +1,15 @@
+<div class="captcha-container">
+    <p class="captcha-title">Por favor, complete el CAPTCHA:</p>
+    <div class="captcha-content">
+      <img *ngIf="!loading" [src]="captchaImage" alt="Captcha Image">
+      <div *ngIf="loading" class="loading-overlay">
+        <p class="captcha-title">Cargando CAPTCHA...</p>
+        <!-- Puedes agregar aquí un spinner de carga o cualquier indicador visual -->
+      </div>
+      <input type="text" [(ngModel)]="userInput" placeholder="Ingrese el código aquí">
+      <button (click)="submitCaptcha()" [disabled]="loading">Enviar</button>
+      <button (click)="refreshComponent()" [disabled]="loading">Refrescar</button>
+    </div>
+  </div>
+  
+  

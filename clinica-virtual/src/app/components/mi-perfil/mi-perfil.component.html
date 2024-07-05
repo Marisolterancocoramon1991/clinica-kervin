@@ -1,1 +1,82 @@
-<p>mi-perfil works!</p>
+<div class="top-bar">
+  <div class="facebook-container">
+    <div class="profile-picture">
+      <img src="logo_clinica.jpg" alt="Logo de la clínica" class="profile-img">
+    </div>
+    <div class="clinica-text">
+      Clinica Virtual
+    </div>
+  </div>
+  <div class="user-info" *ngIf="medicoEnTurno">
+    <span class="blue-text">{{ medicoEnTurno.nombre }}</span><span class="separator"> | </span>
+    <span class="blue-text">{{ medicoEnTurno.apellido }}</span><span class="separator"> | </span>
+    <span class="blue-text">{{ medicoEnTurno.dni }}</span><span class="separator"> | </span>
+    <span class="blue-text">{{ medicoEnTurno.especialidades.join(', ') }}</span><span class="separator"> | </span>
+    <span class="blue-text">{{ medicoEnTurno.mail }}</span>
+    <div class="profile-picture">
+      <img *ngIf="userProfile1ImageUrl" [src]="userProfile1ImageUrl" alt="Imagen de perfil 1" [style.width.px]="40" [style.height.px]="40">
+      <div *ngIf="!userProfile1ImageUrl">Imagen no disponible</div>
+    </div>
+  </div>
+  <div *ngIf="!medicoEnTurno">
+    <span>No se encontraron datos del médico.</span>
+  </div>
+</div>
+
+<div class="horarios-container" *ngIf="medicoEnTurno">
+  <h2>Mis horarios</h2>
+  <div>
+    <label for="numeroHorarios">¿Cuántos horarios desea agregar?</label>
+    <input id="numeroHorarios" type="number" [(ngModel)]="numeroHorarios" (change)="onNumeroHorariosChange()">
+  </div>
+  <div *ngFor="let horario of horarios; let i = index" class="horario-item">
+    <h3>Horario {{ i + 1 }}</h3>
+    <div class="form-group">
+      <label for="dia-{{ i }}">Día:</label>
+      <input id="dia-{{ i }}" type="date" [(ngModel)]="horario.dia" name="dia-{{ i }}" class="form-control">
+    </div> 
+    <div class="form-group">
+      <label for="horaInicio-{{ i }}">Hora Inicio:</label>
+      <input id="horaInicio-{{ i }}" type="time" [(ngModel)]="horario.horaInicio" name="horaInicio-{{ i }}" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="horaFin-{{ i }}">Hora Fin:</label>
+      <input id="horaFin-{{ i }}" type="time" [(ngModel)]="horario.horaFin" name="horaFin-{{ i }}" class="form-control">
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="saveSchedules()">Guardar horarios</button>
+</div>
+
+<div *ngIf="medicoEnTurno && !medicoEnTurno.especialidades.length" class="no-especialidades">
+  <span>No tiene especialidades asociadas.</span>
+</div>
+
+<div *ngIf="!medicoEnTurno" class="no-datos">
+  <span>No se encontraron datos del médico.</span>
+</div>
+<div class="listHorarios">
+  <button class="btn-listar-horarios" (click)="listarHorarios()">Listar Horarios</button>
+
+  <div *ngIf="mostrarHorarios">
+    <div class="container">
+      <div class="component-container">
+        <h2>Horarios Cargados</h2>
+        <div class="horarios-container">
+          <ul>
+            <li *ngFor="let horario of horariosEspecialistasCargadosEnFireBase; let i = index" class="horario-item">
+              <p><strong>Día:</strong> {{ horario.dia }}</p>
+              <p><strong>Hora Inicio:</strong> {{ horario.horaInicio }}</p>
+              <p><strong>Hora Fin:</strong> {{ horario.horaFin }}</p>
+              <p><strong>Disponibilidad:</strong> {{ horario.disponibilidad }}</p>
+              <button class="btn-primary" (mouseover)="mostrarMensaje($event)" (click)="cambiarEstadoHorario(i)">Cambiar Estado</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+
+  <div *ngIf="mostrarHorarios && horariosEspecialistasCargadosEnFireBase && horariosEspecialistasCargadosEnFireBase.length === 0" class="no-horarios">
+    <span>No hay horarios registrados para este especialista.</span>
+  </div>
+</div>

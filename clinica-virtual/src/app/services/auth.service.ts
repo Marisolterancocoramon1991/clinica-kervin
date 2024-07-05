@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Firestore, Timestamp } from '@angular/fire/firestore';
-import { addDoc, collection, getDoc, setDoc, getDocs, updateDoc, doc, query, where, DocumentData } from '@angular/fire/firestore';
+import { Firestore, Timestamp, DocumentReference } from '@angular/fire/firestore';
+import { addDoc, collection, getDoc, setDoc, getDocs, updateDoc, doc, query, where, DocumentData, docData } from '@angular/fire/firestore';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, signOut, authState, user, User } from '@angular/fire/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
-import { Observable, from } from 'rxjs';
+import { Observable, from, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Turno } from '../bibliotecas/turno.interface';
+import { catchError } from 'rxjs/operators';
+import { Paciente } from '../bibliotecas/paciente.interface';
+import {Medico} from '../bibliotecas/medico.interface';
+import { Horario } from '../bibliotecas/horarioEspecialista.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -162,7 +167,7 @@ export class AuthService {
     const storage = getStorage();
     const storageRef = ref(storage);
 
-    const fileref = ref(storageRef, `usuarios/${user.uid}/perfil`);
+    const fileref = ref(storageRef, `usuarios/${user.uid}/perfil1`);
     const uploadFile = await uploadBytes(fileref, file);
     const downloadURL = await getDownloadURL(uploadFile.ref);
 
@@ -350,5 +355,163 @@ export class AuthService {
     );
   }
 
+  isUserPatient(uid: string): Observable<boolean> {
+    const userCollectionRef = collection(this.firestore, 'usuarios');
+    const userQuery = query(userCollectionRef, where('uid', '==', uid));
+
+    return from(getDocs(userQuery)).pipe(
+      map(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data() as { rol: string };
+          return userData.rol === 'paciente';
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+  getTurnosPaciente(uid: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(turnosCollectionRef, where('idPaciente', '==', uid));
+  
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        }));
+      })
+    );
+  }
+  setTurno(turno: Turno): Observable<void> {
+    try {
+      const { id, ...turnoData } = turno; // Extraer id y datos del turno
+      const turnoDocRef = doc(collection(this.firestore, 'turnos'), id);
+
+      return from(setDoc(turnoDocRef, turnoData)).pipe(
+        catchError(error => {
+          console.error('Error al setear el turno:', error);
+          return throwError('Ocurrió un error al setear el turno');
+        })
+      );
+    } catch (error) {
+      console.error('Error en el try-catch al setear el turno:', error);
+      return throwError('Ocurrió un error inesperado');
+    }
+  }
+  getUserProfile1Url(uid: string): Observable<string | null> {
+    const storage = getStorage();
+    const storageRef = ref(storage, `usuarios/${uid}/perfil1`);
+    
+    return from(getDownloadURL(storageRef)).pipe(
+      catchError(error => {
+        console.error('Error obteniendo URL de imagen perfil1:', error);
+        return throwError('Ocurrió un error al obtener la URL de la imagen perfil1');
+      })
+    );
+  }
+  getUserProfile1Ur2(uid: string): Observable<string | null> {
+    const storage = getStorage();
+    const storageRef = ref(storage, `usuarios/${uid}/perfil`);
+    
+    return from(getDownloadURL(storageRef)).pipe(
+      catchError(error => {
+        console.error('Error obteniendo URL de imagen perfil:', error);
+        return throwError('Ocurrió un error al obtener la URL de la imagen perfil');
+      })
+    );
+  }
+  getUserDataByMail(mail: string): Observable<Paciente | null> {
+    const userCollectionRef = collection(this.firestore, 'usuarios');
+    const userQuery = query(userCollectionRef, where('mail', '==', mail));
+
+    return from(getDocs(userQuery)).pipe(
+      map(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data() as Paciente;
+          return userData;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+  getMedicosByEspecialidad(especialidad: string): Observable<Medico[]> {
+    const medicoCollectionRef = collection(this.firestore, 'usuarios');
+    const medicoQuery = query(medicoCollectionRef, where('rol', '==', 'medico'), where('especialidades', 'array-contains', especialidad));
+
+    return from(getDocs(medicoQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Medico,
+          id: doc.id
+         
+        })) as Medico[];
+      })
+    );
+  }
+
+  getMedicosByNombre(nombre: string): Observable<Medico[]> {
+    const medicoCollectionRef = collection(this.firestore, 'usuarios');
+    const medicoQuery = query(medicoCollectionRef, where('rol', '==', 'medico'), where('nombre', '==', nombre));
+  
+    return from(getDocs(medicoQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Medico,
+          id: doc.id
+        })) as Medico[];
+      })
+    );
+  }
+
+  getMedicosByMail(mail: string): Observable<Medico[]> {
+    const medicoCollectionRef = collection(this.firestore, 'usuarios');
+    const medicoQuery = query(medicoCollectionRef, where('rol', '==', 'medico'), where('mail', '==',  mail));
+  
+    return from(getDocs(medicoQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Medico,
+          id: doc.id
+        })) as Medico[];
+      })
+    );
+  }
+  getHorariosEspecialista(correoEspecialista: string): Observable<Horario[]> {
+   const horarioCollecitonRef= collection(this.firestore, 'horarios');
+   const horarioQuery = query(horarioCollecitonRef,
+    where('correoEspecialista', '==',  correoEspecialista));
+    return from(getDocs(horarioQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Horario,
+          id: doc.id
+        })) as Horario[];
+      })
+    );
+
+  }
+
+  updateHorarioCancelada(horario: Horario): Observable<void> {
+    const horarioDocRef = doc(this.firestore, `horarios/${horario.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(horarioDocRef, { disponibilidad: 'cancelada' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+
+
+  saveHorario(horario: Horario): Observable<DocumentReference<DocumentData>> {
+    const horarioCollectionRef = collection(this.firestore, 'horarios');
+    return from(addDoc(horarioCollectionRef, horario));
+  }
+  
   
 }

@@ -1,0 +1,136 @@
+/* Estilo del primer contendor principal */
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Esto alinea los elementos con espacio entre ellos */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en múltiples líneas si es necesario */
+}
+
+.main-container {
+  display: flex; /* Utilizamos flexbox para organizar los elementos */
+  justify-content: space-between; /* Alinea los contenedores a los extremos */
+  align-items: center; /* Centra verticalmente los elementos */
+  margin-top: 20px; /* Espacio opcional desde la parte superior */
+  padding: 20px; /* Añade un padding interno para separación */
+  background-color: #f0f0f0; /* Color de fondo */
+  border: 1px solid #ccc; /* Borde del contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+}
+
+/* Estilo para el contenedor del dropdown */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  width: 100%; /* Ajuste del ancho a 100% para ser responsive */
+  max-width: 300px; /* Ancho máximo del contenedor */
+  margin-bottom: 10px; /* Espacio entre contenedores */
+}
+
+/* Estilo para el botón principal */
+.dropdown-button {
+  background-color: #000a97;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  width: 100%; 
+  white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+  overflow: hidden; /* Oculta el desbordamiento de texto */
+  text-overflow: ellipsis; /* Añade puntos suspensivos al texto desbordante */
+}
+
+.dropdown-button:hover {
+  background-color: #0056b3;
+}
+
+/* Icono de flecha hacia abajo */
+.dropdown-button i {
+  margin-left: 5px;
+}
+
+/* Estilo para la lista desplegable */
+.dropdown-list {          
+  top: calc(100% + 5px); /* Lo coloca justo debajo del botón principal con un pequeño espacio */
+  left: 0; /* Lo alinea a la izquierda del contenedor */
+  background-color: #007bff; /* Color de fondo */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border-radius: 4px; /* Bordes redondeados */
+  padding: 0; /* Sin relleno dentro del contenedor */
+  width: 100%; /* Ancho completo del contenedor */
+  max-height: 200px; /* Altura máxima con scroll si es necesario */
+  overflow-y: auto; /* Scroll vertical si es necesario */
+}
+
+/* Estilo para la lista desplegable cuando está activa */
+.dropdown-list.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estilo para los botones de las especialidades */
+.dropdown-item-button {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+  overflow: hidden; /* Oculta el desbordamiento de texto */
+  text-overflow: ellipsis; /* Añade puntos suspensivos al texto desbordante */
+}
+
+.dropdown-item-button:hover {
+  background-color: #f2f2f2;
+}
+
+/* Estilo para el input del nombre del especialista */
+.dropdown-container input {
+  width: calc(100% - 40px); /* Ajuste del ancho para incluir el botón de búsqueda */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* Espacio entre el input y el botón */
+  box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+}
+
+.dropdown-container button {
+  width: 100%; /* Ancho completo para que sea responsive */
+}
+
+.dropdown-container .dropdown-button {
+  margin-top: 10px; /* Espacio entre el input y el botón */
+}
+
+@media (min-width: 576px) {
+  .dropdown-button {
+      width: 80%; /* Ajuste para pantallas pequeñas */
+  }
+}
+
+@media (min-width: 768px) {
+  .dropdown-button {
+      width: 60%; /* Ajuste para pantallas medianas */
+  }
+}
+
+@media (min-width: 992px) {
+  .dropdown-button {
+      width: 50%; /* Ajuste para pantallas grandes */
+  }
+}
+
+@media (min-width: 1200px) {
+  .dropdown-button {
+      width: 40%; /* Ajuste para pantallas extra grandes */
+  }
+}

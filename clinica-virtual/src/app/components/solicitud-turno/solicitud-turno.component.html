@@ -1,0 +1,13 @@
+
+<div>
+    
+    <app-mis-turnos-pacientes (medicoSeleccionado)="recibirMedicoSeleccionado($event)"></app-mis-turnos-pacientes>
+    
+  </div>
+  <!-- solicitud-turno.component.html -->
+<div>
+  <app-carga-turno-paciente [especialidad]="especialidad" [mailEspecialista]="mailEspecialista" [nombreEspecialista]="nombreEspecialista"></app-carga-turno-paciente>
+</div>
+<div>
+  <button (click)="verificar()">Seleccionar</button>
+</div>

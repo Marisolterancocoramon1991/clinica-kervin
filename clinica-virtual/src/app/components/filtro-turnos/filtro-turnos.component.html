@@ -1,1 +1,33 @@
-<p>filtro-turnos works!</p>
+<div class="main-container">
+    <div class="flex-container">
+      <div class="dropdown-container">
+        <button class="dropdown-button" (click)="toggleDropdown()">
+          Especialidades <i class="fa fa-caret-down"></i>
+        </button>
+        <ul class="dropdown-list" *ngIf="isOpen">
+          <li *ngFor="let specialty of specialties">
+            <button class="dropdown-item-button" (click)="selectSpecialty(specialty)">
+              {{ specialty }}
+            </button>
+          </li>
+        </ul>
+      </div>
+  
+      <div class="dropdown-container">
+        <input type="text" class="dropdown-item-button" [(ngModel)]="nombreEspecialista" placeholder="Nombre del especialista">
+        <button class="dropdown-button" (click)="buscarMedicosPorNombre()">
+          Buscar <i class="fa fa-caret-down"></i>
+        </button>
+  
+        <ul class="dropdown-list">
+            <li *ngFor="let medico of medicosEncontrados">
+              <button class="dropdown-item-button" (click)="seleccionarMedico(medico)">
+                {{ medico.nombre }} {{ medico.apellido }} - {{ medico.especialidades.join(', ') }}
+              </button>
+            </li>
+            <li *ngIf="medicosEncontrados.length === 0">No se encontraron médicos.</li>
+          </ul>          
+      </div>
+    </div>
+  </div>
+  

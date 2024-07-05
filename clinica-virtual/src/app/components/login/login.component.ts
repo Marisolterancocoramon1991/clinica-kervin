@@ -64,10 +64,10 @@ export class LoginComponent {
                   console.log(rol);
                   switch (rol) {
                     case 'paciente':
-                      this.router.navigate(['**']);
+                      this.router.navigate(['registrar/paciente/miturnos']);
                       break;
                     case 'medico':
-                      this.router.navigate(['/especialista']);
+                      this.router.navigate(['/medico/miperfil']);
                       break;
                     case 'admin':
                       this.router.navigate(['/administrador']);

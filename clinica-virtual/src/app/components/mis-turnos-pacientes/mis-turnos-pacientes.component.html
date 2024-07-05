@@ -1,1 +1,43 @@
-<p>mis-turnos-pacientes works!</p>
+<div class="top-bar">
+  <div class="facebook-container">
+    <div class="profile-picture">
+      <img src="logo_clinica.jpg" alt="Logo de la clínica" class="profile-img">
+    </div>
+    <div class="clinica-text">
+      Clinica Virtual
+    </div>
+  </div>
+  <div class="user-info" *ngIf="currentUser">
+    <span class="blue-text">{{ pacienteEnTurno?.nombre }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.apellido }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.dni }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.obraSocial }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.mail }}</span>
+    <div class="profile-picture">
+      <img *ngIf="userProfile1ImageUrl" [src]="userProfile1ImageUrl" alt="Imagen de perfil 1"
+      [style.width.px]="40" [style.height.px]="40">
+      <div *ngIf="!userProfile1ImageUrl">Imagen no disponible</div>
+    </div>      
+  </div>
+  <div *ngIf="!currentUser">
+    <span>No hay usuario autenticado.</span>
+  </div>
+</div>
+
+  <!-- Menú de navegación -->
+<div class="top-bar">
+  <button class="btn btn-primary" (click)="showComponent()">carga de turno</button>
+</div>
+
+<!-- Componentes a mostrar -->
+<div class="container">
+  <div class="component-container">
+    <div *ngIf="showFiltro">
+      <app-filtro-turnos
+        (medicosEncontradosChanged)="recibirMedicosEncontrados($event)"
+        (medicoSeleccionado)="recibirMedicoSeleccionado($event)">
+      </app-filtro-turnos>
+    </div>
+  </div>
+</div>
+
