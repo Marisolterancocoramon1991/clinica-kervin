@@ -67,10 +67,10 @@ export class LoginComponent {
                       this.router.navigate(['registrar/paciente/miturnos']);
                       break;
                     case 'medico':
-                      this.router.navigate(['/medico/miperfil']);
+                      this.router.navigate(['medico/menu']);
                       break;
                     case 'admin':
-                      this.router.navigate(['/administrador']);
+                      this.router.navigate(['registrar/admin/menu']);
                       break;
                     default:
                       console.log('Rol no reconocido:', rol);

@@ -2,27 +2,31 @@
 <div class="main-container">
     <h2>Gestión de Turnos</h2>
     
-    <button class="toggle-button" (click)="toggleFormulario()">
+    <button class="toggle-button" (click)="toggleFormulario()" (click)="listarHorarios()">
       {{ mostrarFormulario ? 'Ocultar Formulario' : 'Mostrar Formulario' }}
     </button>
   
     <div *ngIf="mostrarFormulario" class="form-container">
       <form [formGroup]="turnoForm" (ngSubmit)="onSubmit()" class="formulario-turno">
         <div class="form-group">
-          <label for="fecha">Fecha</label>
-          <input id="fecha" formControlName="fecha" type="date" />
-        </div>
-        <div class="form-group">
-          <label for="hora">Hora</label>
-          <input id="hora" formControlName="hora" type="time" />
+          <label for="especialidad">Horarios disponibles</label>
+          <div class="form-group">
+                <button *ngFor="let dia of horariosDisponibles"
+            type="button"
+            class="btn btn-outline-secondary"
+            [ngClass]="{ 'selected': dia.dia === formatDate(dia.dia) }"
+            (click)="cargarHorarioSeleccionado(dia)">
+            {{ formatDate(dia.dia) }} - {{ dia.horaInicio }} - {{ dia.horaFin }}
+          </button>
+          </div>
         </div>
         <div class="form-group">
           <label for="especialidad">Especialidad</label>
-          <input id="especialidad" formControlName="especialidad" type="text" />
+          <input id="especialidad" formControlName="especialidad" type="text" readonly/>
         </div>
         <div class="form-group">
           <label for="mailEspecialista">Email del Especialista</label>
-          <input id="mailEspecialista" formControlName="mailEspecialista" type="email" />
+          <input id="mailEspecialista" formControlName="mailEspecialista" type="email" readonly/>
         </div>
         <div class="form-group">
           <label for="comentario">Comentario</label>
@@ -37,7 +41,8 @@
             <option value="realizado">Realizado</option>
           </select>
         </div>
-        <button type="submit" [disabled]="turnoForm.invalid" class="submit-button">Enviar</button>
+        <!--  <button type="submit" [disabled]="turnoForm.invalid"
+           class="submit-button">Enviar</button>-->
       </form>
     </div>
   </div>

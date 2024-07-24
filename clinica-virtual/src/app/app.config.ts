@@ -9,6 +9,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideFirebaseApp(() => initializeApp({apiKey: "AIzaSyCaLtOSAWkeZE5skqOxAp3mcNbHd6nS6fE",
@@ -16,5 +17,5 @@ export const appConfig: ApplicationConfig = {
     projectId: "clinic-base-datos",
     storageBucket: "clinic-base-datos.appspot.com",
     messagingSenderId: "815745087237",
-    appId: "1:815745087237:web:e28f163e9bae80449f696c"})), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage())]
+    appId: "1:815745087237:web:e28f163e9bae80449f696c"})), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage()), provideHttpClient()]
 };

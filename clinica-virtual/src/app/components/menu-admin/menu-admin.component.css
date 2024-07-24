@@ -129,3 +129,15 @@
     z-index: 1000;
   }
   
+/*Parrafo*/
+/* src/styles.css */
+.magazine-style {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.5;
+  }
+  

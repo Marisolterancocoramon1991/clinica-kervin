@@ -16,10 +16,16 @@ export class MenuAdminComponent {
   navigatewelcome() {
     this.router.navigate(['/bienvenida']);
   }
+
+  solicitudTurnoAdmin()
+  {
+    this.router.navigate(['administrador/solicitud']);
+    
+  }
   
 
   navigateTDoctor() {
-    this.router.navigate(['registrar/admin/esoecialistaAdmin']);
+    this.router.navigate(['registrar/admin/especialistaAdmin']);
   }
   showMessageOne() {
     Swal.fire({

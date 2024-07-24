@@ -134,3 +134,166 @@
       width: 40%; /* Ajuste para pantallas extra grandes */
   }
 }
+
+.especialidad-button {
+  width: 100px; /* Define el ancho del botón */
+  height: 100px; /* Define la altura del botón para que sea cuadrado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.medicos-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  max-height: 100vh; /* Máxima altura de la pantalla */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 15px; /* Marco redondeado */
+  background-color: #f0f0f0;
+  overflow-y: auto; /* Permite el scroll si el contenido excede la altura */
+  overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+/* parte de la impresion de los botones del medico */
+.medicos-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Distribuye los elementos equitativamente a lo ancho */
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  max-height: 100vh; /* Máxima altura de la pantalla */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 15px; /* Marco redondeado */
+  background-color: #f0f0f0;
+  overflow-y: auto; /* Permite el scroll si el contenido excede la altura */
+  overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+.medico-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  min-width: 200px; /* Ancho mínimo del botón */
+  max-width: 300px; /* Máximo ancho del botón */
+  height: 80px; /* Altura del botón */
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+}
+
+.profile-image {
+  width: 50px; /* Ancho de la imagen */
+  height: 50px; /* Altura de la imagen */
+  border-radius: 50%; /* Hace que la imagen sea redonda */
+  margin-right: 10px;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.info h3 {
+  margin: 0;
+  font-size: 14px; /* Tamaño del texto del nombre */
+}
+
+.info p {
+  margin: 0;
+  font-size: 12px; /* Tamaño del texto de las especialidades */
+  color: #666;
+}
+
+/*especilidades container*/
+
+.especialidades-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.especialidad-item {
+  margin: 10px;
+}
+
+.especialidad-button {
+  background-color: lightgray;
+  border: none;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.especialidad-button img {
+  border-radius: 50%; /* Para hacer la imagen redonda */
+  margin-bottom: 5px;
+}
+/* boton default*/
+.round-image {
+  border-radius: 50%; /* Hace que la imagen tenga bordes redondeados */
+}
+.round-button {
+  border-radius: 50%; /* Hace que el botón tenga bordes redondeados */
+}
+
+
+/* Estilos generales para los botones de especialidad */
+.especialidad-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  background-color: #f0f0f0; /* Color de fondo */
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.especialidad-button:hover {
+  background-color: #e0e0e0; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos para la imagen dentro del botón */
+.especialidad-button img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Borde redondeado para la imagen */
+  margin-bottom: 5px; /* Espacio entre la imagen y el texto */
+}
+
+/* Estilos para el texto dentro del botón */
+.especialidad-button span {
+  overflow: hidden; /* Evita que el texto sobresalga del borde */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos si el texto es demasiado largo */
+  white-space: nowrap; /* Evita saltos de línea */
+}
+
+/* Estilos para el botón redondo */
+.round-button {
+  width: 200px; /* Ancho del botón */
+  height: 200px; /* Alto del botón */
+  border-radius: 50%; /* Borde redondeado */
+}
+
+/* Animación para el botón al hacer hover */
+.especialidad-button:hover {
+  transform: scale(1.1); /* Escala el botón al 110% en hover */
+}

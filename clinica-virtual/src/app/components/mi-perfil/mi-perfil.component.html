@@ -32,9 +32,33 @@
   <div *ngFor="let horario of horarios; let i = index" class="horario-item">
     <h3>Horario {{ i + 1 }}</h3>
     <div class="form-group">
-      <label for="dia-{{ i }}">Día:</label>
-      <input id="dia-{{ i }}" type="date" [(ngModel)]="horario.dia" name="dia-{{ i }}" class="form-control">
-    </div> 
+      <label>Selecciona el día:</label>
+      <div class="form-group">
+        <button *ngFor="let dia of diasDisponibles" 
+                type="button" 
+                class="btn btn-outline-secondary" 
+                [ngClass]="{ 'selected': horario.dia === formatDate(dia) }"
+                (click)="horario.dia = formatDate(dia)">
+          {{ dia | date:'yyyy-MM-dd' }}
+        </button>      
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Selecciona turnos</label>
+      <div class="form-group">
+        <button *ngFor="let hora of horasDisponibles; let i = index" 
+                type="button" 
+                class="btn btn-outline-secondary" 
+                [ngClass]="{ 'selected': hora === horario.horaInicio }"
+                (click)="seleccionarTurno(hora, horasDisponibles[i + 1])">
+          {{ hora }} - {{ horasDisponibles[i + 1] }}
+        </button>
+      </div>
+    </div>
+    
+
+     <!-- Selección de la hora de inicio 
     <div class="form-group">
       <label for="horaInicio-{{ i }}">Hora Inicio:</label>
       <input id="horaInicio-{{ i }}" type="time" [(ngModel)]="horario.horaInicio" name="horaInicio-{{ i }}" class="form-control">
@@ -43,7 +67,7 @@
       <label for="horaFin-{{ i }}">Hora Fin:</label>
       <input id="horaFin-{{ i }}" type="time" [(ngModel)]="horario.horaFin" name="horaFin-{{ i }}" class="form-control">
     </div>
-  </div>
+  </div>-->
   <button class="btn btn-primary" (click)="saveSchedules()">Guardar horarios</button>
 </div>
 

@@ -1,0 +1,29 @@
+<div>
+  <app-cabecera></app-cabecera>
+</div>
+
+<div class="container">
+  <!-- Lista de pacientes: escuche el evento 'pacienteSeleccionado' -->
+  <app-lista-paciente
+    (pacienteSeleccionado)="recibirPaciente($event)">
+  </app-lista-paciente>
+  
+  <!-- Filtro de turnos: escuche el evento 'medicoSeleccionado' -->
+  <app-filtro-turnos
+    (medicoSeleccionado)="recibirMedicoSeleccionado($event)"
+    (especialidadSeleccionada)="recibirEspecialidadSeleccionada($event)">
+    
+  </app-filtro-turnos>
+  
+  <!-- Carga turno paciente: pase datos mediante @Input y escuche el evento 'horarioSeleccionado' -->
+  <app-carga-turno-paciente
+    [especialidad]="especialidad" 
+    [mailEspecialista]="mailEspecialista" 
+    [nombreEspecialista]="nombreEspecialista" 
+    (horarioSeleccionado)="recibirHorarioSeleccionado($event)">
+  </app-carga-turno-paciente>
+  
+  <button (click)="obtenerTurno()" (click)="listartodo()">Obtener Turno</button>
+</div>
+
+ 

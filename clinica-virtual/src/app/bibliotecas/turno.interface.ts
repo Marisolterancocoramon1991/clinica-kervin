@@ -1,9 +1,8 @@
 export interface Turno {
     id: string;
     idPaciente: string;
-    fecha: string; // Ajustar tipo de dato según necesidad
-    hora: string;
-    especialidad: string;
+    idHorario?: string;
+    especialidad: any;
     mailEspecialista: string;
     nombreEspecialista: string;
     comentario: string;

@@ -1,0 +1,79 @@
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px; /* Aumentar el padding para más espacio */
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    border-radius: 10px; /* Bordes redondeados */
+    border: 1px solid #e0e0e0; /* Borde ligero */
+    margin-bottom: 20px; /* Espacio inferior */
+  }
+  
+  .facebook-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre elementos */
+  }
+  
+  .user-info span {
+    color: #333333; /* Color de texto por defecto */
+  }
+  
+  .user-info span.blue-text {
+    color: #1a73e8; /* Color azul oscuro */
+    font-weight: bold; /* Negrita opcional para destacar */
+  }
+  
+  .profile-picture {
+    width: 48px; /* Tamaño de la imagen */
+    height: 48px; /* Tamaño de la imagen */
+    overflow: hidden;
+    border-radius: 50%; /* Bordes redondeados para la imagen de perfil */
+    margin-right: 16px; /* Espacio a la derecha */
+  }
+  
+  .profile-img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .default-img {
+    padding: 8px; /* Espacio interno de la imagen no disponible */
+    font-size: 0.8em; /* Tamaño de fuente para mensaje de imagen no disponible */
+    color: #999999; /* Color de texto gris */
+  }
+  
+  .separator {
+    color: #999999; /* Color de la barra separadora */
+  }
+  
+  .clinica-text {
+    font-size: 1.3em; /* Ajustar el tamaño del texto */
+    font-weight: bold;
+    color: #333333; /* Color del texto */
+  }
+  
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Ajusta la altura mínima menos la altura de la barra superior */
+  }
+  
+  .component-container {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Ancho del contenedor, ajusta según necesites */
+    max-width: 1000px; /* Ancho máximo del contenedor */
+    margin-top: 20px; /* Margen superior para separarlo de la barra superior */
+  }

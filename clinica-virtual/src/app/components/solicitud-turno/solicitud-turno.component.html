@@ -1,13 +1,20 @@
 
 <div>
     
-    <app-mis-turnos-pacientes (medicoSeleccionado)="recibirMedicoSeleccionado($event)"></app-mis-turnos-pacientes>
+    <app-mis-turnos-pacientes 
+    (medicoSeleccionado)="recibirMedicoSeleccionado($event)"
+    (especialidadEncontrada)="recibirEspecialidad($event)"></app-mis-turnos-pacientes>
     
   </div>
   <!-- solicitud-turno.component.html -->
 <div>
-  <app-carga-turno-paciente [especialidad]="especialidad" [mailEspecialista]="mailEspecialista" [nombreEspecialista]="nombreEspecialista"></app-carga-turno-paciente>
+  <app-carga-turno-paciente [especialidad]="especialidad"
+   [mailEspecialista]="mailEspecialista" 
+   [nombreEspecialista]="nombreEspecialista"
+   (horarioSeleccionado)="recibirHorarioSeleccionado($event)"
+   ></app-carga-turno-paciente>
+   <div class="button-container">
+    <button class="animated-button" (click)="obtenerTurno()">Obtener Turno</button>
+  </div>
 </div>
-<div>
-  <button (click)="verificar()">Seleccionar</button>
-</div>
+

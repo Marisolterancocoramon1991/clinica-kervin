@@ -4,7 +4,7 @@ import { addDoc, collection, getDoc, setDoc, getDocs, updateDoc, doc, query, whe
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, signOut, authState, user, User } from '@angular/fire/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { Observable, from, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map,switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Turno } from '../bibliotecas/turno.interface';
@@ -370,6 +370,21 @@ export class AuthService {
       })
     );
   }
+  isUserSpecialist(uid: string): Observable<boolean> {
+    const userCollectionRef = collection(this.firestore, 'usuarios');
+    const userQuery = query(userCollectionRef, where('uid', '==', uid));
+
+    return from(getDocs(userQuery)).pipe(
+      map(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data() as { rol: string };
+          return userData.rol === 'medico';
+        } else {
+          return false;
+        }
+      })
+    );
+  }
   getTurnosPaciente(uid: string): Observable<Turno[]> {
     const turnosCollectionRef = collection(this.firestore, 'turnos');
     const turnosQuery = query(turnosCollectionRef, where('idPaciente', '==', uid));
@@ -506,12 +521,93 @@ export class AuthService {
         });
     });
   }
+  updateHorarioOcupado(horario: Horario): Observable<void> {
+    const horarioDocRef = doc(this.firestore, `horarios/${horario.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(horarioDocRef, { disponibilidad: 'ocupada' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
 
 
-  saveHorario(horario: Horario): Observable<DocumentReference<DocumentData>> {
+
+  /*saveHorario(horario: Horario): Observable<DocumentReference<DocumentData>> {
     const horarioCollectionRef = collection(this.firestore, 'horarios');
     return from(addDoc(horarioCollectionRef, horario));
+  }*/
+ /* saveHorario(horario: Horario): Observable<Horario> {
+    const horarioCollectionRef = collection(this.firestore, 'horarios');
+    return from(addDoc(horarioCollectionRef, horario)).pipe(
+      map((docRef: DocumentReference<DocumentData>) => {
+        // Añade el ID generado al objeto Horario y lo retorna
+        return { ...horario, id: docRef.id };
+      })
+    );
+  }*/
+    saveHorario(horario: Horario): Observable<Horario> {
+      const horarioCollectionRef = collection(this.firestore, 'horarios');
+      
+      // Agrega el documento y luego actualiza con el ID
+      return from(addDoc(horarioCollectionRef, {})).pipe(
+        switchMap((docRef: DocumentReference<DocumentData>) => {
+          const horarioConId = { ...horario, id: docRef.id };
+          const horarioDocRef = doc(this.firestore, `horarios/${docRef.id}`);
+          return from(updateDoc(horarioDocRef, horarioConId)).pipe(
+            map(() => horarioConId)
+          );
+        })
+      );
+    }
+
+  
+  getAllMedicos(): Observable<Medico[]> {
+    const medicoCollectionRef = collection(this.firestore, 'usuarios');
+    const medicoQuery = query(medicoCollectionRef, where('rol', '==', 'medico'));
+  
+    return from(getDocs(medicoQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Medico,
+          id: doc.id
+        })) as Medico[];
+      })
+    );
   }
   
+  saveTurno(turno: Turno): Observable<Turno> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+  
+    // Agrega el documento vacío primero
+    return from(addDoc(turnosCollectionRef, {})).pipe(
+      switchMap((docRef: DocumentReference<DocumentData>) => {
+        // Crea un turno con el ID obtenido
+        const turnoConId = { ...turno, id: docRef.id };
+        // Actualiza el documento con los datos del turno y el ID
+        const turnoDocRef = doc(this.firestore, `turnos/${docRef.id}`);
+        return from(updateDoc(turnoDocRef, turnoConId)).pipe(
+          map(() => turnoConId)
+        );
+      })
+    );
+  }
+  obtenerPacientes(): Observable<Paciente[]> {
+    const pacienteCollectionRef = collection(this.firestore, 'usuarios');
+    const pacienteQuery = query(pacienteCollectionRef, where('rol', '==', 'paciente'));
+  
+    return from(getDocs(pacienteQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Paciente,
+          id: doc.id
+        })) as Paciente[];
+      })
+    );
+  }
   
 }

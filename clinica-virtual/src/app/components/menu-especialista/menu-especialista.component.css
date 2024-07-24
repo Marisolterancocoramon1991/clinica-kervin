@@ -1,0 +1,151 @@
+.d-inline-block {
+    border-radius: 50%;
+}
+.containerBody
+{
+    color: #00ffaa;
+}
+
+/* General Navbar Styles */
+.navbar {
+    background-color: #007bff; /* Color azul más claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.navbar-brand {
+    font-family: 'Helvetica', sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white !important;
+    display: flex;
+    align-items: center; /* Alinea verticalmente el texto e imagen del navbar-brand */
+}
+
+.navbar-brand img {
+    border-radius: 50%; /* Bordes redondeados para la imagen */
+    margin-right: 10px;
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    color: white !important;
+    transition: color 0.3s ease;
+    padding: 10px 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffdd57 !important; /* Color de hover para los enlaces */
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    border: none;
+}
+
+
+
+/* Custom Container */
+.container {
+    max-width: 1200px;
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 0 15px; /* Espacio interior alrededor del contenedor */
+}
+
+/* Imágenes fluidas */
+.img-fluid {
+    border-radius: 50%; /* Bordes redondeados para las imágenes */
+    width: 200px; /* Ancho de las imágenes */
+    height: auto; /* Altura automática para mantener la proporción */
+    transition: transform 0.3s ease; /* Transición suave para el efecto al pasar el cursor */
+}
+
+/* Contenedor de imágenes de especialistas */
+.pictureSpecialistAdministrator {
+    display: flex;
+    justify-content: space-between; /* Distribución uniforme de las imágenes */
+    align-items: center; /* Alineación vertical de las imágenes */
+    width: 80%; /* Ancho del contenedor según tus necesidades */
+    margin: 50px auto; /* Margen superior e inferior para el contenedor */
+}
+
+.pictureSpecialistAdministrator img:hover {
+    transform: translateX(5px); /* Desplazamiento hacia adelante al pasar el cursor */
+}
+
+/* Media queries para ajustes responsivos */
+@media (max-width: 992px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 10px;
+    }
+
+    .navbar-brand {
+        margin-bottom: 10px;
+    }
+}
+.container {
+    width: 80%; /* Ancho del contenedor según tus necesidades */
+    margin: 50px auto; /* Margen superior e inferior para el contenedor */
+  }
+  
+  .pictureSpecialistAdministrator {
+    display: flex;
+    justify-content: space-between; /* Distribución uniforme de las imágenes */
+  }
+  
+  .specialist-container {
+    border: 2px solid #ccc; /* Borde con relieve */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espacio interno */
+    transition: transform 0.3s ease; /* Transición suave para el efecto al pasar el cursor */
+  }
+  
+  .specialist-container:hover {
+    transform: translateY(-5px); /* Levantar un poco al pasar el cursor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil al pasar el cursor */
+    cursor: pointer; /* Cambiar cursor al pasar el cursor */
+  }
+  
+  .img-fluid {
+    width: 100%; /* Ancho máximo para las imágenes */
+    height: auto; /* Altura automática para mantener la proporción */
+  }
+  
+  /* Estilos para los mensajes (puedes personalizarlos según tu diseño) */
+  .message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+/*Parrafo*/
+/* src/styles.css */
+.magazine-style {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.5;
+  }
+  .specialist-container {
+    text-align: center;
+    cursor: pointer;
+    max-width: 200px; /* Limitar el ancho del contenedor */
+    padding: 10px; /* Añadir padding para un poco de espacio alrededor */
+    border: 1px solid #ccc; /* Añadir un borde opcional */
+    border-radius: 10px; /* Redondear bordes opcional */
+  }
+  

@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import {Horario} from '../../bibliotecas/horarioEspecialista.interface'
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { formatDate as angularFormatDate } from '@angular/common';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -26,6 +27,18 @@ export class MiPerfilComponent implements OnInit {
   horarios: Horario[] = [];
   horariosEspecialistasCargadosEnFireBase: Horario[] = [];
   mostrarHorarios: boolean = false;
+  diasDisponibles: Date[] = [];
+  horasDisponibles: string[] = [
+    '09:00', '09:45',
+    '10:00', '10:45',
+    '11:00', '11:45',
+    '12:00', '12:45',
+    // Periodo de descanso de 1 a 2 de la tarde
+    '14:00', '14:45',
+    '15:00', '15:45',
+    '16:00', '16:45',
+    '17:00', '17:45',
+  ];
 
   constructor(private authService: AuthService){}
   ngOnInit(): void {
@@ -73,6 +86,7 @@ export class MiPerfilComponent implements OnInit {
         console.error('Error al obtener usuario actual:', error);
       }
     );
+    this.inicializarDiasDisponibles();
   }
   onNumeroHorariosChange() {
     this.horarios = Array(this.numeroHorarios).fill(0).map(() => ({
@@ -83,6 +97,17 @@ export class MiPerfilComponent implements OnInit {
       disponibilidad: 'abierta' // Puedes establecer un valor predeterminado si es necesario
     }));
   }  
+  formatDate(date: Date): string {
+    return angularFormatDate(date, 'yyyy-MM-dd', 'en-US');
+  }
+  seleccionarTurno(horaInicio: string, horaFin: string) {
+    if (this.horarios.length > 0) {
+      const horario = this.horarios[0]; // Asigna siempre al primer horario, puedes cambiar la lógica según necesites
+      horario.horaInicio = horaInicio;
+      horario.horaFin = horaFin;
+    }
+  }
+
   saveSchedules() {
     const currentDate = new Date();
     if (!this.currentUser?.email) {
@@ -166,6 +191,10 @@ export class MiPerfilComponent implements OnInit {
   
   // Función para verificar si dos horarios se solapan
   horariosOverlap(horario1: Horario, horario2: Horario): boolean {
+     // Comparar primero los días
+    if (horario1.dia !== horario2.dia) {
+      return false; // Si los días son diferentes, no hay solapamiento
+    }
     const inicio1 = this.parseTimeStringToDate(horario1.horaInicio);
     const fin1 = this.parseTimeStringToDate(horario1.horaFin);
     const inicio2 = this.parseTimeStringToDate(horario2.horaInicio);
@@ -261,6 +290,36 @@ export class MiPerfilComponent implements OnInit {
         }
       );
     }
+  }
+  seleccionarDia(diaSeleccionado: Date) {
+    
+    console.log('Día seleccionado:', diaSeleccionado);
+    // Aquí puedes implementar la lógica necesaria para manejar la selección del día
+    // Por ejemplo, guardar el día seleccionado en alguna variable o realizar una acción específica.
+  }
+
+  inicializarDiasDisponibles() {
+    // Obtener la fecha de mañana
+    const mañana = new Date();
+    mañana.setDate(mañana.getDate() + 1); // Sumar un día
+
+    // Obtener la fecha de 15 días después
+    const quinceDiasDespues = new Date();
+    quinceDiasDespues.setDate(quinceDiasDespues.getDate() + 15); // Sumar 15 días
+
+    // Generar la lista de días disponibles
+    this.diasDisponibles = this.getFechasEntre(mañana, quinceDiasDespues);
+  }
+  getFechasEntre(fechaInicio: Date, fechaFin: Date): Date[] {
+    const fechas: Date[] = [];
+    let fechaActual = new Date(fechaInicio);
+
+    while (fechaActual <= fechaFin) {
+      fechas.push(new Date(fechaActual));
+      fechaActual.setDate(fechaActual.getDate() + 1); // Avanzar al siguiente día
+    }
+
+    return fechas;
   }
 
 }

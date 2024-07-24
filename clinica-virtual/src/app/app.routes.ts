@@ -20,6 +20,11 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 import { CasaComponent } from './components/casa/casa.component';
 import { SolicitudTurnoComponent } from './components/solicitud-turno/solicitud-turno.component';
 import { MiPerfilComponent } from './components/mi-perfil/mi-perfil.component';
+import { CabeceraComponent } from './components/cabecera/cabecera.component';
+import { ListaPacienteComponent } from './components/lista-paciente/lista-paciente.component';
+import { SolicitudTurnoAdministradorComponent } from './components/solicitud-turno-administrador/solicitud-turno-administrador.component';
+import { especialistaGuard } from './guards/especialista.guard';
+import { MenuEspecialistaComponent } from './components/menu-especialista/menu-especialista.component';
 
 export const routes: Routes = [
    
@@ -45,16 +50,18 @@ export const routes: Routes = [
     },
     {
         path: 'registrar/admin',
-        component: RegistrarAdminComponent
+        component: RegistrarAdminComponent,
+        canActivate: [adminGuard]
     },
     {
         path: 'registrar/admin/menu',
-        component: MenuAdminComponent
+        component: MenuAdminComponent,
+        canActivate: [adminGuard]
     },
     {
-        path: 'registrar/admin/esoecialistaAdmin',
-        component: EspecialistaAdminComponent
-       // canActivate: [adminGuard]
+        path: 'registrar/admin/especialistaAdmin',
+        component: EspecialistaAdminComponent,
+        canActivate: [adminGuard]
     },
     {
         path: 'registrar/paciente/miturnos',
@@ -78,13 +85,35 @@ export const routes: Routes = [
     },
     {
         path: 'paciente/formulario',
-        component: SolicitudTurnoComponent
+        component: SolicitudTurnoComponent,
+        canActivate: [patientAuthGuard]
+    },
+    { 
+        path: 'medico/miperfil',
+        component: MiPerfilComponent,
+        canActivate: [especialistaGuard]
+      
+    },
+    { 
+        path: 'medico/menu',
+        component: MenuEspecialistaComponent,
+        canActivate: [especialistaGuard]
+      
+    },
+    {
+        path: 'listadopaciente',
+        component: ListaPacienteComponent
+
+    },
+    { 
+        path: 'cabecera',
+        component: CabeceraComponent
       // canActivate: [patientAuthGuard]
     },
     {
-        path: 'medico/miperfil',
-        component: MiPerfilComponent
-      // canActivate: [patientAuthGuard]
+        path: 'administrador/solicitud',
+        component: SolicitudTurnoAdministradorComponent,
+        canActivate: [adminGuard]
     },
     
 

@@ -12,6 +12,7 @@ import { FiltroTurnosComponent } from '../filtro-turnos/filtro-turnos.component'
 import { CargaTurnoPacienteComponent } from '../carga-turno-paciente/carga-turno-paciente.component';
 import { Medico } from '../../bibliotecas/medico.interface';
 
+
 @Component({
   selector: 'app-mis-turnos-pacientes',
   standalone: true,
@@ -26,6 +27,7 @@ import { Medico } from '../../bibliotecas/medico.interface';
 export class MisTurnosPacientesComponent implements OnInit{
   @Output() medicoSeleccionado = new EventEmitter<Medico>();
   @Input() medico: Medico | null = null; 
+  @Output() pacienteEmitido = new EventEmitter<Paciente>();
   turnos$: Observable<Turno[]> | undefined; 
   currentUser: User | null = null;
   userProfile1ImageUrl: string | null = null;
@@ -33,6 +35,7 @@ export class MisTurnosPacientesComponent implements OnInit{
   showFiltro: boolean = false;
   showMisTurnos: boolean = false;
   medicosEncontrados: Medico[] = [];
+  @Output() especialidadEncontrada = new EventEmitter<string[]>();
 
 
   constructor(private authService: AuthService){}
@@ -57,6 +60,7 @@ export class MisTurnosPacientesComponent implements OnInit{
   
       if (userData) {
         this.pacienteEnTurno = userData;
+        this.cargarPaciente(this.pacienteEnTurno);
         console.log('Paciente en turno:', this.pacienteEnTurno);
       } else {
         console.log('No se encontraron datos de paciente.');
@@ -95,10 +99,18 @@ export class MisTurnosPacientesComponent implements OnInit{
     console.log('Médico seleccionado en MisTurnosPacientesComponent:', medico);
     // Aquí puedes manejar la lógica para el médico seleccionado
   }
+  recibirEspecialidad(especialidad: string[])
+  {
+    this.especialidadEncontrada.emit(especialidad);
+    console.log('especialidad seleccionado en MisTurnosPacientesComponent:', especialidad);
+  }
 
   seleccionarMedico(medico: Medico) {
     this.medicoSeleccionado.emit(medico);
     alert("entro aqui dos");
+  }
+  cargarPaciente(paciente: Paciente) {
+    this.pacienteEmitido.emit(paciente);
   }
   
 }

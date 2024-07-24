@@ -6,7 +6,7 @@ export interface Medico {
     especialidades: string[];
     mail: string;
     nombre: string;
-    profileImage: string;
+    profileImage?: string;
     rol: string;
     uid: string;
   }

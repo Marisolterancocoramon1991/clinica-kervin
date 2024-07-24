@@ -7,6 +7,7 @@ import { error } from 'console';
 import Swal from 'sweetalert2';
 
 import { CommonModule } from '@angular/common';
+import { CabeceraComponent } from '../cabecera/cabecera.component';
 @Component({
   selector: 'app-especialista-admin',
   standalone: true,
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
     RegistrarAdminComponent,
     RegistrarMedicoComponent,
     RegistrarPacienteComponent,
+    CabeceraComponent,
     CommonModule
   ],
   templateUrl: './especialista-admin.component.html',

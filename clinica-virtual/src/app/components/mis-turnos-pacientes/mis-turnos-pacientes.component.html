@@ -35,7 +35,9 @@
     <div *ngIf="showFiltro">
       <app-filtro-turnos
         (medicosEncontradosChanged)="recibirMedicosEncontrados($event)"
-        (medicoSeleccionado)="recibirMedicoSeleccionado($event)">
+        (medicoSeleccionado)="recibirMedicoSeleccionado($event)"
+        (especialidadSeleccionada)="recibirEspecialidad($event)">
+        
       </app-filtro-turnos>
     </div>
   </div>

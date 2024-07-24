@@ -1,10 +1,13 @@
-import { Component, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Specialty } from '../../bibliotecas/especialidad.enum';
 import { CommonModule } from '@angular/common';
 import { Medico } from '../../bibliotecas/medico.interface';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
-
+import { forkJoin } from 'rxjs';
+import { subscribe } from 'diagnostics_channel';
+import { user } from '@angular/fire/auth';
+import { ImagenesEspecialidadService } from '../../services/imagenes-especialidad.service';
 @Component({
   selector: 'app-filtro-turnos',
   standalone: true,
@@ -14,16 +17,61 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './filtro-turnos.component.html',
   styleUrl: './filtro-turnos.component.css'
 })
-export class FiltroTurnosComponent {
+export class FiltroTurnosComponent implements OnInit{
   @Output() specialtySelected = new EventEmitter<Specialty>();
   @Output() medicosEncontradosChanged = new EventEmitter<Medico[]>();
   @Output() medicoSeleccionado = new EventEmitter<Medico>(); // Nuevo EventEmitter
+  @Output() especialidadSeleccionada = new EventEmitter<string[]>();
   specialties: Specialty[] = Object.values(Specialty);
+  mostrarEspecialidades = false; 
+
+  especialidadesSeleccionadas: string[] = [];
+  imagenesEspecialidades: { [especialidad: string]: string[] } = {};
+  especialidades: string[] = [];
+  mostrarMedicos= true;
+
+  listaMedicos: Medico[] = [];
   selectedSpecialty: Specialty | undefined;
   isOpen = false;
   nombreEspecialista: string = '';
   medicosEncontrados: Medico[] = [];//es este 
-  constructor(private cdr: ChangeDetectorRef, private authService: AuthService) {} 
+  constructor(private cdr: ChangeDetectorRef, private authService: AuthService,
+    private ImagenesEspecialidadService: ImagenesEspecialidadService
+  ) {} 
+  ngOnInit(): void {
+    this.authService.getAllMedicos().subscribe(
+      medicos => {
+        if (medicos) {
+          this.listaMedicos = medicos;
+  
+          medicos.forEach(medico => {
+            if (medico.mail) {
+              this.authService.getUserProfile1Ur2(medico.uid).subscribe(
+                imageUrl => {
+                  if (imageUrl !== null) {
+                    medico.profileImage = imageUrl;
+                    this.cdr.detectChanges(); // Actualiza la vista después de asignar la imagen
+                  } else {
+                    console.error('La URL de imagen de perfil es nula.');
+                  }
+                },
+                error => {
+                  console.error('Error al obtener URL de imagen de perfil:', error);
+                }
+              );
+            }
+          });
+        }
+      },
+      error => {
+        console.error('Error al obtener todos los médicos:', error);
+      }
+    );
+  }
+
+  
+  
+  
 
   selectSpecialty(specialty: Specialty): void {
     this.selectedSpecialty = specialty;
@@ -66,9 +114,44 @@ export class FiltroTurnosComponent {
   }
   seleccionarMedico(medico: Medico) {
     this.medicoSeleccionado.emit(medico);
-    // Aquí puedes manejar la lógica para seleccionar al médico, por ejemplo, guardar su ID o mostrar algún mensaje de confirmación.
+    this.imagenesEspecialidades = {};
+
+    // Iterar sobre cada especialidad del médico y buscar imágenes
+    medico.especialidades.forEach(especialidad => {
+      this.ImagenesEspecialidadService.searchImages(especialidad).subscribe(
+        (urls: string[]) => {
+          // Guardar las URLs en imagenesEspecialidades por especialidad
+          this.imagenesEspecialidades[especialidad] = urls ;
+          console.log(`Imágenes de ${especialidad}:`, urls);
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          console.error(`Error al obtener imágenes de ${especialidad}:`, error);
+        }
+      );
+    });
+    this.mostrarPantallas();
+    
+
     console.log('Médico seleccionado:', medico);
   }
-   
-
+  getEspecialidadesKeys(): string[] {
+    return Object.keys(this.imagenesEspecialidades);
+  }
+  mostrarPantallas() {
+    if (this.mostrarMedicos === false && this.mostrarEspecialidades === false) {
+      this.mostrarMedicos = true;
+      this.mostrarEspecialidades = false;
+    } else if (this.mostrarMedicos === true && this.mostrarEspecialidades === false) {
+      this.mostrarMedicos = false;
+      this.mostrarEspecialidades = true;
+    } else {
+      this.mostrarMedicos = false;
+      this.mostrarEspecialidades = false;
+    }
+  }
+  onSelectEspecialidad(especialidad: any): void {
+    this.especialidadSeleccionada.emit(especialidad);
+  }
+  
 }

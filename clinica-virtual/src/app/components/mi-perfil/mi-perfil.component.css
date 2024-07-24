@@ -183,3 +183,32 @@
   .btn-listar-horarios:hover {
     background-color: #0056b3;
   }  
+
+/* Estilo para botones seleccionados */
+.btn.btn-outline-secondary.selected {
+  background-color: #28a745; /* Fondo verde cuando está seleccionado */
+  color: #fff; /* Color del texto cuando está seleccionado */
+  border-color: #28a745; /* Color del borde cuando está seleccionado */
+}
+
+/* Estilo para botones normales */
+.btn.btn-outline-secondary {
+  background-color: transparent; /* Fondo transparente por defecto */
+  color: #007bff; /* Color del texto normal */
+  border-color: #007bff; /* Color del borde normal */
+  transition: background-color 0.3s, color 0.3s; /* Transición suave para cambios */
+}
+
+/* Estilo hover para botones */
+.btn.btn-outline-secondary:hover {
+  background-color: #007bff; /* Color de fondo al pasar el mouse */
+  color: #fff; /* Color del texto al pasar el mouse */
+  border-color: #007bff; /* Color del borde al pasar el mouse */
+}
+
+/* Estilo activo (cuando se hace clic) para botones */
+.btn.btn-outline-secondary:active {
+  background-color: #28a745; /* Color de fondo cuando se hace clic */
+  color: #fff; /* Color del texto cuando se hace clic */
+  border-color: #28a745; /* Color del borde cuando se hace clic */
+}

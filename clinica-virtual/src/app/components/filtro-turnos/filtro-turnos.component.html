@@ -30,4 +30,41 @@
       </div>
     </div>
   </div>
+<!-- filtro-turnos.component.html -->
+<!-- filtro-turnos.component.html -->
+<div class="medicos-container" *ngIf="mostrarMedicos" >
+  <div *ngIf="listaMedicos.length > 0">
+    <div *ngFor="let medico of listaMedicos">
+    <button class="medico-button" (click)="seleccionarMedico(medico)">
+      <img *ngIf="medico.profileImage" [src]="medico.profileImage" alt="Imagen de perfil" class="profile-image">
+      <div class="info">
+        <h3>{{ medico.nombre }}</h3>
+        <p>Especialidades: {{ medico.especialidades.join(', ') }}</p>
+      </div>
+    </button>
+  </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarEspecialidades" class="especialidades-container">
+  <div *ngFor="let especialidad of getEspecialidadesKeys()" class="especialidad-item">
+    <button class="especialidad-button round-button" (click)="mostrarPantallas()"
+    (click)="onSelectEspecialidad(especialidad)">
+      <img [src]="imagenesEspecialidades[especialidad]" alt="Imagen de {{ especialidad }}" width="50" height="50">
+      <span>{{ especialidad }}</span>
+    </button>
+  </div>
   
+  <!-- Botón por defecto -->
+  <div *ngIf="getEspecialidadesKeys().length === 0" class="especialidad-item">
+    <button class="especialidad-button round-button" (click)="mostrarPantallas()"
+    >
+      <img src="default.png" alt="Imagen por defecto" width="50" height="50" class="round-image">
+      <span>Sin imagen</span>
+    </button>
+  </div>
+</div>
+
+
+
+

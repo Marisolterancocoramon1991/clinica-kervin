@@ -1,0 +1,36 @@
+/* Botón con animación */
+.button-container {
+  display: grid;
+  place-items: center; /* Centra horizontal y verticalmente */
+}
+
+.animated-button {
+   
+    background-color: #4CAF50; /* Color de fondo verde */
+    border: none; /* Sin borde */
+    color: white; /* Texto en blanco */
+    padding: 15px 32px; /* Espaciado */
+    text-align: center; /* Centrando el texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* En línea con el bloque */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 4px 2px; /* Margen */
+    cursor: pointer; /* Cursor de mano */
+    border-radius: 12px; /* Bordes redondeados */
+    transition: all 0.4s ease; /* Transición suave para todas las propiedades */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra inicial */
+  }
+  
+  /* Efecto al pasar el ratón por encima */
+  .animated-button:hover {
+    background-color: #45a049; /* Color de fondo más oscuro */
+    transform: scale(1.05); /* Aumentar tamaño */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Sombra más intensa */
+  }
+  
+  /* Efecto al hacer clic */
+  .animated-button:active {
+    transform: scale(0.98); /* Reducir tamaño */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra más ligera */
+  }
+  
