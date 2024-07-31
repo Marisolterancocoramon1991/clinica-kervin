@@ -1,1 +1,20 @@
-<p>menu-paciente works!</p>
+<header class="header">
+    <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
+    <h1 class="title">Menú Paciente</h1>
+  </header>
+  
+  <nav class="containerBody">
+  <div class="container">
+    <nav class="pictureSpecialistAdministrator">
+      <div class="specialist-container" (click)="navigateSolicitud()">
+        <p class="magazine-style">Perfil</p>
+        <img src="calendario-paciente-ico.png" class="img-fluid"
+         alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="navigateAdministracionTurno()">
+        <p class="magazine-style">Turnos</p>
+        <img src="registe-ico.png" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+    </nav>
+  </div>
+</nav>

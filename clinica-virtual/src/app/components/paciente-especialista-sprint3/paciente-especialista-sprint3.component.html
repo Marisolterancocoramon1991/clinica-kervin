@@ -1,0 +1,108 @@
+<div>
+  <app-cabecera></app-cabecera>
+</div>
+
+<div class="pacientes-container">
+  <div *ngIf="pacientes.length > 0">
+    <div *ngFor="let paciente of pacientes">
+      <button class="paciente-button" (click)="seleccionarPaciente(paciente)">
+        <!-- Mostrar imagen de perfil si está disponible -->
+        <img *ngIf="paciente.profileImage" [src]="paciente.profileImage" alt="Imagen de perfil" class="profile-image">
+        <div class="info">
+          <h3>{{ paciente.nombre }}</h3>
+          <p>DNI: {{ paciente.dni }}</p>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Lista de turnos realizados -->
+<div class="turnos-container">
+  <!-- Lista de turnos realizados -->
+  <div *ngIf="turnosRealizadosPacientes.length > 0" class="turnos-list">
+    <h3>Lista de Turnos Realizados</h3>
+    <ul>
+      <!-- Itera sobre el array de turnos y crea un elemento de lista para cada turno -->
+      <li *ngFor="let turno of turnosRealizadosPacientes" class="turno-item">
+        <!-- Muestra la información del turno -->
+        <span>Especialidad: {{ turno.especialidad }} - Especialista: {{ turno.nombreEspecialista }} - ID Paciente: {{ turno.idPaciente }}</span>
+        <!-- Botón para seleccionar el turno -->
+        <button mat-raised-button color="primary" (click)="seleccionarTurno(turno)">Seleccionar</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Mostrar información del turno seleccionado -->
+  <div *ngIf="turnoSeleccionado" class="turno-seleccionado">
+    <h4>Turno Seleccionado</h4>
+    <p>Especialidad: {{ turnoSeleccionado.especialidad }}</p>
+    <p>Especialista: {{ turnoSeleccionado.nombreEspecialista }}</p>
+    <p>ID Paciente: {{ turnoSeleccionado.idPaciente }}</p>
+  </div>
+</div>
+
+
+<!-- formulario del historial medico -->
+<div class="form-container">
+  <form [formGroup]="historiaClinicaForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Altura (cm)</mat-label>
+        <input matInput formControlName="altura" type="number">
+        <mat-error *ngIf="historiaClinicaForm.get('altura')?.hasError('required')">La altura es obligatoria.</mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('altura')?.hasError('min')">La altura debe ser un número positivo.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Peso (kg)</mat-label>
+        <input matInput formControlName="peso" type="number">
+        <mat-error *ngIf="historiaClinicaForm.get('peso')?.hasError('required')">El peso es obligatorio.</mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('peso')?.hasError('min')">El peso debe ser un número positivo.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Temperatura (°C)</mat-label>
+        <input matInput formControlName="temperatura" type="number">
+        <mat-error *ngIf="historiaClinicaForm.get('temperatura')?.hasError('required')">La temperatura es obligatoria.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Presión arterial</mat-label>
+        <input matInput formControlName="presion">
+        <mat-error *ngIf="historiaClinicaForm.get('presion')?.hasError('required')">La presión arterial es obligatoria.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div formArrayName="datosDinamicos">
+      <div *ngFor="let dato of datosDinamicos.controls; let i = index" [formGroupName]="i" class="form-field">
+        <mat-form-field appearance="fill">
+          <mat-label>Clave</mat-label>
+          <input matInput formControlName="clave">
+          <mat-error *ngIf="dato.get('clave')?.hasError('required')">La clave es obligatoria.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Valor</mat-label>
+          <input matInput formControlName="valor">
+          <mat-error *ngIf="dato.get('valor')?.hasError('required')">El valor es obligatorio.</mat-error>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="removeDatosDinamicos(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" (click)="addDatosDinamicos()">Agregar Especificación</button>
+      <button mat-raised-button color="primary" 
+      type="submit" (click)="guardarHistoriaClinica()">Actualizar Historia Clínica</button>
+    </div>
+  </form>
+</div>

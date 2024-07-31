@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { Medico } from '../../bibliotecas/medico.interface';
 import { Horario } from '../../bibliotecas/horarioEspecialista.interface';
 import { Paciente } from '../../bibliotecas/paciente.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-administrador-de-turnos',
@@ -18,6 +19,8 @@ import { Paciente } from '../../bibliotecas/paciente.interface';
   imports: [
     CabeceraComponent,
     FiltroTurnosComponent,
+    CommonModule,
+
     
   ],
   templateUrl: './administrador-de-turnos.component.html',
@@ -30,6 +33,7 @@ export class AdministradorDeTurnosComponent {
   nombreEspecialista: string = '';
   paciente: Paciente | null = null;
   uidPaciente: string = '';
+  turnosPorEspecialista: Turno[] = [];
   constructor(private authService: AuthService) {}
   recibirMedicoSeleccionado(medico: Medico) {
     this.medicoSeleccionado = medico;
@@ -40,4 +44,59 @@ export class AdministradorDeTurnosComponent {
     this.especialidad = especialidad;
   }
 
+  obtenerTurnos(): void {
+    if (this.mailEspecialista) {
+      this.authService.getTurnosPorMailEspecialista(this.mailEspecialista).subscribe({
+        next: (turnos) => {
+          this.turnosPorEspecialista = turnos;
+        },
+        error: (error) => {
+          Swal.fire('Error', 'No se pudieron cargar los turnos', 'error');
+        }
+      });
+    }
+  }
+  seleccionarTurno(turno: Turno): void {
+    Swal.fire({
+      title: 'Detalles del Turno',
+      html: `<p><strong>Especialista:</strong> ${turno.nombreEspecialista}</p>
+             <p><strong>Comentario:</strong> ${turno.comentario}</p>`,
+      icon: 'info'
+    });
+  }
+  cancelarTurno(turno: Turno): void {
+    // Verificar el estado del turno
+    if (turno.estado === 'pendiente') {
+      // Mostrar SweetAlert2 para confirmar la cancelación del turno
+      Swal.fire({
+        title: 'Detalles del Turno',
+        html: `<p><strong>Especialista:</strong> ${turno.nombreEspecialista}</p>
+               <p><strong>Comentario:</strong> ${turno.comentario}</p>
+               <p><strong>¿Estás seguro de que deseas cancelar este turno?</strong></p>`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cancelar',
+        cancelButtonText: 'No, mantener'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Proceder con la cancelación si el usuario confirma
+          this.authService.updateTurnoCancelado(turno).subscribe({
+            next: () => {
+              Swal.fire('Éxito', 'El turno ha sido cancelado', 'success');
+            },
+            error: (error) => {
+              Swal.fire('Error', 'No se pudo cancelar el turno', 'error');
+              console.error('Error al cancelar el turno:', error);
+            }
+          });
+        } else {
+          // Informar al usuario que la cancelación fue abortada
+          Swal.fire('Cancelado', 'El turno no fue cancelado', 'info');
+        }
+      });
+    } else {
+      // Informar al usuario que el turno no puede ser cancelado
+      Swal.fire('Operación no permitida', `El turno está en estado '${turno.estado}' y solo se puede cancelar si está en estado 'pendiente'.`, 'warning');
+    }
+  }
 }

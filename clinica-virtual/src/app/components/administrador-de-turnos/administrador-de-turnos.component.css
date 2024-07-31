@@ -1,0 +1,43 @@
+.obtener-turno-button {
+    background-color: #28a745; /* Color de fondo verde */
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    margin-bottom: 20px; /* Espacio debajo del botón */
+  }
+  
+  .obtener-turno-button img {
+    vertical-align: middle; /* Alinear el ícono con el texto */
+  }
+  
+  .obtener-turno-button:hover {
+    background-color: #218838; /* Color de fondo verde más oscuro en hover */
+  }
+  
+  .turnos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .turno-button {
+    background-color: #007bff; /* Color de fondo azul */
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .turno-button:hover {
+    background-color: #0056b3; /* Color de fondo azul más oscuro en hover */
+  }
+  
+  

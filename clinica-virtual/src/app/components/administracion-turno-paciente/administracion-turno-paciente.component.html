@@ -1,0 +1,53 @@
+<header class="header">
+    <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
+    <h1 class="title">Menú Paciente</h1>
+  </header>
+  
+<app-filtro-turnos
+    (medicoSeleccionado)="recibirMedicoSeleccionado($event)"
+    (especialidadSeleccionada)="recibirEspecialidadSeleccionada($event)">
+    
+  </app-filtro-turnos>
+
+  <div *ngIf="turnos.length > 0; else noTurnos">
+    <div *ngFor="let turno of turnos" class="turno-container">
+      <h3>Nombre del Especialista: {{ turno.nombreEspecialista }}</h3>
+      <p>Nombre del Paciente: {{ paciente?.nombre }}</p>
+      <p>Estado del Turno: {{ turno.estado }}</p>
+      
+      <div class="button-container">
+        <!-- Botón Cancelar -->
+        <button *ngIf="turno.estado === 'pendiente' || turno.estado === 'rechazado'" 
+        (click)="cancelarTurno(turno)">Cancelar</button>
+        
+        <!-- Botón Rechazar Turno -->
+        <button *ngIf="turno.comentario !== 'Comentario opcional'" 
+        (click)="chequeoComentarioEspecialista(turno)">Ver Comentario Especialista </button>
+
+        
+        <!-- Botón Aceptar -->
+        <button *ngIf=" turno.estado === 'realizado' && turno.comentario !== 'Comentario opcional'" 
+        (click)="dejarResenia(turno)">Dejar reseña</button>
+
+        <!-- Botón Aceptar -->
+        <div class="rating-container">
+          <div class="stars">
+            <img 
+              *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" 
+              [src]="i < rating ? 'star-icon.png' : 'star-icon.png'" 
+              (click)="setRating(i + 1, turno)"
+              [alt]="i < rating ? 'Star filled' : 'Star empty'" 
+            />
+          </div>
+            <!--<button (click)="submitRating()">Enviar Reseña</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #noTurnos>
+    <p>No hay turnos disponibles.</p>
+  </ng-template>
+  
+  
+

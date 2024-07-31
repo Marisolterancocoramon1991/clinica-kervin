@@ -17,6 +17,19 @@ export class MenuEspecialistaComponent {
   navigateMiPerfil() {
     this.router.navigate(['/medico/miperfil']);
   }
+  navigateAdministradorEspecial()
+  {
+    this.router.navigate(['/medico/menu/administracionturno']);
+  }
 
+  navigateAdministradorEspecialListaHistoriaclinica()
+  {
+    this.router.navigate(['/medico/listar/paciente/historialclinico']);
+  }
+  navigateAdministradorEspecialLlenarHistoria()
+  {
+    this.router.navigate(['/medico/llenarHistoriaClinica']);
+  }
 
+  
 }

@@ -34,6 +34,12 @@ export class LoginComponent {
     this.password="123456";
   }
 
+  completeFieldsDoctorDos()
+  {
+    this.email ="martasjsj@gmail.com";
+    this.password="123456";
+  }
+
   completeFieldsDoctor()
   {
     this.email ="martalatra@gmail.com";
@@ -44,6 +50,19 @@ export class LoginComponent {
   {
 
   }
+  completeFieldsPatientDOS()
+  {
+    this.email = "k_e_iver@hotmail.com";
+    this.password="123456";
+  }
+
+  completeFieldsPatientTres()
+  {
+    this.email= "marisolteran123@gmail.com";
+    this.password="123456";
+  }
+
+
 
   gotoWelcome()
   {
@@ -62,9 +81,9 @@ export class LoginComponent {
               (rol: string | null) => {
                 if (rol) {
                   console.log(rol);
-                  switch (rol) {
+                  switch (rol) {  
                     case 'paciente':
-                      this.router.navigate(['registrar/paciente/miturnos']);
+                      this.router.navigate(['menu/paciente']);
                       break;
                     case 'medico':
                       this.router.navigate(['medico/menu']);

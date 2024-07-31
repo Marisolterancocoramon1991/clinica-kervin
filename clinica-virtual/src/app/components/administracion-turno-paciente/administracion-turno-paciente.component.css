@@ -1,0 +1,193 @@
+/* Estilo general para la cabecera */
+.header {
+    display: flex; /* Disposición en fila para el logo y el título */
+    align-items: center; /* Alinear verticalmente el logo y el título */
+    background-color: #003366; /* Fondo azul oscuro */
+    padding: 10px 20px; /* Espaciado interno de la cabecera */
+    border-bottom: 3px solid #4caf50; /* Línea decorativa verde en la parte inferior */
+  }
+  
+  /* Estilo para el logo */
+  .logo {
+    width: 50px; /* Ancho del logo */
+    height: 50px; /* Alto del logo */
+    border-radius: 50%; /* Bordes redondeados para hacer el logo circular */
+    margin-right: 15px; /* Espaciado entre el logo y el título */
+    object-fit: cover; /* Asegura que la imagen del logo no se distorsione */
+  }
+  
+  /* Estilo para el título de la cabecera */
+  .title {
+    color: #4caf50; /* Color del texto verde */
+    font-size: 24px; /* Tamaño de fuente para el título */
+    margin: 0; /* Eliminar márgenes por defecto */
+  }
+  
+  /* General container styles */
+.especialidades-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Individual item styles */
+.especialidad-item {
+  margin: 20px; /* Aumenta el margen si es necesario */
+}
+
+.especialidad-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  width: 200px; /* Doble del tamaño original */
+  height: 200px; /* Doble del tamaño original */
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1); /* Aumenta la sombra si es necesario */
+}
+
+.especialidad-button:hover {
+  transform: translateY(-10px); /* Aumenta el desplazamiento al pasar el mouse */
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15); /* Aumenta la sombra al pasar el mouse */
+}
+
+.especialidad-button img {
+  border-radius: 50%;
+  width: 100px; /* Doble del tamaño original */
+  height: 100px; /* Doble del tamaño original */
+  object-fit: cover;
+  margin-bottom: 10px; /* Aumenta el margen si es necesario */
+}
+
+.especialidad-button span {
+  font-size: 28px; /* Aumenta el tamaño del texto */
+  color: #333;
+}
+
+/* Styles for the list of turnos */
+.turnos-lista {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.turno-button {
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 10px;
+  padding: 30px; /* Doble del tamaño original */
+  margin-bottom: 20px; /* Aumenta el margen si es necesario */
+  width: 80%;
+  max-width: 600px;
+  text-align: left;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1); /* Aumenta la sombra si es necesario */
+}
+
+.turno-button:hover {
+  background-color: #d0d0d0;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15); /* Aumenta la sombra al pasar el mouse */
+}
+
+.turno-button p {
+  margin: 0;
+  font-size: 32px; /* Doble del tamaño original */
+}
+
+.turno-button p strong {
+  font-weight: bold;
+}
+
+
+/* Estilo general para la página de turnos */
+.turno-container {
+  border: 1px solid #ddd; /* Borde ligero alrededor del contenedor de cada turno */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  padding: 20px; /* Espaciado interno */
+  margin-bottom: 20px; /* Espaciado entre turnos */
+  background-color: #f9f9f9; /* Fondo claro para el contenedor del turno */
+  transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+.turno-container:hover {
+  background-color: #eaeaea; /* Cambio de color al pasar el ratón sobre el contenedor */
+}
+
+.turno-container h3 {
+  margin-top: 0; /* Eliminar margen superior del encabezado */
+  color: #333; /* Color del texto del encabezado */
+}
+
+.turno-container p {
+  margin: 5px 0; /* Espaciado entre párrafos */
+  color: #555; /* Color del texto de los párrafos */
+}
+
+.button-container {
+  display: flex; /* Disposición en fila para los botones */
+  gap: 10px; /* Espaciado entre botones */
+  margin-top: 10px; /* Espaciado superior de los botones */
+}
+
+.button-container button {
+  padding: 10px 20px; /* Espaciado interno de los botones */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados para los botones */
+  color: #fff; /* Color del texto de los botones */
+  font-size: 16px; /* Tamaño del texto de los botones */
+  cursor: pointer; /* Cursor en forma de mano al pasar sobre el botón */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+}
+
+.button-container button:hover {
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño del botón al pasar el ratón */
+}
+
+.button-container button:nth-child(1) {
+  background-color: #f44336; /* Rojo para el botón Cancelar */
+}
+
+.button-container button:nth-child(2) {
+  background-color: #ff9800; /* Naranja para el botón Rechazar Turno */
+}
+
+.button-container button:nth-child(3) {
+  background-color: #4caf50; /* Verde para el botón Aceptar */
+}
+
+/* Estilo para el mensaje cuando no hay turnos */
+ng-template #noTurnos p {
+  color: #888; /* Color del texto cuando no hay turnos */
+  font-size: 18px; /* Tamaño de fuente mayor para el mensaje */
+  text-align: center; /* Centrar el texto */
+}
+
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stars {
+  display: flex;
+}
+
+.stars img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.stars img:hover {
+  opacity: 0.7;
+}

@@ -29,7 +29,7 @@ export class FiltroTurnosComponent implements OnInit{
   imagenesEspecialidades: { [especialidad: string]: string[] } = {};
   especialidades: string[] = [];
   mostrarMedicos= true;
-
+ 
   listaMedicos: Medico[] = [];
   selectedSpecialty: Specialty | undefined;
   isOpen = false;

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PdfService } from './services/pdf.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,9 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'clinica-virtual';
+  constructor(private pdfService: PdfService) {}
+  generatePdf(){
+    console.log("entra");
+ }
+
 }

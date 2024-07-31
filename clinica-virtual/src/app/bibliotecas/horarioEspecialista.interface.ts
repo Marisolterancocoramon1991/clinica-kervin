@@ -4,7 +4,7 @@ export interface Horario {
   horaInicio: string;
   horaFin: string;
   correoEspecialista: string;
-  disponibilidad: 'abierta' | 'ocupada'| 'cancelada';
+  disponibilidad: 'abierta' | 'ocupada'| 'cancelada' | 'rechazada'| 'realizado';
 }
 
   

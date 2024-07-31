@@ -25,6 +25,12 @@ import { ListaPacienteComponent } from './components/lista-paciente/lista-pacien
 import { SolicitudTurnoAdministradorComponent } from './components/solicitud-turno-administrador/solicitud-turno-administrador.component';
 import { especialistaGuard } from './guards/especialista.guard';
 import { MenuEspecialistaComponent } from './components/menu-especialista/menu-especialista.component';
+import { AdministradorDeTurnosComponent } from './components/administrador-de-turnos/administrador-de-turnos.component';
+import { AdministradorEspecialistaTurnoComponent } from './components/administrador-especialista-turno/administrador-especialista-turno.component';
+import { AdministracionTurnoPacienteComponent } from './components/administracion-turno-paciente/administracion-turno-paciente.component';
+import { MenuPacienteComponent } from './components/menu-paciente/menu-paciente.component';
+import { PacienteEspecialistaSprint3Component } from './components/paciente-especialista-sprint3/paciente-especialista-sprint3.component';
+import { ListaImpresionEspecialistaComponent } from './components/lista-impresion-especialista/lista-impresion-especialista.component';
 
 export const routes: Routes = [
    
@@ -69,6 +75,11 @@ export const routes: Routes = [
        canActivate: [patientAuthGuard]
     },
     {
+        path: 'menu/paciente',
+        component: MenuPacienteComponent,
+       canActivate: [patientAuthGuard]
+    },
+    {
         path: 'registrar/paciente/formulario',
         component: CargaTurnoPacienteComponent,
        canActivate: [patientAuthGuard]
@@ -84,8 +95,25 @@ export const routes: Routes = [
       // canActivate: [patientAuthGuard]
     },
     {
+        path: 'medico/llenarHistoriaClinica',
+        component: PacienteEspecialistaSprint3Component,
+        canActivate: [especialistaGuard]
+      // canActivate: [patientAuthGuard]
+    },
+    {//
+        path: 'medico/listar/paciente/historialclinico',
+        component: ListaImpresionEspecialistaComponent,
+        canActivate: [especialistaGuard]
+        // canActivate: [patientAuthGuard]
+    },
+    {
         path: 'paciente/formulario',
         component: SolicitudTurnoComponent,
+        canActivate: [patientAuthGuard]
+    },
+    {
+        path: 'paciente/formulario/administracion',
+        component: AdministracionTurnoPacienteComponent,
         canActivate: [patientAuthGuard]
     },
     { 
@@ -98,6 +126,19 @@ export const routes: Routes = [
         path: 'medico/menu',
         component: MenuEspecialistaComponent,
         canActivate: [especialistaGuard]
+      
+    },
+    { 
+        path: 'medico/menu/administracionturno',
+        component: AdministradorEspecialistaTurnoComponent,
+        canActivate: [especialistaGuard]
+      
+    },
+    { 
+        path: 'administrador/turnos',
+        component: AdministradorDeTurnosComponent,
+       // canActivate: [especialistaGuard]
+       canActivate: [adminGuard]
       
     },
     {

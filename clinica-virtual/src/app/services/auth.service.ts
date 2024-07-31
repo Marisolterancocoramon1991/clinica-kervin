@@ -12,6 +12,10 @@ import { catchError } from 'rxjs/operators';
 import { Paciente } from '../bibliotecas/paciente.interface';
 import {Medico} from '../bibliotecas/medico.interface';
 import { Horario } from '../bibliotecas/horarioEspecialista.interface';
+import { ComentarioPaciente } from '../bibliotecas/comenatrioPaciente.interface';
+import { Calificacion } from '../bibliotecas/calificacion.interface';
+import { HistoriaClinica } from '../bibliotecas/historiaClinica.interface';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -398,6 +402,24 @@ export class AuthService {
       })
     );
   }
+
+  getIdPacientesTurnosRealizados(correoEspecialista: string): Observable<string[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(turnosCollectionRef, 
+      where('mailEspecialista', '==', correoEspecialista), 
+      where('estado', '==', 'realizado')
+    );
+  
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => {
+          const turno = doc.data() as Turno;
+          return turno.idPaciente;
+        });
+      })
+    );
+  }
+  
   setTurno(turno: Turno): Observable<void> {
     try {
       const { id, ...turnoData } = turno; // Extraer id y datos del turno
@@ -507,11 +529,79 @@ export class AuthService {
     );
 
   }
+  updateTurnoCancelado(turno: Turno): Observable<void> {
+    const turnoDocRef = doc(this.firestore, `turnos/${turno.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(turnoDocRef, { estado: 'cancelado' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  
 
   updateHorarioCancelada(horario: Horario): Observable<void> {
     const horarioDocRef = doc(this.firestore, `horarios/${horario.id}`);
     return new Observable<void>((observer) => {
       updateDoc(horarioDocRef, { disponibilidad: 'cancelada' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  updateHorarioCanceladoById(idHorario: string): Observable<void> {
+    const horarioDocRef = doc(this.firestore, `horarios/${idHorario}`);
+    return new Observable<void>((observer) => {
+      updateDoc(horarioDocRef, { disponibilidad: 'cancelada' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  updateHorarioRechazadoById(idHorario: string): Observable<void> {
+    const horarioDocRef = doc(this.firestore, `horarios/${idHorario}`);
+    return new Observable<void>((observer) => {
+      updateDoc(horarioDocRef, { disponibilidad: 'rechazada' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  
+  updateHorarioRealizadoById(idHorario: string): Observable<void> {
+    const horarioDocRef = doc(this.firestore, `horarios/${idHorario}`);
+    return new Observable<void>((observer) => {
+      updateDoc(horarioDocRef, { disponibilidad: 'realizado' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+
+  updateHorarioAbiertoById(idHorario: string): Observable<void> {
+    const horarioDocRef = doc(this.firestore, `horarios/${idHorario}`);
+    return new Observable<void>((observer) => {
+      updateDoc(horarioDocRef, { disponibilidad: 'abierta' })
         .then(() => {
           observer.next();
           observer.complete();
@@ -609,5 +699,268 @@ export class AuthService {
       })
     );
   }
+  GetPacientePorCorreo(correo: string): Observable<Paciente | null> {
+    const pacienteCollectionRef = collection(this.firestore, 'usuarios');
+    const pacienteQuery = query(pacienteCollectionRef, where('mail', '==', correo));
+    
+    return from(getDocs(pacienteQuery)).pipe(
+      map(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          return {
+            ...doc.data() as Paciente,
+            id: doc.id
+          } as Paciente;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+  GetPacientePorUID(uid: string): Observable<Paciente | null> {
+    const pacienteCollectionRef = collection(this.firestore, 'usuarios');
+    const pacienteQuery = query(pacienteCollectionRef, where('uid', '==', uid));
+
+    return from(getDocs(pacienteQuery)).pipe(
+      map(querySnapshot => {
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          return {
+            ...doc.data() as Paciente,
+            id: doc.id
+          } as Paciente;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+  getTurnosPorMailEspecialista(mailEspecialista: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(turnosCollectionRef, where('mailEspecialista', '==', mailEspecialista));
+
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        })) as Turno[];
+      })
+    );
+  }
+  getTurnosPorPacienteId(idPaciente: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(turnosCollectionRef, 
+      where('idPaciente', '==', idPaciente),
+      where('estado', '==', 'realizado') // Asegúrate de que el estado esté configurado correctamente
+    );
   
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        })) as Turno[];
+      })
+    );
+  }
+  getTurnosPorMailYEspecialidad(mailEspecialista: string, especialidad: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(
+      turnosCollectionRef,
+      where('mailEspecialista', '==', mailEspecialista),
+      where('especialidad', '==', especialidad) // Asegúrate de que 'especialidad' es el campo correcto
+    );
+
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        })) as Turno[];
+      })
+    );
+  }
+  updateTurnoRechazado(turno: Turno): Observable<void> {
+    const turnoDocRef = doc(this.firestore, `turnos/${turno.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(turnoDocRef, { estado: 'rechazado' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  updateHistoriaClinica(historiaClinica: HistoriaClinica): Observable<void> {
+    const historiaDocRef = doc(this.firestore, `historiasClinicas/${historiaClinica.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(historiaDocRef, {
+        altura: historiaClinica.altura,
+        peso: historiaClinica.peso,
+        temperatura: historiaClinica.temperatura,
+        presion: historiaClinica.presion,
+        datosDinamicos: historiaClinica.datosDinamicos
+      })
+      .then(() => {
+        observer.next();
+        observer.complete();
+      })
+      .catch((error) => {
+        observer.error(error);
+      });
+    });
+  }
+  updateTurnoAceptado(turno: Turno): Observable<void> {
+    const turnoDocRef = doc(this.firestore, `turnos/${turno.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(turnoDocRef, { estado: 'aceptado' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  updateTurnoRealizado(turno: Turno): Observable<void> {
+    const turnoDocRef = doc(this.firestore, `turnos/${turno.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(turnoDocRef, { estado: 'realizado' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+
+   getTurnosPorParametros(mailEspecialista: string, especialidad: string, idPaciente: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(
+      turnosCollectionRef,
+      where('mailEspecialista', '==', mailEspecialista),
+      where('especialidad', '==', especialidad),
+      where('idPaciente', '==', idPaciente) // Filtro adicional por idPaciente
+    );
+
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        })) as Turno[];
+      })
+    );
+  }
+  getTurnosRealizadosClientes(mailEspecialista: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(
+      turnosCollectionRef,
+      where('mailEspecialista', '==', mailEspecialista),
+      where('estado', '==', "realizado"),
+    );
+
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        })) as Turno[];
+      })
+    );
+  }
+
+
+  updateTurnoComentarioPaciente(idTurno: string, comentario: string): Observable<void> {
+    // Referencia a la colección de comentarios en Firestore
+    const comentarioCollectionRef = collection(this.firestore, 'comentarioPaciente');
+    
+    return new Observable<void>((observer) => {
+      // Agrega un nuevo documento en la colección de comentarios
+      addDoc(comentarioCollectionRef, { 
+        idTurno,         // El ID del turno
+        comentario       // El comentario del paciente
+      })
+      .then(() => {
+        observer.next();
+        observer.complete();
+      })
+      .catch((error) => {
+        observer.error(error);
+      });
+    });
+  }
+  saveComentarioPaciente(comentarioPaciente: ComentarioPaciente): Observable<ComentarioPaciente> {
+    const comentariosCollectionRef = collection(this.firestore, 'comentarioPaciente');
+  
+    // Agrega el documento vacío primero
+    return from(addDoc(comentariosCollectionRef, {})).pipe(
+      switchMap((docRef: DocumentReference<DocumentData>) => {
+        // Crea un comentario con el ID obtenido
+        const comentarioConId = { ...comentarioPaciente, idComentario: docRef.id };
+        // Actualiza el documento con los datos del comentario y el ID
+        const comentarioDocRef = doc(this.firestore, `comentarioPaciente/${docRef.id}`);
+        return from(updateDoc(comentarioDocRef, comentarioConId)).pipe(
+          map(() => comentarioConId)
+        );
+      })
+    );
+  }
+  saveHistoriaClinica(historiaClinica: HistoriaClinica): Observable<HistoriaClinica> {
+    const historiaClinicaCollectionRef = collection(this.firestore, 'historiaClinica');
+
+    // Agrega el documento vacío primero
+    return from(addDoc(historiaClinicaCollectionRef, {})).pipe(
+      switchMap((docRef: DocumentReference<DocumentData>) => {
+        // Crea un comentario con el ID obtenido
+        const historiaClinicaConId = { ...historiaClinica, id: docRef.id };
+        // Actualiza el documento con los datos del comentario y el ID
+        const historiaClinicaDocRef = doc(this.firestore, `historiaClinica/${docRef.id}`);
+        return from(updateDoc(historiaClinicaDocRef, historiaClinicaConId)).pipe(
+          map(() => historiaClinicaConId)
+        );
+      })
+    );
+  }
+
+  saveCalificacion(calificacion: Calificacion): Observable<Calificacion> {
+    const calificacionesCollectionRef = collection(this.firestore, 'calificaciones');
+  
+    // Agrega el documento vacío primero
+    return from(addDoc(calificacionesCollectionRef, {})).pipe(
+      switchMap((docRef: DocumentReference<DocumentData>) => {
+        // Crea una calificación con el ID obtenido
+        const calificacionConId = { ...calificacion, id: docRef.id };
+        // Actualiza el documento con los datos de la calificación y el ID
+        const calificacionDocRef = doc(this.firestore, `calificaciones/${docRef.id}`);
+        return from(updateDoc(calificacionDocRef, calificacionConId)).pipe(
+          map(() => calificacionConId)
+        );
+      })
+    );
+  }
+
+  getHistoriaClinicaPorPaciente(idPaciente: string): Observable<HistoriaClinica[]> {
+    const historiasClinicasCollectionRef = collection(this.firestore, 'historiaClinica');
+    const historiasClinicasQuery = query(
+      historiasClinicasCollectionRef,
+      where('idPaciente', '==', idPaciente)
+    );
+
+    return from(getDocs(historiasClinicasQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as HistoriaClinica,
+          id: doc.id
+        })) as HistoriaClinica[];
+      })
+    );
+  }
 }
+ 

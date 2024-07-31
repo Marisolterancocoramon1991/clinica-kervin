@@ -1,0 +1,45 @@
+<div>
+    <app-cabecera></app-cabecera>
+  </div>
+  <app-lista-paciente
+    (pacienteSeleccionado)="recibirPaciente($event)">
+  </app-lista-paciente>
+  <div *ngIf="mostrarEspecialidades" class="especialidades-container">
+    <div *ngFor="let especialidad of getEspecialidadesKeys()" class="especialidad-item">
+      <button class="especialidad-button round-button" (click)="onSelectEspecialidad(especialidad)">
+        <img [src]="imagenesEspecialidades[especialidad]" alt="Imagen de {{ especialidad }}" width="100" height="100">
+        <span>{{ especialidad }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- administrador-especialista-turno.component.html -->
+
+<div *ngIf="turnos.length > 0; else noTurnos">
+  <div *ngFor="let turno of turnos" class="turno-container">
+    <h3>Nombre del Especialista: {{ turno.nombreEspecialista }}</h3>
+    <p>Nombre del Paciente: {{ paciente?.nombre }}</p>
+    <p>Estado del Turno: {{ turno.estado }}</p>
+    
+    <div class="button-container">
+      <!-- Botón Cancelar -->
+      <button *ngIf="turno.estado === 'pendiente' || turno.estado === 'rechazado'" 
+      (click)="cancelarTurno(turno)">Cancelar</button>
+      
+      <!-- Botón Rechazar Turno -->
+      <button *ngIf="turno.estado === 'pendiente' || turno.estado === 'cancelado'" 
+      (click)="rechazarTurno(turno)">Rechazar Turno</button>
+      
+      <!-- Botón Aceptar -->
+      <button *ngIf="turno.estado === 'pendiente'" 
+      (click)="aceptarTurno(turno)">Aceptar</button>
+      <button *ngIf="turno.estado === 'aceptado'" 
+      (click)="finalizarTurno(turno)">finalizar</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #noTurnos>
+  <p>No hay turnos disponibles.</p>
+</ng-template>
+

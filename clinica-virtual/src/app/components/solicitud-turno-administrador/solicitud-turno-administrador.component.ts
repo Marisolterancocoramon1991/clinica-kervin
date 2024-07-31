@@ -83,7 +83,7 @@ export class SolicitudTurnoAdministradorComponent {
     console.log('Paciente recibido en solicitudAdministrador:', paciente);
   }
 
-
+ 
   listartodo(): void {
     console.log('Disponibilidad del horario seleccionado:', this.horarioSeleccionado?.disponibilidad);
     console.log('Nombre del médico seleccionado:', this.medicoSeleccionado?.nombre);

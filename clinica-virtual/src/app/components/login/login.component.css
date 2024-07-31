@@ -1,57 +1,64 @@
-.fullBody
-{
-    background-color: #c5f5cf; /* Color de fondo azul claro */
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.fullBody {
+  background-color: #5ff07c; /* Color de fondo verde claro */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-container {
-    background-color: #f8f9fa;
-    background-image: url('../../../../public/fondo-clinic.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .login-container {
-    
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-  }
-  .button-container
-  {
-    justify-content: center;
-    margin-top: 15px;
-  }
-  .button-container .btn-block {
-    
-    background-color: #007bff;
-    color: white;
-    transition: transform 0.2s; /* Suaviza la transición de movimiento */
-  }
-  
-  .btn-block {
-    margin: 5px;
-    background-color: #007bff;
-    color: white;
-    transition: transform 0.2s; /* Suaviza la transición de movimiento */
-  }
-  
-  .btn-block:hover {
-    background-color: #0056b3;
-  }
-  
-  .btn-block:active {
-    transform: translateY(4px); /* Mueve el botón hacia abajo cuando se hace clic */
-  }
-  
-  /* Asegúrate de que los botones tengan un espacio entre ellos */
-  button + button {
-    margin-top: 10px;
-  }
+  background-color: #f8f9fa;
+  background-image: url('../../../../public/fondo-clinic.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  max-width: 400px;
+  width: 100%; /* Asegúrate de que ocupe todo el ancho disponible */
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button-container {
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.button-container .btn-block {
+  background-color: #007bff;
+  color: white;
+  transition: transform 0.2s; /* Suaviza la transición de movimiento */
+}
+
+.btn-block {
+  margin: 5px;
+  background-color: #007bff;
+  color: white;
+  transition: transform 0.2s; /* Suaviza la transición de movimiento */
+}
+
+.btn-block:hover {
+  background-color: #0056b3;
+}
+
+.btn-block:active {
+  transform: translateY(4px); /* Mueve el botón hacia abajo cuando se hace clic */
+}
+
+/* Asegúrate de que los botones tengan un espacio entre ellos */
+button + button {
+  margin-top: 10px;
+}

@@ -1,0 +1,21 @@
+<div>
+    <app-cabecera></app-cabecera>
+  </div>
+  
+  <div class="pacientes-container">
+    <div *ngIf="pacientes.length > 0">
+      <div *ngFor="let paciente of pacientes">
+        <button class="paciente-button" (click)="seleccionarPaciente(paciente)">
+          <!-- Mostrar imagen de perfil si está disponible -->
+          <img *ngIf="paciente.profileImage" [src]="paciente.profileImage" alt="Imagen de perfil" class="profile-image">
+          <div class="info">
+            <h3>{{ paciente.nombre }}</h3>
+            <p>DNI: {{ paciente.dni }}</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="button-container">
+    <button class="styled-button" (click)="guardarHistoriaClinica()">Guardar Historia Clínica</button>
+  </div>

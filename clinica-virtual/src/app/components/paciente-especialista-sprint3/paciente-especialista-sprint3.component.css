@@ -1,0 +1,170 @@
+.pacientes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: center; /* Centra los elementos dentro del contenedor */
+    align-items: center; /* Centra los elementos verticalmente */
+}
+  
+  .paciente-button {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .paciente-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .profile-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  .form-field {
+    margin-bottom: 16px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  textarea.mat-input-element {
+    min-height: 100px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  button.mat-raised-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+
+  button.mat-raised-button {
+    background-color: #007bff; /* Color de fondo primario */
+    color: white; /* Color del texto */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: 500; /* Grosor de la fuente */
+    padding: 12px 24px; /* Relleno del botón */
+    border-radius: 4px; /* Bordes redondeados */
+    border: none; /* Sin borde */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Transición suave */
+  }
+  
+  button.mat-raised-button:hover {
+    background-color: #0056b3; /* Color de fondo en estado hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada en hover */
+  }
+  
+  button.mat-raised-button:focus {
+    outline: none; /* Sin contorno de foco */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Sombra de enfoque más clara */
+  }
+  
+  button.mat-raised-button:active {
+    background-color: #004085; /* Color de fondo en estado activo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Sombra más ligera en activo */
+  }
+
+  
+  .turnos-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .turnos-list {
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  .turnos-list h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .turnos-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .turno-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .turno-item span {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .turno-item button {
+    margin-left: 20px;
+  }
+  
+  .turno-seleccionado {
+    width: 80%;
+    max-width: 600px;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    text-align: center;
+  }
+  
+  .turno-seleccionado h4 {
+    margin-bottom: 10px;
+  }
+  
+  
