@@ -30,15 +30,12 @@
         </div>
         <div class="form-group">
           <label for="comentario">Comentario</label>
-          <textarea id="comentario" formControlName="comentario"></textarea>
+          <textarea id="comentario" formControlName="comentario" readonly></textarea>
         </div>
         <div class="form-group">
           <label for="estado">Estado</label>
           <select id="estado" formControlName="estado">
             <option value="pendiente">Pendiente</option>
-            <option value="confirmado">Confirmado</option>
-            <option value="cancelado">Cancelado</option>
-            <option value="realizado">Realizado</option>
           </select>
         </div>
         <!--  <button type="submit" [disabled]="turnoForm.invalid"

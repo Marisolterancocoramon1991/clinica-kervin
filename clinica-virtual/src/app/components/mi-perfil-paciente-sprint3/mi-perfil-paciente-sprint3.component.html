@@ -1,1 +1,37 @@
-<p>mi-perfil-paciente-sprint3 works!</p>
+<div class="top-bar">
+  <div class="facebook-container">
+    <div class="profile-picture">
+      <img src="logo_clinica.jpg" alt="Logo de la clínica" class="profile-img">
+    </div>
+    <div class="clinica-text">
+      Clinica Virtual
+    </div>
+  </div>
+  <div class="user-info" *ngIf="currentUser">
+    <span class="blue-text">{{ pacienteEnTurno?.nombre }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.apellido }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.dni }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.obraSocial }}</span><span class="separator"> | </span>
+      <span class="blue-text">{{ pacienteEnTurno?.mail }}</span>
+    <div class="profile-picture">
+      <img *ngIf="userProfile1ImageUrl" [src]="userProfile1ImageUrl" alt="Imagen de perfil 1"
+      [style.width.px]="40" [style.height.px]="40">
+      <div *ngIf="!userProfile1ImageUrl">Imagen no disponible</div>
+    </div>      
+  </div>
+  <div *ngIf="!currentUser">
+    <span>No hay usuario autenticado.</span>
+  </div>
+</div>
+
+  
+<app-filtro-turnos
+    (medicoSeleccionado)="recibirMedicoSeleccionado($event)"
+    (especialidadSeleccionada)="recibirEspecialidadSeleccionada($event)">
+    
+  </app-filtro-turnos>
+
+  <div class="container">
+    <button [ngClass]="{'circular-button': true, 'animate': animar}" 
+    (click)="obtenerTurnosYGenerarPdf()">Click me</button>
+  </div>

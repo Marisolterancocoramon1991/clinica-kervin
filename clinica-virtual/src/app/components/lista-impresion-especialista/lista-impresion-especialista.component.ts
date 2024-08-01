@@ -107,7 +107,7 @@ export class ListaImpresionEspecialistaComponent {
     this.pacienteSeleccionado = paciente;
     console.log(this.pacienteSeleccionado.nombre);
     
-  }
+  } 
   guardarHistoriaClinica(): void {
     console.log(this.pacienteSeleccionado?.apellido);
     if (this.pacienteSeleccionado) {

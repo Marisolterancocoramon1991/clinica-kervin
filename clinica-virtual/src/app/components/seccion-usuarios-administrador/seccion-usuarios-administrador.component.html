@@ -1,0 +1,25 @@
+<div>
+    <app-cabecera></app-cabecera>
+  </div>
+  <div class="user-card-container">
+    <div class="user-card" *ngFor="let item of pacientesConImagen" (click)="seleccionarPaciente(item.paciente)">
+      <div class="user-card-inner">
+        <div class="user-card-front">
+          <img *ngIf="item.imagenUrl" [src]="item.imagenUrl" alt="{{ item.paciente.nombre }} {{ item.paciente.apellido }}">
+          <h3>{{ item.paciente.nombre }} {{ item.paciente.apellido }}</h3>
+          <p>DNI: {{ item.paciente.dni }}</p>
+          <p>Email: {{ item.paciente.mail }}</p>
+          <p>Obra Social: {{ item.paciente.obraSocial }}</p>
+        </div>
+        <div class="user-card-back">
+          <!-- Contenido para la parte trasera de la tarjeta -->
+          <h3>Descarga de PDF</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="button-container">
+    <button (click)="exportToExcel()">Exportar a Excel</button>
+  </div>

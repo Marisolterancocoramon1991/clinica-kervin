@@ -31,6 +31,8 @@ import { AdministracionTurnoPacienteComponent } from './components/administracio
 import { MenuPacienteComponent } from './components/menu-paciente/menu-paciente.component';
 import { PacienteEspecialistaSprint3Component } from './components/paciente-especialista-sprint3/paciente-especialista-sprint3.component';
 import { ListaImpresionEspecialistaComponent } from './components/lista-impresion-especialista/lista-impresion-especialista.component';
+import { SeccionUsuariosAdministradorComponent } from './components/seccion-usuarios-administrador/seccion-usuarios-administrador.component';
+import { MiPerfilPacienteSprint3Component } from './components/mi-perfil-paciente-sprint3/mi-perfil-paciente-sprint3.component';
 
 export const routes: Routes = [
    
@@ -79,7 +81,7 @@ export const routes: Routes = [
         component: MenuPacienteComponent,
        canActivate: [patientAuthGuard]
     },
-    {
+    {  
         path: 'registrar/paciente/formulario',
         component: CargaTurnoPacienteComponent,
        canActivate: [patientAuthGuard]
@@ -100,6 +102,11 @@ export const routes: Routes = [
         canActivate: [especialistaGuard]
       // canActivate: [patientAuthGuard]
     },
+    {
+        path: 'admin/seccionusuario',
+        component: SeccionUsuariosAdministradorComponent,
+        canActivate: [adminGuard]
+    },
     {//
         path: 'medico/listar/paciente/historialclinico',
         component: ListaImpresionEspecialistaComponent,
@@ -109,6 +116,11 @@ export const routes: Routes = [
     {
         path: 'paciente/formulario',
         component: SolicitudTurnoComponent,
+        canActivate: [patientAuthGuard]
+    },
+    {
+        path: 'paciente/impresion/busqueda/pdf',
+        component: MiPerfilPacienteSprint3Component,
         canActivate: [patientAuthGuard]
     },
     {

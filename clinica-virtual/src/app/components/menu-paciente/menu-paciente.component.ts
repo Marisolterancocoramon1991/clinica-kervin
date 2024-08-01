@@ -25,4 +25,11 @@ export class MenuPacienteComponent {
     this.router.navigate(['paciente/formulario/administracion']);
   }
 
+  navigateImpresionTurno()
+  {
+    this.router.navigate(['paciente/impresion/busqueda/pdf']);
+  }
+
+  
+
 }

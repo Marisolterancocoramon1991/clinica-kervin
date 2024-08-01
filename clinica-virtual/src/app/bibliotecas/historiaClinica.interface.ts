@@ -1,7 +1,7 @@
 export interface HistoriaClinica {
     id: string;
     idPaciente: string,
-    idEspecialista: string
+    mailEspecialista: string
     idTurno: string;
     altura: number;           // Altura en centímetros o metros
     peso: number;             // Peso en kilogramos

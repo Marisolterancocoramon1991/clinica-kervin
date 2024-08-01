@@ -4,18 +4,26 @@
 
 <div class="pacientes-container">
   <div *ngIf="pacientes.length > 0">
-    <div *ngFor="let paciente of pacientes">
-      <button class="paciente-button" (click)="seleccionarPaciente(paciente)">
-        <!-- Mostrar imagen de perfil si está disponible -->
-        <img *ngIf="paciente.profileImage" [src]="paciente.profileImage" alt="Imagen de perfil" class="profile-image">
-        <div class="info">
-          <h3>{{ paciente.nombre }}</h3>
-          <p>DNI: {{ paciente.dni }}</p>
+    <div *ngFor="let paciente of pacientes" class="user-card">
+      <div class="user-card-inner">
+        <div class="user-card-front">
+          <!-- Mostrar imagen de perfil si está disponible -->
+          <img src="patient_ico_2.png" alt="Imagen de perfil" class="profile-image">
+          <div class="info">
+            <h3>{{ paciente.nombre }}</h3>
+            <p>apellido: {{ paciente.apellido }}</p>
+            <p>DNI: {{ paciente.dni }}</p>
+          </div>
         </div>
-      </button>
+        <div class="user-card-back">
+          <h3>Seleccionar para crear historia clinica</h3>
+          <!-- Puedes agregar más información aquí -->
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 <!-- Lista de turnos realizados -->
 <div class="turnos-container">
   <!-- Lista de turnos realizados -->

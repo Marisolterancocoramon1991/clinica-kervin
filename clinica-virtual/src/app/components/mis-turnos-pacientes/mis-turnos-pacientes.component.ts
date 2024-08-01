@@ -79,7 +79,7 @@ export class MisTurnosPacientesComponent implements OnInit{
           }
         );
       }
-    });
+    });  
   }
 
   showComponent() {

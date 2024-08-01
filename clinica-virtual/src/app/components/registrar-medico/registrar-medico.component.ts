@@ -4,11 +4,14 @@ import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
+import { CasaComponent } from '../casa/casa.component';
 
 @Component({
   selector: 'app-registrar-medico',
   standalone: true,
-  imports: [CommonModule,FormsModule, ReactiveFormsModule],
+  imports: [CommonModule,FormsModule, ReactiveFormsModule,
+    CasaComponent
+  ],
   templateUrl: './registrar-medico.component.html',
   styleUrl: './registrar-medico.component.css'
 })
@@ -31,6 +34,7 @@ export class RegistrarMedicoComponent {
     'Traumatology', 'Urology'
   ];
   especialidades: string[] = [] ;
+  validacion: boolean = false;
 
   registerForm: FormGroup;
 
@@ -95,6 +99,19 @@ export class RegistrarMedicoComponent {
   
   
   async registrarMedico(): Promise<void> {
+    // Verificar si el CAPTCHA ha sido validado
+    if (!this.validacion) {
+      await Swal.fire({
+        icon: 'warning',
+        title: '¡CAPTCHA No Validado!',
+        text: 'Por favor, valida el CAPTCHA antes de continuar.',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
+      return; // Salir de la función si el CAPTCHA no ha sido validado
+    }
+  
+    // Verificar si el formulario es válido
     if (this.registerForm.valid) {
       const {
         nombreRegister,
@@ -129,7 +146,7 @@ export class RegistrarMedicoComponent {
         this.navigateToWelcome();
   
       } catch (error) {
-        console.error('Error registrando Medico:', error);
+        console.error('Error registrando Médico:', error);
         // Mostrar mensaje de error usando SweetAlert2
         await Swal.fire({
           icon: 'error',
@@ -139,7 +156,6 @@ export class RegistrarMedicoComponent {
           confirmButtonText: 'Entendido'
         });
       }
-  
     } else {
       // Mostrar mensaje de campos incompletos usando SweetAlert2
       await Swal.fire({
@@ -156,7 +172,10 @@ export class RegistrarMedicoComponent {
   navigateToWelcome() {
     this.router.navigateByUrl('/**');
   }
-  
+  recibirBooleano(validacion: boolean): void 
+  {
+    this.validacion = validacion;
+  }
 
 
 }

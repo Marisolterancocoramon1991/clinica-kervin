@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , EventEmitter,Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-casa',
@@ -16,7 +17,7 @@ export class CasaComponent implements OnInit{
   captchaCode: string = '';
   userInput: string = ''; // Asegurarse de inicializar también userInput si es necesario
   loading: boolean = false; 
-  
+  @Output() captchaValidated: EventEmitter<boolean> = new EventEmitter<boolean>();  
 
   ngOnInit(): void {
     this.generateCaptcha();
@@ -48,15 +49,25 @@ export class CasaComponent implements OnInit{
 
   submitCaptcha(): void {
     // Verificar si el código ingresado coincide con el CAPTCHA generado
-    if (this.userInput === this.captchaCode) {
-      alert('¡CAPTCHA validado correctamente!');
-      // Aquí puedes continuar con la lógica de tu aplicación después de validar el CAPTCHA
+    const isValid = this.userInput === this.captchaCode;
+    if (isValid) {
+      Swal.fire({
+        title: '¡CAPTCHA validado correctamente!',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
     } else {
-      alert('Código CAPTCHA incorrecto. Inténtelo de nuevo.');
+      Swal.fire({
+        title: 'Código CAPTCHA incorrecto',
+        text: 'Inténtelo de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
       this.userInput = '';
-      // Aquí puedes manejar la lógica cuando el CAPTCHA es incorrecto
       this.generateCaptcha(); // Regenera un nuevo CAPTCHA
     }
+    // Emitir el resultado del CAPTCHA
+    this.captchaValidated.emit(isValid);
   }
 
   refreshComponent(): void {

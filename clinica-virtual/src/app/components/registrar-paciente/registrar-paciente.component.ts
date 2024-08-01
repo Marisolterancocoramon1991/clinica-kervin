@@ -5,12 +5,15 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup,
    Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { CasaComponent } from '../casa/casa.component';
 
 
 @Component({
   selector: 'app-registrar-paciente',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,
+    CasaComponent, 
+  ],
   templateUrl: './registrar-paciente.component.html',
   styleUrl: './registrar-paciente.component.css'
 })
@@ -23,7 +26,7 @@ export class RegistrarPacienteComponent {
   edad: number | null = null;
   obraSocial: string = ''; 
   archivoPerfil: File[] = [];
-
+  validacion: boolean = false;
   registerForm: FormGroup;
 
   constructor(private authService: AuthService, private fb: FormBuilder) {
@@ -44,6 +47,16 @@ export class RegistrarPacienteComponent {
   }
 
   async registrarPaciente(): Promise<void> {
+    if (!this.validacion) {
+      await Swal.fire({
+        icon: 'warning',
+        title: '¡CAPTCHA No Validado!',
+        text: 'Por favor, valida el CAPTCHA antes de continuar.',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
+      return; // Salir de la función si el CAPTCHA no ha sido validado
+    }
     // Asigna los valores del formulario a las propiedades de la clase
     this.nombre = this.registerForm.get('nombreRegister')?.value;
     this.apellido = this.registerForm.get('apellidoRegister')?.value;
@@ -98,6 +111,12 @@ export class RegistrarPacienteComponent {
       return;
     }
   }
+
+  recibirBooleano(validacion: boolean): void 
+  {
+    this.validacion = validacion;
+  }
+
   
 
 }

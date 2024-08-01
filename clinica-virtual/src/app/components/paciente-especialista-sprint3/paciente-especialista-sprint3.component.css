@@ -6,6 +6,14 @@
     justify-content: center; /* Centra los elementos dentro del contenedor */
     align-items: center; /* Centra los elementos verticalmente */
 }
+.profile-image {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
   
   .paciente-button {
     display: flex;
@@ -167,4 +175,73 @@
     margin-bottom: 10px;
   }
   
+  .pacientes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .user-card {
+    perspective: 1000px; /* Distancia de la cámara para el efecto 3D */
+    width: 250px;
+    height: 350px; /* Ajusta la altura según tus necesidades */
+  }
+  
+  .user-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d; /* Preserva el 3D */
+    transition: transform 0.8s; /* Duración de la transición de la rotación */
+  }
+  
+  .user-card:hover .user-card-inner {
+    transform: rotateY(180deg) rotateX(15deg); /* Gira la tarjeta en 180 grados en el eje Y y un poco en el eje X */
+  }
+  
+  .user-card-front, .user-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Oculta la parte trasera cuando está de espaldas */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .user-card-front {
+    background-color: #f8f9fa;
+  }
+  
+  .user-card-back {
+    background-color: #007bff;
+    color: white;
+    transform: rotateY(180deg); /* Gira la parte trasera para que esté al revés por defecto */
+  }
+  
+  .profile-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .info {
+    text-align: center;
+  }
+  
+  .info h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+  }
+  
+  .info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+  }
   

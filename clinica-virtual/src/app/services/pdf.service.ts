@@ -3,8 +3,6 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Paciente } from '../bibliotecas/paciente.interface';
 import { Medico } from '../bibliotecas/medico.interface';
-import { Turno } from '../bibliotecas/turno.interface';
-import { Horario } from '../bibliotecas/horarioEspecialista.interface';
 import { HistoriaClinica } from '../bibliotecas/historiaClinica.interface';
 import * as moment from 'moment-timezone';
 import { forkJoin } from 'rxjs'
@@ -21,7 +19,7 @@ export class PdfService {
     const doc = new jsPDF();
     const fechaArgentina = moment.tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 
-    // Ruta del logo
+    // Ruta del logo   
     const logoUrl = 'logo_clinica.jpg'; // Asegúrate de que esta ruta sea correcta
 
     // Cargar el logo como una imagen

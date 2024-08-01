@@ -22,8 +22,16 @@ export class MenuAdminComponent {
     this.router.navigate(['administrador/solicitud']);
     
   }
+  administracionturno()
+  {
+    this.router.navigate(['administrador/turnos']);
+  }
   
-
+  seccionUsuario()
+  {
+    this.router.navigate(['admin/seccionusuario']);
+  }
+  
   navigateTDoctor() {
     this.router.navigate(['registrar/admin/especialistaAdmin']);
   }

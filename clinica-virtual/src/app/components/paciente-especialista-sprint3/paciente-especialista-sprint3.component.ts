@@ -178,7 +178,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       const historiaClinica: HistoriaClinica = {
         id: '', // Este será el ID generado automáticamente
         idPaciente: this.pacienteSeleccionado.uid,
-        idEspecialista: this.medicoEnTurno.uid,
+        mailEspecialista: this.medicoEnTurno.mail,
         idTurno: this.turnoSeleccionado.id, // Asigna el ID del turno seleccionado
         altura: formData.altura,
         peso: formData.peso,

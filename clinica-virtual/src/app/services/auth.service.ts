@@ -735,6 +735,25 @@ export class AuthService {
       })
     );
   }
+  getTurnosPorPacienteEspecialistaYEspecialidad(paciente: Paciente, medico: Medico, especialidad: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(
+      turnosCollectionRef,
+      where('idPaciente', '==', paciente.uid),
+      where('mailEspecialista', '==', medico.mail),
+      where('especialidad', '==', especialidad)
+    );
+
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as Turno,
+          id: doc.id
+        })) as Turno[];
+      })
+    );
+  }
+ 
   getTurnosPorMailEspecialista(mailEspecialista: string): Observable<Turno[]> {
     const turnosCollectionRef = collection(this.firestore, 'turnos');
     const turnosQuery = query(turnosCollectionRef, where('mailEspecialista', '==', mailEspecialista));
@@ -951,6 +970,22 @@ export class AuthService {
     const historiasClinicasQuery = query(
       historiasClinicasCollectionRef,
       where('idPaciente', '==', idPaciente)
+    );
+
+    return from(getDocs(historiasClinicasQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => ({
+          ...doc.data() as HistoriaClinica,
+          id: doc.id
+        })) as HistoriaClinica[];
+      })
+    );
+  }
+  getHistoriaClinicaPorTurno(idTurno: string): Observable<HistoriaClinica[]> {
+    const historiasClinicasCollectionRef = collection(this.firestore, 'historiaClinica');
+    const historiasClinicasQuery = query(
+      historiasClinicasCollectionRef,
+      where('idTurno', '==', idTurno)
     );
 
     return from(getDocs(historiasClinicasQuery)).pipe(

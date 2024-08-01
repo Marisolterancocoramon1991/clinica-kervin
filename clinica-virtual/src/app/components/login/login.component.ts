@@ -46,13 +46,9 @@ export class LoginComponent {
     this.password="123456";
   }
   
-  enterRoomAdministrator()
-  {
-
-  }
   completeFieldsPatientDOS()
   {
-    this.email = "k_e_iver@hotmail.com";
+    this.email = "marta@gmail.com";
     this.password="123456";
   }
 
