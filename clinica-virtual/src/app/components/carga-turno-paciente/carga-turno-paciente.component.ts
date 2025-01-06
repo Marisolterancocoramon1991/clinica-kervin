@@ -89,19 +89,27 @@ export class CargaTurnoPacienteComponent implements OnInit, OnChanges {
     if (this.mailEspecialista) {
       this.authServices.getHorariosEspecialista(this.mailEspecialista).subscribe(
         horarios => {
-          console.log('Horarios del especialista:', horarios);
+          console.log('Horarios del especialista antes de filtrar:', horarios);
   
           // Obtener la fecha de mañana
           const tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + 1);
+          tomorrow.setDate(tomorrow.getDate() + 1); // Mover al día siguiente
+          tomorrow.setHours(0, 0, 0, 0); // Ajustar a medianoche
   
           // Filtrar los horarios por disponibilidad abierta y a partir de mañana
           this.horariosDisponibles = horarios.filter(horario => {
+            // Asegurarse de que horario.dia sea una fecha válida
             const horarioDate = new Date(horario.dia);
-            return horarioDate >= tomorrow && horario.disponibilidad === 'abierta';
+            if (isNaN(horarioDate.getTime())) {
+              console.warn(`Fecha inválida en el horario: ${horario.dia}`);
+              return false; // Excluir horarios con fechas no válidas
+            }
+  
+            // Verificar disponibilidad y que la fecha sea estrictamente mayor a hoy
+            return horarioDate >= tomorrow && horario.disponibilidad.trim().toLowerCase() === 'abierta';
           });
   
-          // Mantener horaInicio y horaFin como strings si es necesario
+          console.log('Horarios disponibles después de filtrar (solo del día siguiente en adelante):', this.horariosDisponibles);
         },
         error => {
           console.error('Error obteniendo horarios:', error);

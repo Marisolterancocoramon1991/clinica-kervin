@@ -6,6 +6,32 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup,
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { CasaComponent } from '../casa/casa.component';
+import {  ValidationErrors, ValidatorFn } from '@angular/forms'
+import { Router } from '@angular/router';
+
+export function esNombreOApellidoValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; // Solo permite letras y espacios
+    return value && regex.test(value) ? null : { nombreOApellidoInvalido: true };
+  };
+}
+
+// Validador para verificar que el DNI tenga al menos 6 dígitos
+export function dniValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const dni = control.value;
+    return dni && dni.toString().length >= 6 ? null : { dniInvalido: true };
+  };
+}
+
+// Validador para verificar que la edad esté dentro de un rango (ejemplo: 18-100)
+export function edadValidator(min: number, max: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const edad = control.value;
+    return edad && edad >= min && edad <= max ? null : { edadInvalida: true };
+  };
+}
 
 
 @Component({
@@ -29,18 +55,19 @@ export class RegistrarPacienteComponent {
   validacion: boolean = false;
   registerForm: FormGroup;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group({
-      nombreRegister: ['', [Validators.required, Verificar.esNombreOApellidoValidator]],
-      apellidoRegister: ['', [Validators.required, Verificar.esNombreOApellidoValidator]],
-      emailRegister: ['', [Validators.required, Validators.email]],
-      passwordRegister: ['', Validators.required],
-      dniRegister: ['', [Validators.required, Verificar.dniValidator]],
-      obraSocial: ['', Validators.required],
-      edadRegister: ['', [Validators.required, Verificar.edadValidator(18, 65)]], // Ajusta los valores de edad mínima y máxima según sea necesario
-      archivoRegister: ['', Validators.required],
+      nombreRegister: ['', [Validators.required, esNombreOApellidoValidator()]], // Nombre requerido y validado
+      apellidoRegister: ['', [Validators.required, esNombreOApellidoValidator()]], // Apellido requerido y validado
+      emailRegister: ['', [Validators.required, Validators.email]], // Correo requerido y validación de formato
+      passwordRegister: ['', Validators.required], // Contraseña requerida
+      dniRegister: ['', [Validators.required, dniValidator()]], // Validador personalizado para DNI
+      obraSocial: ['', Validators.required], // Obra social requerida
+      edadRegister: ['', [Validators.required, edadValidator(18, 100)]], // Validador personalizado para edad (18 a 100)
+      archivoRegister: ['', Validators.required], // Archivo requerido
     });
   }
+  
 
   onFileChange(event: any) {
     this.archivoPerfil = event.target.files;
@@ -117,6 +144,9 @@ export class RegistrarPacienteComponent {
     this.validacion = validacion;
   }
 
-  
+  navigateToWelcome() {
+    this.router.navigateByUrl('/**');
+  }
+
 
 }

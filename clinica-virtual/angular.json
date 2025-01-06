@@ -13,6 +13,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "canvg",
+              "core-js",
+              "sweetalert2",
+              "moment-timezone",
+              "jspdf-autotable"
+            ],
+            
             "outputPath": "dist/clinica-virtual",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -37,6 +45,7 @@
             "ssr": {
               "entry": "server.ts"
             }
+            
           },
           "configurations": {
             "production": {

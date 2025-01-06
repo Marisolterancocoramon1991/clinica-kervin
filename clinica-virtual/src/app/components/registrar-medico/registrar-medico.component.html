@@ -11,7 +11,7 @@
             <div *ngIf="registerForm.get('nombreRegister')?.invalid && registerForm.get('nombreRegister')?.touched">
                 <span class="help-block text-danger">Nombre Requerido</span>
             </div>
-            
+             
             <input formControlName="emailRegister" type="email" id="mail" class="form-control mb-3" placeholder="Mail...">
             <div *ngIf="registerForm.get('emailRegister')?.errors?.['required'] && (registerForm.get('emailRegister')?.dirty || registerForm.get('emailRegister')?.touched)">
                 <span class="help-block text-danger">Correo Requerido</span>
@@ -71,4 +71,5 @@
     </form>
     <app-casa (captchaValidated)="recibirBooleano($event)"></app-casa>
     <button type="submit" class="btn btn-dark btn-full-width" (click)="registrarMedico()">Registrarse</button>
+    <button type="submit" class="btn btn-dark btn-full-width" (click)="navigateToWelcome()">Volver</button>
 </div>

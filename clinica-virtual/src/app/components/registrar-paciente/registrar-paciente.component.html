@@ -5,7 +5,7 @@
     
     <h1>Paciente</h1>
     
-    <form [formGroup]="registerForm" (ngSubmit)="registrarPaciente()" class="row justify-content-center mt-4">
+    <form [formGroup]="registerForm"  class="row justify-content-center mt-4">
       <div class="col-md-5 mb-3">
         <input formControlName="nombreRegister" type="text" id="nombre" class="form-control" placeholder="Nombre...">
         <div *ngIf="registerForm.get('nombreRegister')?.errors?.['required'] && registerForm.get('nombreRegister')?.touched" class="help-block">
@@ -58,7 +58,8 @@
         </div>
       </div>
       <app-casa (captchaValidated)="recibirBooleano($event)"></app-casa>
-      <button type="submit" class="btn btn-dark btn-full-width">Registrarse</button>
+      <button type="submit" class="btn btn-dark btn-full-width" (click)="registrarPaciente()">Registrarse</button>
+      <button type="submit" class="btn btn-dark btn-full-width" (click)="navigateToWelcome()">Volver</button>
     </form>
   </div>
   

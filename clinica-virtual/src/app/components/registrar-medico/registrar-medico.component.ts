@@ -2,9 +2,28 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, 
+  ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CasaComponent } from '../casa/casa.component';
+import {  ValidationErrors, ValidatorFn } from '@angular/forms'
+
+
+export function dniValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const dni = control.value;
+    return dni && dni.toString().length >= 6 ? null : { dniInvalido: true };
+  };
+}
+
+// Validador personalizado para la edad (mayor a 25 años)
+export function edadValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const edad = control.value;
+    return edad && edad > 25 ? null : { edadInvalida: true };
+  };
+}
+
 
 @Component({
   selector: 'app-registrar-medico',
@@ -44,12 +63,12 @@ export class RegistrarMedicoComponent {
       apellidoRegister: ['', Validators.required],
       emailRegister: ['', [Validators.required, Validators.email]],
       passwordRegister: ['', Validators.required],
-      dniRegister: ['', Validators.required],
-      edadRegister: ['', Validators.required],
+      dniRegister: ['', [Validators.required, dniValidator()]], // Validador personalizado para DNI
+      edadRegister: ['', [Validators.required, edadValidator()]],
       archivoRegister: ['', Validators.required],
     });
   }
-
+ 
   onEspecialidadCheckboxChange(especialidad: string, event: any): void {
     const checkbox = event.target;
     if (checkbox.checked) {
@@ -110,6 +129,30 @@ export class RegistrarMedicoComponent {
       });
       return; // Salir de la función si el CAPTCHA no ha sido validado
     }
+    const dniControl = this.registerForm.get('dniRegister');
+    const edadControl = this.registerForm.get('edadRegister');
+  
+    if (dniControl?.hasError('dniInvalido')) {
+      await Swal.fire({
+        icon: 'error',
+        title: '¡DNI Inválido!',
+        text: 'El DNI debe tener al menos 6 dígitos.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }
+  
+    if (edadControl?.hasError('edadInvalida')) {
+      await Swal.fire({
+        icon: 'error',
+        title: '¡Edad Inválida!',
+        text: 'La edad del especialista debe ser mayor a 25 años.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }
   
     // Verificar si el formulario es válido
     if (this.registerForm.valid) {
@@ -122,6 +165,8 @@ export class RegistrarMedicoComponent {
         edadRegister,
         archivoRegister
       } = this.registerForm.value;
+  
+      
   
       try {
         await this.authService.registerMedico(

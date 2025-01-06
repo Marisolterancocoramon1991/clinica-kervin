@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 @Component({
@@ -24,7 +25,7 @@ export class RegistrarAdminComponent {
   archivoPerfil: File | null = null;
   registerForm: FormGroup;
 
-  constructor(private authService: AuthService, private fb: FormBuilder){
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router){
     this.registerForm = this.fb.group({
       nombreRegister: ['', Validators.required],
       apellidoRegister: ['', Validators.required],
@@ -59,6 +60,7 @@ export class RegistrarAdminComponent {
           title: 'Registro Exitoso',
           text: 'Te has Registrado Correctamente',
         });
+        this.navigateToWelcome();
       } catch (error) {
         console.error('Error registrando Administrador:', error);
       }
@@ -70,6 +72,9 @@ export class RegistrarAdminComponent {
       });
       return;
     }
+  }
+  navigateToWelcome() {
+    this.router.navigateByUrl('/**');
   }
 
 }

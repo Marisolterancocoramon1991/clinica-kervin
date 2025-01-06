@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import {  User } from '@angular/fire/auth';
+import {  user, User } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
@@ -28,7 +28,7 @@ export class CabeceraComponent {
     this.authService.getCurrentUser().pipe(
       switchMap(user => {
         this.currentUser = user;
-
+  
         if (user && user.email) {
           return this.authService.getUserDataByMail(user.email);
         } else {
@@ -38,33 +38,54 @@ export class CabeceraComponent {
           });
         }
       })
-    ).subscribe(userData => {
-      console.log('Usuario actual:', this.currentUser);
-      console.log('Datos del administrador obtenidos:', userData);
-
-      if (userData && this.isAdministrador(userData)) {
-        this.administrador = userData;
-        console.log('Administrador en turno:', this.administrador);
-        this.CargarAdministrador(this.administrador);
-      } else {
-        console.log('No se encontraron datos del administrador.');
-      }
-
-      if (this.currentUser && this.currentUser.uid) {
-        const uidPaciente = this.currentUser.uid;
-        this.turnos$ = this.authService.getTurnosPaciente(uidPaciente);
-        this.authService.getUserProfile1Ur2(this.currentUser.uid).subscribe(
-          imageUrl => {
-            this.userProfile1ImageUrl = imageUrl;
-            console.log('URL de imagen de perfil 1:', this.userProfile1ImageUrl);
-          },
-          error => {
-            console.error('Error obteniendo URL de imagen perfil1:', error);
-          }
-        );
+    ).subscribe({
+      next: userData => {
+        console.log('Usuario actual:', this.currentUser);
+        console.log('Datos del administrador obtenidos:', userData);
+  
+        if (userData && this.isAdministrador(userData)) {
+          this.administrador = userData;
+          console.log('Administrador en turno:', this.administrador);
+          this.CargarAdministrador(this.administrador);
+        } else {
+          console.log('No se encontraron datos del administrador.');
+        }
+  
+        if (this.currentUser && this.currentUser.uid) {
+          const uidPaciente = this.currentUser.uid;
+  
+          // Obtener turnos del paciente
+          this.turnos$ = this.authService.getTurnosPaciente(uidPaciente);
+  
+          // Obtener rol y manejar imagen de perfil según el rol
+          this.authService.getUserRoleByUid(uidPaciente).pipe(
+            switchMap(rol => {
+              console.log('Rol del usuario:', rol);
+  
+              if (rol === "medico" || rol === "admin") {
+                return this.authService.getUserProfile1Ur2(uidPaciente);
+              } else {
+                return this.authService.getUserProfile1Url(uidPaciente);
+              }
+            })
+          ).subscribe({
+            next: imageUrl => {
+              this.userProfile1ImageUrl = imageUrl;
+              console.log('URL de imagen de perfil 1:', this.userProfile1ImageUrl);
+            },
+            error: error => {
+              console.error('Error obteniendo URL de imagen perfil1:', error);
+              this.userProfile1ImageUrl = 'ruta/a/imagen/predeterminada.png'; // Asignar imagen predeterminada
+            }
+          });
+        }
+      },
+      error: error => {
+        console.error('Error al obtener usuario o datos:', error);
       }
     });
   }
+  
 
   CargarAdministrador(administrador: Administrador) {
     this.administradorEmitido.emit(administrador);

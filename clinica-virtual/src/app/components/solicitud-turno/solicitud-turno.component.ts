@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 import { switchMap } from 'rxjs'
 import { Observable } from 'rxjs';
 import { User } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitud-turno',
@@ -30,7 +31,12 @@ export class SolicitudTurnoComponent {
   mailEspecialista: string = '';
   nombreEspecialista: string = '';
   horarioSeleccionado: Horario | null = null;
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router){}
+  gotomMenu()
+  {
+    this.router.navigateByUrl('menu/paciente')
+  }
+
 
   recibirMedicoSeleccionado(medico: Medico) {
     this.medicoSeleccionado = medico;
@@ -78,7 +84,9 @@ export class SolicitudTurnoComponent {
             Swal.fire('Éxito', 'Turno guardado y horario actualizado correctamente', 'success');
             console.log('Turno guardado y horario actualizado');
             // Imprimir el UID del usuario actual para verificar
+            this.gotomMenu();
             console.log('ID del paciente:', user.uid);
+
           },
           error: (error) => {
             Swal.fire('Error', 'Ocurrió un error al guardar el turno o actualizar el horario', 'error');

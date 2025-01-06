@@ -42,7 +42,7 @@ export class AuthService {
         title: 'Verificación de Email',
         text: 'Se ha enviado un correo de verificación. Por favor verifica tu email antes de continuar.',
       });
-  
+      
       // Verificación del correo electrónico
       const checkEmailVerified = setInterval(async () => {
         await user.reload();
@@ -111,13 +111,25 @@ export class AuthService {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.authF, mail, password);
       const user = userCredential.user;
-      this.saveUserDataMedico(user, nombre, apellido, password, dni, edad, especialidades, file);
-      //this.router.navigate(["/home/login"]);
+      await sendEmailVerification(user);
+      console.log('Correo de verificación enviado a:', mail);
+
       Swal.fire({
         icon: 'info',
-        title: 'Verificacion de tu Cuenta',
-        text: 'La cuenta ha sido registrada con éxito. Por favor, espera la aprobación de nuestro Equipo.',
+        title: 'Verificación de Email',
+        text: 'Se ha enviado un correo de verificación. Por favor verifica tu email antes de continuar.',
       });
+
+      const checkEmailVerified = setInterval(async () => {
+        await user.reload();
+        console.log('Verificando email. Estado actual:', user.emailVerified);
+        if (user.emailVerified) {
+          clearInterval(checkEmailVerified);
+          console.log('Email verificado. Guardando datos del médico...');
+          await this.saveUserDataMedico(user, nombre, apellido, password, dni, edad, especialidades, file);
+          console.log('Datos del médico guardados exitosamente.');
+        }
+      }, 5000);
     } catch (error) {
       console.error('Error registrando Medico:', error);
       Swal.fire({

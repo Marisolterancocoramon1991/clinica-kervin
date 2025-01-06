@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { switchMap } from 'rxjs';
-import {  User } from '@angular/fire/auth';
+import { User } from '@angular/fire/auth';
 import { Medico } from '../../bibliotecas/medico.interface';
 import { CommonModule } from '@angular/common';
-import {Horario} from '../../bibliotecas/horarioEspecialista.interface'
+import { Horario } from '../../bibliotecas/horarioEspecialista.interface';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { formatDate as angularFormatDate } from '@angular/common';
@@ -39,8 +38,18 @@ export class MiPerfilComponent implements OnInit {
     '16:00', '16:45',
     '17:00', '17:45',
   ];
+  getParesDeHoras(): { inicio: string; fin: string }[] {
+    const pares: { inicio: string; fin: string }[] = [];
+    for (let i = 0; i < this.horasDisponibles.length - 1; i += 2) {
+      pares.push({
+        inicio: this.horasDisponibles[i],
+        fin: this.horasDisponibles[i + 1],
+      });
+    }
+    return pares;
+  }
+  constructor(private authService: AuthService) {}
 
-  constructor(private authService: AuthService){}
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(
       user => {
@@ -52,10 +61,9 @@ export class MiPerfilComponent implements OnInit {
             this.authService.getMedicosByMail(user.email).subscribe(
               medico => {
                 if (medico.length > 0) {
-                  this.medicoEnTurno = medico[0]; // Si esperas un solo médico, toma el primero de la lista
+                  this.medicoEnTurno = medico[0];
                   console.log('Datos del médico obtenidos:', this.medicoEnTurno);
 
-                  // Obtener la URL de la imagen de perfil del médico si está disponible
                   if (this.currentUser && this.currentUser.uid) {
                     this.authService.getUserProfile1Ur2(this.currentUser.uid).subscribe(
                       imageUrl => {
@@ -88,21 +96,29 @@ export class MiPerfilComponent implements OnInit {
     );
     this.inicializarDiasDisponibles();
   }
+
   onNumeroHorariosChange() {
     this.horarios = Array(this.numeroHorarios).fill(0).map(() => ({
       dia: '',
       horaInicio: '',
       horaFin: '',
       correoEspecialista: this.currentUser?.email || '',
-      disponibilidad: 'abierta' // Puedes establecer un valor predeterminado si es necesario
+      disponibilidad: 'abierta'
     }));
   }  
+
   formatDate(date: Date): string {
     return angularFormatDate(date, 'yyyy-MM-dd', 'en-US');
   }
-  seleccionarTurno(horaInicio: string, horaFin: string) {
+
+  seleccionarTurno(horaInicio: string, horaFin: string | null) {
+    if (!horaFin) {
+      console.error('No se puede seleccionar un turno sin horario de fin');
+      return;
+    }
+
     if (this.horarios.length > 0) {
-      const horario = this.horarios[0]; // Asigna siempre al primer horario, puedes cambiar la lógica según necesites
+      const horario = this.horarios[0];
       horario.horaInicio = horaInicio;
       horario.horaFin = horaFin;
     }
@@ -116,42 +132,58 @@ export class MiPerfilComponent implements OnInit {
     }
   
     // Cargar los horarios del especialista actual
-    this.cargarHorariosEspecialista(this.currentUser?.email);
+    this.cargarHorariosEspecialista(this.currentUser.email);
   
     this.horarios.forEach(horario => {
       const horaInicio = this.parseTimeStringToDate(horario.horaInicio);
       const horaFin = this.parseTimeStringToDate(horario.horaFin);
   
-      // Validar que la diferencia sea al menos 30 minutos (30 * 60 * 1000 milisegundos)
-      if (horaInicio.getTime() >= horaFin.getTime() - (30 * 60 * 1000)) {
-        console.error('El horario de inicio debe ser al menos 30 minutos antes que el horario de fin:', horario);
+      // Validar que la fecha esté cargada
+      if (!horario.dia) {
+        console.error('La fecha del horario no está cargada:', horario);
         Swal.fire({
           title: 'Error al guardar horario',
-          text: 'El horario de inicio debe ser al menos 30 minutos antes que el horario de fin.',
+          text: 'Debe seleccionar una fecha para cada horario.',
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
-        return; // Salir de la iteración actual si la validación no se cumple
+        return;
       }
   
-      // Validar que la fecha del horario sea al menos un día después del día actual
-      const dia = new Date(horario.dia);
-      dia.setHours(0, 0, 0, 0); // Ajustar a medianoche para comparar solo la fecha
-  
-      if (dia.getTime() <= currentDate.getTime()) {
-        console.error('El día del horario debe ser al menos un día después del día actual:', horario);
+      // Validar que la diferencia entre inicio y fin sea al menos de 15 minutos
+      if (horaInicio.getTime() >= horaFin.getTime() - (15 * 60 * 1000)) {
+        console.error('El horario de inicio debe ser al menos 15 minutos antes que el horario de fin:', horario);
         Swal.fire({
           title: 'Error al guardar horario',
-          text: 'El día del horario debe ser al menos un día después del día actual.',
+          text: 'El horario de inicio debe ser al menos 15 minutos antes que el horario de fin.',
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
-        return; // Salir de la iteración actual si la validación no se cumple
+        return;
       }
   
-      // Validar que no haya conflictos con los horarios ya cargados
+      // Validar que no exista el mismo horario ya cargado
+      const duplicado = this.horariosEspecialistasCargadosEnFireBase.some(horarioCargado =>
+        horarioCargado.dia === horario.dia &&
+        horarioCargado.horaInicio === horario.horaInicio &&
+        horarioCargado.horaFin === horario.horaFin
+      );
+  
+      if (duplicado) {
+        console.error('El horario ya está cargado:', horario);
+        Swal.fire({
+          title: 'Error al guardar horario',
+          text: 'El horario ya existe. Por favor, seleccione otro.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
+  
+      // Validar conflictos con otros horarios ya cargados
       const conflicto = this.horariosEspecialistasCargadosEnFireBase.some(horarioCargado =>
-        this.horariosOverlap(horarioCargado, horario)
+        this.horariosOverlap(horarioCargado, horario) ||
+        this.diferenciaMenor15Minutos(horarioCargado, horario)
       );
   
       if (conflicto) {
@@ -162,7 +194,7 @@ export class MiPerfilComponent implements OnInit {
           icon: 'error',
           confirmButtonText: 'Aceptar'
         });
-        return; // Salir de la iteración actual si hay conflicto
+        return;
       }
   
       // Si pasa todas las validaciones, guardar el horario
@@ -175,6 +207,8 @@ export class MiPerfilComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          // Recargar horarios después de guardar
+          this.listarHorarios();
         },
         error => {
           console.error('Error inesperado al guardar el horario:', error);
@@ -189,22 +223,28 @@ export class MiPerfilComponent implements OnInit {
     });
   }
   
-  // Función para verificar si dos horarios se solapan
   horariosOverlap(horario1: Horario, horario2: Horario): boolean {
-     // Comparar primero los días
     if (horario1.dia !== horario2.dia) {
-      return false; // Si los días son diferentes, no hay solapamiento
+      return false;
     }
     const inicio1 = this.parseTimeStringToDate(horario1.horaInicio);
     const fin1 = this.parseTimeStringToDate(horario1.horaFin);
     const inicio2 = this.parseTimeStringToDate(horario2.horaInicio);
     const fin2 = this.parseTimeStringToDate(horario2.horaFin);
-  
-    // Verificar si hay solapamiento de horarios
+
     return !(fin1 <= inicio2 || fin2 <= inicio1);
   }
-  
-  // Función para convertir la cadena de tiempo (HH:mm) en objeto Date
+
+  diferenciaMenor15Minutos(horario1: Horario, horario2: Horario): boolean {
+    const inicio1 = this.parseTimeStringToDate(horario1.horaInicio);
+    const fin1 = this.parseTimeStringToDate(horario1.horaFin);
+    const inicio2 = this.parseTimeStringToDate(horario2.horaInicio);
+    const fin2 = this.parseTimeStringToDate(horario2.horaFin);
+
+    return Math.abs(inicio1.getTime() - fin2.getTime()) < (15 * 60 * 1000) ||
+           Math.abs(inicio2.getTime() - fin1.getTime()) < (15 * 60 * 1000);
+  }
+
   private parseTimeStringToDate(timeString: string): Date {
     const [hours, minutes] = timeString.split(':').map(part => parseInt(part, 10));
     const date = new Date();
@@ -218,7 +258,7 @@ export class MiPerfilComponent implements OnInit {
       this.authService.getHorariosEspecialista(this.currentUser.email).subscribe(
         horarios => {
           console.log('Horarios del especialista:', horarios);
-          this.horariosEspecialistasCargadosEnFireBase = horarios; // Mantener horaInicio y horaFin como strings
+          this.horariosEspecialistasCargadosEnFireBase = horarios;
           this.mostrarHorarios = true;
         },
         error => {
@@ -238,12 +278,34 @@ export class MiPerfilComponent implements OnInit {
     this.authService.getHorariosEspecialista(correoEspecialista).subscribe(
       horarios => {
         console.log('Horarios del especialista:', horarios);
-        this.horariosEspecialistasCargadosEnFireBase = horarios; // Guardar horarios en la propiedad del componente
+        this.horariosEspecialistasCargadosEnFireBase = horarios;
       },
       error => {
         console.error('Error obteniendo horarios:', error);
       }
     );
+  }
+
+  inicializarDiasDisponibles() {
+    const mañana = new Date();
+    mañana.setDate(mañana.getDate() + 1);
+
+    const quinceDiasDespues = new Date();
+    quinceDiasDespues.setDate(quinceDiasDespues.getDate() + 15);
+
+    this.diasDisponibles = this.getFechasEntre(mañana, quinceDiasDespues);
+  }
+
+  getFechasEntre(fechaInicio: Date, fechaFin: Date): Date[] {
+    const fechas: Date[] = [];
+    let fechaActual = new Date(fechaInicio);
+
+    while (fechaActual <= fechaFin) {
+      fechas.push(new Date(fechaActual));
+      fechaActual.setDate(fechaActual.getDate() + 1);
+    }
+
+    return fechas;
   }
   mostrarMensaje(event: MouseEvent): void {
     const mensaje = '¿Deseas cambiar el estado del horario?';
@@ -259,13 +321,14 @@ export class MiPerfilComponent implements OnInit {
     tooltip.style.top = `${event.clientY + 15}px`;
     tooltip.style.left = `${event.clientX + 15}px`;
     document.body.appendChild(tooltip);
-
+  
     const removeTooltip = () => {
       document.body.removeChild(tooltip);
     };
-
+  
     event.target?.addEventListener('mouseout', removeTooltip, { once: true });
   }
+  
   cambiarEstadoHorario(index: number): void {
     if (index >= 0 && index < this.horariosEspecialistasCargadosEnFireBase.length) {
       this.horariosEspecialistasCargadosEnFireBase[index].disponibilidad = 'cancelada';
@@ -291,35 +354,6 @@ export class MiPerfilComponent implements OnInit {
       );
     }
   }
-  seleccionarDia(diaSeleccionado: Date) {
-    
-    console.log('Día seleccionado:', diaSeleccionado);
-    // Aquí puedes implementar la lógica necesaria para manejar la selección del día
-    // Por ejemplo, guardar el día seleccionado en alguna variable o realizar una acción específica.
-  }
-
-  inicializarDiasDisponibles() {
-    // Obtener la fecha de mañana
-    const mañana = new Date();
-    mañana.setDate(mañana.getDate() + 1); // Sumar un día
-
-    // Obtener la fecha de 15 días después
-    const quinceDiasDespues = new Date();
-    quinceDiasDespues.setDate(quinceDiasDespues.getDate() + 15); // Sumar 15 días
-
-    // Generar la lista de días disponibles
-    this.diasDisponibles = this.getFechasEntre(mañana, quinceDiasDespues);
-  }
-  getFechasEntre(fechaInicio: Date, fechaFin: Date): Date[] {
-    const fechas: Date[] = [];
-    let fechaActual = new Date(fechaInicio);
-
-    while (fechaActual <= fechaFin) {
-      fechas.push(new Date(fechaActual));
-      fechaActual.setDate(fechaActual.getDate() + 1); // Avanzar al siguiente día
-    }
-
-    return fechas;
-  }
-
+  
+  
 }
