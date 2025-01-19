@@ -96,49 +96,60 @@ export class AdministracionTurnoPacienteComponent implements OnInit{
       console.log('No se puede obtener turnos, datos del médico o paciente no disponibles.');
     }
   }
-  cancelarTurno(turno: Turno): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: `¿Quieres cancelar el turno con ${turno.nombreEspecialista}?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, cancelar',
-      cancelButtonText: 'No, mantener'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Comentario',
-          text: 'Por favor, ingresa un comentario sobre la cancelación:',
-          input: 'textarea',
-          inputPlaceholder: 'Escribe tu comentario aquí...',
-          showCancelButton: true,
-          confirmButtonText: 'Enviar',
-          cancelButtonText: 'Omitir'
-        }).then((commentResult) => {
-          if (commentResult.isConfirmed || commentResult.dismiss === Swal.DismissReason.cancel) {
-            const comentario = commentResult.value || 'Sin comentario';
-            const comentarioPaciente: ComentarioPaciente = {
-              idComentario: "", // Generar un ID único
-              idTurno: turno.id,
-              comentario: comentario
-            };
-  
-            this.authService.saveComentarioPaciente(comentarioPaciente).subscribe(
-              () => {
-                Swal.fire('Cancelado', 'El turno ha sido cancelado y tu comentario ha sido guardado.', 'success');
-                this.obtenerTurnos(); // Actualiza la lista de turnos después de cancelar
-              },
-              (error) => {
-                Swal.fire('Error', 'No se pudo cancelar el turno o guardar el comentario. Inténtalo de nuevo.', 'error');
-                console.error('Error al cancelar el turno o guardar el comentario:', error);
-              }
-            );
-          }
-        });
-      }
-    });
-  }
-  
+ cancelarTurno(turno: Turno): void {
+     // Verificar el estado del turno
+     if (turno.estado === 'pendiente') {
+       // Mostrar SweetAlert2 para obtener el comentario de cancelación
+       Swal.fire({
+         title: 'Cancelar Turno',
+         html: `
+           <p><strong>Especialista:</strong> ${turno.nombreEspecialista}</p>
+           <p><strong>Especialidad:</strong> ${turno.especialidad}</p>
+           <p><strong>Por favor, indique el motivo de la cancelación:</strong></p>
+         `,
+         input: 'textarea', // Campo para ingresar el comentario
+         inputPlaceholder: 'Escriba su comentario aquí...',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Cancelar Turno',
+         cancelButtonText: 'No cancelar',
+         inputValidator: (value) => {
+           if (!value) {
+             return 'Debe ingresar un comentario para continuar.';
+           }
+           return null;
+         }
+       }).then((result) => {
+         if (result.isConfirmed && result.value) {
+           // Actualizar el comentario del turno con el motivo ingresado
+           turno.comentario = result.value;
+           turno.estado = 'cancelado'; // Cambiar el estado del turno a cancelado
+   
+           // Llamar al servicio para actualizar el turno
+           this.authService.updateTurnoCancelado(turno).subscribe({
+             next: () => {
+               Swal.fire('Éxito', 'El turno ha sido cancelado exitosamente.', 'success');
+               // Redirigir al usuario o actualizar la vista
+             },
+             error: (error) => {
+               Swal.fire('Error', 'No se pudo cancelar el turno.', 'error');
+               console.error('Error al cancelar el turno:', error);
+             }
+           });
+         } else if (result.dismiss === Swal.DismissReason.cancel) {
+           Swal.fire('Cancelado', 'El turno no fue cancelado.', 'info');
+         }
+       });
+     } else {
+       // Informar al usuario que el turno no puede ser cancelado
+       Swal.fire(
+         'Operación no permitida',
+         `El turno está en estado '${turno.estado}' y solo se puede cancelar si está en estado 'pendiente'.`,
+         'warning'
+       );
+     }
+   }
+   
 
   chequeoComentarioEspecialista(turno: Turno): void {
     const comentario = turno.comentario;

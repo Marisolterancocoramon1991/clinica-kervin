@@ -8,18 +8,20 @@
 </app-filtro-turnos>
 
 <!-- Botón para obtener turnos -->
-<button class="obtener-turno-button" (click)="obtenerTurnos()">
-  <img src="calendario-ico.png" alt="Obtener Turnos" width="20" height="20">
-  Obtener Turnos
-</button>
+<div class="turnos-container">
+  <button class="obtener-turno-button" (click)="obtenerTurnos()">
+    <img src="calendario-ico.png" alt="Obtener Turnos" width="20" height="20">
+    Obtener Turnos
+  </button>
 
-<!-- Lista de turnos -->
-<div class="turnos-lista">
-  <div *ngFor="let turno of turnosPorEspecialista">
-    <button class="turno-button" (click)="seleccionarTurno(turno)"  (click)="cancelarTurno(turno)">
-      <p><strong>Especialista:</strong> {{ turno.nombreEspecialista }}</p>
-      <p><strong>Comentario:</strong> {{ turno.especialidad }}</p>
-      <p><strong>estado:</strong> {{ turno.estado }}</p>
-    </button>
+  <!-- Lista de turnos -->
+  <div class="turnos-lista">
+    <div *ngFor="let turno of turnosPorEspecialista">
+      <button class="turno-button" (click)="seleccionarTurno(turno)"  (click)="cancelarTurno(turno)">
+        <p><strong>Especialista:</strong> {{ turno.nombreEspecialista }}</p>
+        <p><strong>Comentario:</strong> {{ turno.especialidad }}</p>
+        <p><strong>estado:</strong> {{ turno.estado }}</p>
+      </button>
+    </div>
   </div>
 </div>

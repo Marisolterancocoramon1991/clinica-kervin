@@ -1,43 +1,87 @@
+/* Contenedor general */
+.turnos-container {
+  display: flex; /* Activa el modelo de diseño flexible */
+  flex-direction: column; /* Coloca los elementos hijos en columna (uno debajo del otro) */
+  align-items: center; /* Centra horizontalmente los elementos hijos */
+   /* Centra verticalmente los elementos hijos  justify-content: center;*/
+  height: 100vh; /* Ocupa el 100% de la altura visible de la ventana */
+  padding: 20px; /* Espacio interno entre el contenido y los bordes del contenedor */
+  background-color: #f8f9fa; /* Fondo claro */
+  box-sizing: border-box; /* Incluye padding y bordes en las dimensiones totales */
+}
+
+
+/* Botón para obtener turnos */
 .obtener-turno-button {
-    background-color: #28a745; /* Color de fondo verde */
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    margin-bottom: 20px; /* Espacio debajo del botón */
-  }
-  
-  .obtener-turno-button img {
-    vertical-align: middle; /* Alinear el ícono con el texto */
-  }
-  
-  .obtener-turno-button:hover {
-    background-color: #218838; /* Color de fondo verde más oscuro en hover */
-  }
-  
-  .turnos-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .turno-button {
-    background-color: #007bff; /* Color de fondo azul */
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .turno-button:hover {
-    background-color: #0056b3; /* Color de fondo azul más oscuro en hover */
-  }
-  
-  
+  background-color: #17a2b8; /* Color de fondo moderno */
+  color: #fff;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%; /* Ocupa todo el ancho */
+  max-width: 500px; /* Ancho máximo */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Animaciones suaves */
+  margin-bottom: 20px;
+}
+
+.obtener-turno-button:hover {
+  background-color: #138496; /* Color de fondo más oscuro */
+  transform: translateY(-3px); /* Efecto de levitación */
+}
+
+.obtener-turno-button img {
+  vertical-align: middle; /* Alinear el ícono con el texto */
+}
+
+/* Lista de turnos */
+.turnos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px; /* Ancho máximo */
+}
+
+/* Botón de turno */
+.turno-button {
+  background-color: #007bff; /* Azul moderno */
+  color: #fff;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%; /* Ocupa todo el ancho */
+  text-align: left; /* Alineación del texto */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.turno-button:hover {
+  background-color: #0056b3; /* Azul más oscuro */
+  transform: translateY(-3px); /* Efecto de levitación */
+}
+
+/* Estilo para el texto dentro del botón */
+.turno-especialista, .turno-comentario, .turno-estado {
+  margin: 5px 0;
+}
+
+.turno-especialista {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.turno-comentario, .turno-estado {
+  font-size: 14px;
+  color: #e0e0e0;
+}

@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class ListaPacienteComponent implements OnInit{
   pacientes: Paciente[] = [];
   @Output() pacienteSeleccionado = new EventEmitter<Paciente>();
+  pacienteActualSeleccionado: Paciente | null = null;
 
   constructor(private authService: AuthService, private cdr: ChangeDetectorRef) {}
   ngOnInit(): void {
@@ -47,6 +48,7 @@ export class ListaPacienteComponent implements OnInit{
   }
   seleccionarPaciente(paciente: Paciente): void {
     console.log('Paciente seleccionado:', paciente);
+    this.pacienteActualSeleccionado = paciente;
     this.pacienteSeleccionado.emit(paciente);
   }
 

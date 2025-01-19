@@ -49,3 +49,10 @@
     color: #555;
   }
   
+
+  .paciente-button.selected {
+    background-color: #d4edda; /* Verde claro */
+    border: 1px solid #c3e6cb; /* Borde verde suave */
+    transition: background-color 0.3s ease; /* Animación suave */
+  }
+  

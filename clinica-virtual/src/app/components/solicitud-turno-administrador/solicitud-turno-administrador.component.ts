@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { Medico } from '../../bibliotecas/medico.interface';
 import { Horario } from '../../bibliotecas/horarioEspecialista.interface';
 import { Paciente } from '../../bibliotecas/paciente.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitud-turno-administrador',
@@ -31,7 +32,7 @@ export class SolicitudTurnoAdministradorComponent {
   horarioSeleccionado: Horario | null = null;
   paciente: Paciente | null = null;
   uidPaciente: string = '';
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   obtenerTurno(): void {
     if (this.medicoSeleccionado && this.horarioSeleccionado && this.paciente && this.especialidad) {
@@ -58,6 +59,7 @@ export class SolicitudTurnoAdministradorComponent {
         next: () => {
           Swal.fire('Éxito', 'Turno guardado y horario actualizado correctamente', 'success');
           console.log('Turno guardado y horario actualizado');
+          this.router.navigate(['registrar/admin/menu']);
         },
         error: (error) => {
           Swal.fire('Error', 'Ocurrió un error al guardar el turno o actualizar el horario', 'error');

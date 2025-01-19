@@ -1,0 +1,120 @@
+.grafico-container {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    padding: 15px; /* Reducir el padding */
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px auto; /* Centramos el componente */
+    width: 80%; /* Ajustar el tamaño del contenedor */
+    max-width: 600px; /* Tamaño máximo para pantallas grandes */
+  }
+  
+  .grafico-container h3 {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px; /* Tamaño de fuente reducido */
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-align: center; /* Centrar el título */
+  }
+  
+  .btn-download {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f0fca1;
+    color: #000;
+    border: none;
+    padding: 6px 10px; /* Ajustar el tamaño del botón */
+    font-size: 12px; /* Tamaño de fuente reducido */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-download:hover {
+    background-color: #d9e989;
+  }
+  
+  .user-table {
+    width: 100%;
+    margin-top: 15px; /* Reducir espacio entre el gráfico y la tabla */
+    border-collapse: collapse;
+  }
+  
+  .user-table th,
+  .user-table td {
+    text-align: left;
+    padding: 8px; /* Reducir el padding */
+    font-family: 'Urbanist', sans-serif;
+    color: #808080;
+    font-size: 12px; /* Tamaño de fuente reducido */
+  }
+  
+  .user-table th {
+    background-color: #2b2b2b;
+  }
+  
+  .user-table td {
+    background-color: #1e1e1e;
+  }
+  
+  canvas {
+    max-height: 250px; /* Limitar la altura del gráfico */
+    display: block;
+    margin: 0 auto; /* Centrar el gráfico */
+  }
+  .btn-download {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaciado entre la imagen y el texto */
+    background-color: #f0fca1;
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-download:hover {
+    background-color: #d9e989;
+  }
+  
+  .btn-download img.icon {
+    width: 16px; /* Ajusta el tamaño de la imagen */
+    height: 16px;
+  }
+  
+
+  .medicos-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .medico-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .btn-medico {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-medico:hover {
+    background-color: #0056b3;
+  }
+  

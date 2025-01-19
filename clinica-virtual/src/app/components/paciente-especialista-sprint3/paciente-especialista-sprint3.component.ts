@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { HistoriaClinica } from '../../bibliotecas/historiaClinica.interface';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-paciente-especialista-sprint3',
@@ -45,7 +46,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
   turnoSeleccionado: Turno| null = null; 
   pacienteSeleccionado: Paciente| null = null;
 
-  constructor(private authService: AuthService, private fb: FormBuilder){
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder){
     this.historiaClinicaForm = this.fb.group({
       altura: [''],
       peso: [''],
@@ -85,6 +86,12 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
                         next: (pacientes) => {
                           // Filtrar los pacientes nulos y asignar los datos a la variable pacientes
                           this.pacientes = pacientes.filter(paciente => paciente !== null) as Paciente[];
+                          this.pacientes = pacientes
+  .filter((paciente): paciente is Paciente => paciente !== null) // Filtrar valores null con type guard
+  .filter((paciente, index, self) =>
+    index === self.findIndex(p => p !== null && p.uid === paciente.uid) // Filtrar duplicados por uid
+  );
+
               
                           // Opcional: Puedes realizar otras acciones con los datos de los pacientes aquí
                           console.log('Datos de pacientes:', this.pacientes);
@@ -124,7 +131,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
   seleccionarPaciente(paciente: Paciente): void {
     console.log('Paciente seleccionado:', paciente);
     this.pacienteSeleccionado = paciente;
-    
+     
     // Llamar a la función para obtener los turnos realizados por el paciente
     this.authService.getTurnosPorPacienteId(paciente.uid).subscribe({
       next: (turnos) => {
@@ -193,6 +200,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       this.authService.saveHistoriaClinica(historiaClinica).subscribe(
         (response) => {
           console.log('Historia Clínica guardada con éxito', response);
+          this.router.navigate(['medico/menu']);
           // Mostrar alerta de éxito
           Swal.fire({
             icon: 'success',

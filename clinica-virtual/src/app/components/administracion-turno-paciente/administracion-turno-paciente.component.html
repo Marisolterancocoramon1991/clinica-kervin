@@ -26,8 +26,8 @@
 
         
         <!-- Botón Aceptar -->
-        <button *ngIf=" turno.estado === 'realizado' && turno.comentario !== 'Comentario opcional'" 
-        (click)="dejarResenia(turno)">Dejar reseña</button>
+        <button *ngIf=" turno.estado === 'realizado' " 
+        (click)="dejarResenia(turno)">Dejar reseña</button> <!-- && turno.comentario !== 'Comentario opcional' -->
 
         <!-- Botón Aceptar -->
         <div class="rating-container">

@@ -4,7 +4,7 @@
 
 <div class="pacientes-container">
   <div *ngIf="pacientes.length > 0">
-    <div *ngFor="let paciente of pacientes" class="user-card">
+    <div *ngFor="let paciente of pacientes" class="user-card" (click)="seleccionarPaciente(paciente)">
       <div class="user-card-inner">
         <div class="user-card-front">
           <!-- Mostrar imagen de perfil si está disponible -->
@@ -33,7 +33,8 @@
       <!-- Itera sobre el array de turnos y crea un elemento de lista para cada turno -->
       <li *ngFor="let turno of turnosRealizadosPacientes" class="turno-item">
         <!-- Muestra la información del turno -->
-        <span>Especialidad: {{ turno.especialidad }} - Especialista: {{ turno.nombreEspecialista }} - ID Paciente: {{ turno.idPaciente }}</span>
+        <span>Especialidad: {{ turno.especialidad }} - Especialista: {{ turno.nombreEspecialista }} -  
+                Turno-ID: {{ turno.id }}</span>
         <!-- Botón para seleccionar el turno -->
         <button mat-raised-button color="primary" (click)="seleccionarTurno(turno)">Seleccionar</button>
       </li>

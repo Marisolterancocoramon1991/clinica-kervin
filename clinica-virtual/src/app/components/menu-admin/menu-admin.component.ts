@@ -31,6 +31,10 @@ export class MenuAdminComponent {
   {
     this.router.navigate(['admin/seccionusuario']);
   }
+  seccionGraficos()
+  {
+    this.router.navigate(['admin/grafico']);
+  }
   
   navigateTDoctor() {
     this.router.navigate(['registrar/admin/especialistaAdmin']);

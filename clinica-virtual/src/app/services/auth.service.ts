@@ -202,6 +202,13 @@ export class AuthService {
     });
   }
 
+  async add(collectionName: string, data: any): Promise<void> {
+    const collRef = collection(this.firestore, collectionName);
+    console.log("entro");
+    await addDoc(collRef, data);
+    console.log("FIN DEL METODO ADD");
+  }
+
   async login(email: string, password: string): Promise<void> {
     try {
       const userCredential = await signInWithEmailAndPassword(this.authF, email, password);
@@ -209,13 +216,41 @@ export class AuthService {
       const rol = await this.getUserRoleByUid(user.uid).toPromise();
       switch (rol) {
         case 'paciente':
+          console.log("ES UN PACIENTE");
           await this.signInPaciente(user);
+
+          await this.add("entradaUsuario", {
+            user: {
+              fullName: user.displayName,
+              email: user.email,
+              picture: user.photoURL
+            },
+            entryTime: new Date()
+          });
           break;
         case 'medico':
           await this.signInMedico(user);
+
+          await this.add("entradaUsuario", {
+            user: {
+              fullName: user.displayName,
+              email: user.email,
+              picture: user.photoURL
+            },
+            entryTime: new Date()
+          });
           break;
         case 'admin':
           this.router.navigate(["/administrador"]);
+
+          await this.add("entradaUsuario", {
+            user: {
+              fullName: user.displayName,
+              email: user.email,
+              picture: user.photoURL
+            },
+            entryTime: new Date()
+          });
           break;
         default:
           await signOut(this.authF);
@@ -237,18 +272,58 @@ export class AuthService {
   }
   async logout(): Promise<void> {
     try {
+      // Obtén el usuario autenticado actualmente
+      const currentUser = this.authF.currentUser;
+  
+      // Valida que el usuario exista antes de proceder
+      if (!currentUser) {
+        console.error("No hay un usuario autenticado.");
+        throw new Error("No se encontró un usuario autenticado para registrar la salida.");
+      }
+  
+      // Realiza el logout
       await signOut(this.authF);
       console.log('Logout successful');
+  
+      // Registra la salida del usuario
+      await this.add("salidaUsuario", {
+        user: {
+          email: currentUser.email || "Correo no disponible", // Validación de seguridad
+        },
+        entryTime: new Date()
+      });
+  
+      // Navega a la página de inicio
       this.router.navigate(["/home"]);
+  
     } catch (error) {
       console.error('Logout error:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Ocurrio Un Error intentando Cerrar la Sesion',
+        text: 'Ocurrió un error intentando cerrar la sesión.',
       });
       throw error;
     }
+  }
+  obtenerMedicos(): Observable<Medico[]> {
+    const medicosRef = collection(this.firestore, 'usuarios');
+    const medicoQuery = query(medicosRef, where('rol', '==', 'medico')); // Filtrar solo por rol "medico"
+
+    return new Observable<Medico[]>((observer) => {
+      getDocs(medicoQuery)
+        .then((querySnapshot) => {
+          const medicos: Medico[] = [];
+          querySnapshot.forEach((doc) => {
+            medicos.push(doc.data() as Medico); // Convertir cada documento a un objeto Medico
+          });
+          observer.next(medicos); // Emitir la lista de médicos
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error); // Manejar errores
+        });
+    });
   }
 
   getUserRoleByUid(uid: string): Observable<string | null> {
@@ -270,6 +345,7 @@ export class AuthService {
     try {
       if (!user.emailVerified) {
         await signOut(this.authF);
+
         Swal.fire({
           icon: 'warning',
           title: 'Verificación de Email',
@@ -544,7 +620,7 @@ export class AuthService {
   updateTurnoCancelado(turno: Turno): Observable<void> {
     const turnoDocRef = doc(this.firestore, `turnos/${turno.id}`);
     return new Observable<void>((observer) => {
-      updateDoc(turnoDocRef, { estado: 'cancelado' })
+      updateDoc(turnoDocRef, { estado: 'cancelado', comentario: turno.comentario })
         .then(() => {
           observer.next();
           observer.complete();
@@ -1009,5 +1085,7 @@ export class AuthService {
       })
     );
   }
+
+
 }
  

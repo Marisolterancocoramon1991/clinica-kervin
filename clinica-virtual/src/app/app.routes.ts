@@ -33,6 +33,7 @@ import { PacienteEspecialistaSprint3Component } from './components/paciente-espe
 import { ListaImpresionEspecialistaComponent } from './components/lista-impresion-especialista/lista-impresion-especialista.component';
 import { SeccionUsuariosAdministradorComponent } from './components/seccion-usuarios-administrador/seccion-usuarios-administrador.component';
 import { MiPerfilPacienteSprint3Component } from './components/mi-perfil-paciente-sprint3/mi-perfil-paciente-sprint3.component';
+import { GraficosComponent } from './components/graficos/graficos.component';
 
 export const routes: Routes = [
    
@@ -168,10 +169,15 @@ export const routes: Routes = [
         component: SolicitudTurnoAdministradorComponent,
         canActivate: [adminGuard]
     },
+    {
+        path: 'admin/grafico',
+        component: GraficosComponent,
+        canActivate: [adminGuard]
+    },
     
-
     {
         path: '**',
         component: BienvenidaComponent
     },
+
 ];

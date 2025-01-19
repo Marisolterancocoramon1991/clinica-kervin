@@ -62,7 +62,7 @@ export class CabeceraComponent {
             switchMap(rol => {
               console.log('Rol del usuario:', rol);
   
-              if (rol === "medico" || rol === "admin") {
+              if (rol === "medico" ) {
                 return this.authService.getUserProfile1Ur2(uidPaciente);
               } else {
                 return this.authService.getUserProfile1Url(uidPaciente);
