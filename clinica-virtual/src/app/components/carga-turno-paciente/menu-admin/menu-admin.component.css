@@ -1,0 +1,48 @@
+/* Contenedor de imágenes de especialistas */
+.pictureSpecialistAdministrator {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten a nuevas líneas */
+    justify-content: space-around; /* Distribuye los elementos con espacio alrededor */
+    align-items: center; /* Alinea verticalmente los elementos */
+    width: 100%; /* Ancho completo del contenedor */
+    margin: 50px auto; /* Margen superior e inferior para el contenedor */
+}
+
+/* Contenedor de cada imagen de especialista */
+.specialist-container {
+    flex: 1 1 200px; /* Crece para llenar el espacio disponible y se reduce a 200px mínimo */
+    border: 2px solid #ccc; /* Borde con relieve */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espacio interno */
+    margin: 10px; /* Espacio entre los elementos */
+    transition: transform 0.3s ease; /* Transición suave para el efecto al pasar el cursor */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido dentro del contenedor */
+    justify-content: center; /* Centra el contenido dentro del contenedor */
+}
+
+.specialist-container:hover {
+    transform: translateY(-5px); /* Levantar un poco al pasar el cursor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil al pasar el cursor */
+    cursor: pointer; /* Cambiar cursor al pasar el cursor */
+}
+
+/* Ajustar imágenes para que llenen el contenedor sin deformarse */
+.img-fluid {
+    width: 100%; /* Ancho máximo para las imágenes */
+    height: auto; /* Altura automática para mantener la proporción */
+    border-radius: 10px; /* Bordes redondeados para las imágenes */
+}
+
+/* Estilos para los párrafos */
+.magazine-style {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; /* Tamaño de fuente ajustado para mejor visualización */
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    margin-bottom: 10px; /* Espacio entre el texto y la imagen */
+}

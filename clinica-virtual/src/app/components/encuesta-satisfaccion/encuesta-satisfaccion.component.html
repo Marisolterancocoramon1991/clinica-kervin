@@ -1,0 +1,93 @@
+
+<header class="header">
+  <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
+  <h1 class="title">Menú Paciente</h1>
+</header> 
+<form [formGroup]="encuestaForm" class="encuesta-form">
+  <div class="turnos-container">
+    <h2>Turnos Agendados</h2>
+    <div *ngFor="let turno of turnosPaciente" class="turno-card">
+      <h3>{{ turno.especialidad }}</h3>
+      <button (click)="cargarturno(turno)">
+        <p><strong>Especialista:</strong> {{ turno.nombreEspecialista }}</p>
+        <p><strong>Estado:</strong> <span class="estado {{ turno.estado }}">{{ turno.estado }}</span></p>
+        <p><strong>Comentario:</strong> {{ turno.comentario }}</p>
+      </button>
+    </div>
+  </div>
+<div *ngIf="turnoSeleccionado">
+  <h2 class="form-title">Encuesta de Satisfacción</h2>
+
+  <!-- Cuadro de texto -->
+  <div class="form-group">
+    <label for="comentarios" class="form-label">Deja tus comentarios:</label>
+    <textarea
+      id="comentarios"
+      formControlName="comentarios"
+      class="form-control"
+      placeholder="Escribe tus comentarios aquí..."
+      rows="4"
+    ></textarea>
+  </div>
+
+  <!-- Estrellas para calificar -->
+  <div class="form-group">
+    <label class="form-label">Califica la atención:</label>
+    <div class="estrellas">
+      <span
+        *ngFor="let estrella of [1, 2, 3, 4, 5]; let i = index"
+        (click)="calificar(i + 1)"
+        class="star"
+        [class.filled]="i < encuestaForm.value.calificacion"
+      >
+        &#9733;
+      </span>
+    </div>
+  </div>
+  
+    <!-- Radio buttons -->
+    <div class="form-group">
+      <label class="form-label">¿Recomendarías este servicio?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" formControlName="recomendacion" value="Sí" />
+          Sí
+        </label>
+        <label class="radio-label">
+          <input type="radio" formControlName="recomendacion" value="No" />
+          No
+        </label>
+      </div>
+    </div>
+
+    <!-- Checkboxes -->
+    <div class="form-group">
+      <label class="form-label">Selecciona los aspectos que más te gustaron:</label>
+      <div formGroupName="aspectos" class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="trato" />
+          Trato del personal
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="tiempoEspera" />
+          Tiempo de espera
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="instalaciones" />
+          Instalaciones
+        </label>
+      </div>
+    </div>
+
+    <!-- Control de rango -->
+    <div class="form-group">
+      <label class="form-label">¿Qué tan satisfecho estás con el servicio? (1-10):</label>
+      <input type="range" formControlName="satisfaccion" min="1" max="10" class="form-range" />
+    </div>
+
+    <!-- Botón para enviar -->
+    <button type="submit" class="form-button" [disabled]="!encuestaForm.valid" (click)="enviarEncuesta()" >
+      Enviar Encuesta
+    </button>
+  </div>
+</form>

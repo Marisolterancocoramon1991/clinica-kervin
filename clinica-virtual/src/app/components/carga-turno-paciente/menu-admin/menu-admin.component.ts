@@ -1,30 +1,17 @@
-import { Component, inject, Output, EventEmitter, ViewChild   } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AppComponent } from '../../app.component';
-import { CommonModule } from '@angular/common';
-import { IdiomaService } from '../../services/idioma.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu-admin',
   standalone: true,
-  imports: [AppComponent, CommonModule],
+  imports: [],
   templateUrl: './menu-admin.component.html',
   styleUrl: './menu-admin.component.css'
 })
 export class MenuAdminComponent {
-  idioma: string = '';
-  private subscription!: Subscription;
 
-  constructor(private router: Router, private idiomaService: IdiomaService) {}
-  ngOnInit() {
-    // Suscribirse al servicio para cambios dinámicos
-    this.subscription = this.idiomaService.idiomaActual$.subscribe((nuevoIdioma) => {
-      this.idioma = nuevoIdioma; // Actualiza el idioma dinámicamente
-      console.log('Idioma actualizado en MenuAdminComponent:', nuevoIdioma);
-    });
-  }
+  constructor(private router: Router) {}
 
   navigatewelcome() {
     this.router.navigate(['/bienvenida']);

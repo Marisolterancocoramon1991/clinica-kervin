@@ -14,6 +14,8 @@ import { ComentarioPaciente } from '../../bibliotecas/comenatrioPaciente.interfa
 import { HistoriaClinica } from '../../bibliotecas/historiaClinica.interface';
 import { PdfService } from '../../services/pdf.service';
 import { forkJoin } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-mi-perfil-paciente-sprint3',
@@ -81,40 +83,63 @@ export class MiPerfilPacienteSprint3Component {
 
   obtenerTurnosYGenerarPdf(): void {
     this.animar = true;
+  
+    // Detener la animación después de 2 segundos
     setTimeout(() => {
       this.animar = false;
     }, 2000);
-
-    if (this.pacienteEnTurno && this.medicoSeleccionado && this.especialidad) {
-      this.authService.getTurnosPorPacienteEspecialistaYEspecialidad(
-        this.pacienteEnTurno,
-        this.medicoSeleccionado,
-        this.especialidad
-      ).pipe(
+  
+    // Validar que toda la información esté presente
+    if (!this.pacienteEnTurno || !this.medicoSeleccionado || !this.especialidad) {
+      console.error('No se puede obtener turnos, falta información requerida.');
+      return;
+    }
+  
+    // Obtener turnos
+    this.authService
+      .getTurnosPorPacienteEspecialistaYEspecialidad(this.pacienteEnTurno, this.medicoSeleccionado, this.especialidad)
+      .pipe(
         switchMap(turnos => {
+          if (!turnos || turnos.length === 0) {
+            console.warn('No se encontraron turnos para los criterios seleccionados.');
+            return of([]); // Retornar un observable vacío
+          }
+  
           this.turnos = turnos;
           console.log('Turnos obtenidos:', this.turnos);
   
-          // Obtener las historias clínicas para todos los turnos
+          // Obtener las historias clínicas de los turnos
           const historiasClinicasObservables = this.turnos.map(turno =>
-            this.authService.getHistoriaClinicaPorTurno(turno.id)
+            this.authService.getHistoriaClinicaPorTurno(turno.id).pipe(
+              catchError(error => {
+                console.error(`Error al obtener la historia clínica para el turno ${turno.id}:`, error);
+                return of([]); // Retornar observable vacío en caso de error
+              })
+            )
           );
-  
-          // Ejecutar todas las solicitudes simultáneamente
-          return forkJoin(historiasClinicasObservables);
+          return forkJoin(historiasClinicasObservables); // Combinar todas las solicitudes
         })
-      ).subscribe(historiales => {
-        // Iterar sobre cada array de historias clínicas para generar un PDF por historia clínica
-        historiales.forEach(historiaClinicaArray => {
-          historiaClinicaArray.forEach(historiaClinica => {
-            if(this.pacienteEnTurno && this.medicoSeleccionado)
-            this.pdfService.generatePdf(this.pacienteEnTurno, this.medicoSeleccionado, historiaClinica);
-          });
-        });
-      });
-    } else {
-      console.log('No se puede obtener turnos, falta información.');
-    }
-  }
+      )
+      .subscribe(
+        historiales => {
+          if (!historiales || historiales.length === 0) {
+            console.warn('No se obtuvieron historias clínicas.');
+            return;
+          }
   
+          // Generar un PDF por cada historia clínica obtenida
+          historiales.forEach(historiaClinicaArray => {
+            historiaClinicaArray.forEach(historiaClinica => {
+              if (this.pacienteEnTurno && this.medicoSeleccionado) {
+                this.pdfService.generatePdf(this.pacienteEnTurno, this.medicoSeleccionado, historiaClinica);
+                console.log('PDF generado para la historia clínica:', historiaClinica);
+              }
+            });
+          });
+        },
+        error => {
+          console.error('Error en el proceso de generación de PDFs:', error);
+        }
+      );
+  }
 }

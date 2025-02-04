@@ -1,0 +1,59 @@
+<nav class="containerBody">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="logo_clinica.jpg" alt="Logo" width="40" height="35" class="d-inline-block align-text-top">
+        Clínica Online
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <button (click)="navigatewelcome()" class="nav-link">Home</button>
+          </li>
+          <li class="nav-item">
+            <button (click)="navigateTDoctor()" class="nav-link">Administrador de Especialistas</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <nav class="pictureSpecialistAdministrator">
+      <div class="specialist-container" (click)="showMessageOne()">
+        <p class="magazine-style">Breve Historia de la Clinica</p>
+        <img src="SpecialistAdministrator.jpg" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="showMessageTwo()">
+        <p class="magazine-style">Mision y Vision de la Clinica</p>
+        <img src="SpecialistAdministrator2.jpg" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="showMessageThree()">
+        <p class="magazine-style">Consejos para seleccionar</p>
+        <img src="SpecialistAdministrator3.jpg" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="navigateTDoctor()">
+        <p class="magazine-style">Seleccionar medico</p>
+        <img src="doctor-ico.png" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="solicitudTurnoAdmin()">
+        <p class="magazine-style">Carga Turno</p>
+        <img src="calendario-ico.png" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="administracionturno()">
+        <p class="magazine-style">Administracion turno</p>
+        <img src="administracionTurno.png" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="seccionUsuario()">
+        <p class="magazine-style">Seccion usuario</p>
+        <img src="guardar.png" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+      <div class="specialist-container" (click)="seccionGraficos()">
+        <p class="magazine-style">Seccion usuario</p>
+        <img src="graphics.png" class="img-fluid" alt="Specialist Administrator Image">
+      </div>
+    </nav>
+  </div>
+</nav>

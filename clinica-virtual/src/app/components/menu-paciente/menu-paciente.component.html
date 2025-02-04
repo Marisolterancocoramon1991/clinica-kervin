@@ -1,24 +1,80 @@
-<header class="header">
-    <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
-    <h1 class="title">Menú Paciente</h1>
-  </header>
-  
-  <nav class="containerBody">
-  <div class="container">
-    <nav class="pictureSpecialistAdministrator">
-      <div class="specialist-container" (click)="navigateSolicitud()">
-        <p class="magazine-style">Perfil</p>
-        <img src="calendario-paciente-ico.png" class="img-fluid"
-         alt="Specialist Administrator Image">
-      </div>
-      <div class="specialist-container" (click)="navigateAdministracionTurno()">
-        <p class="magazine-style">Turnos</p>
-        <img src="registe-ico.png" class="img-fluid" alt="Specialist Administrator Image">
-      </div>
-      <div class="specialist-container" (click)="navigateImpresionTurno()">
-        <p class="magazine-style">Impresion Historia</p>
-        <img src="pdfCambiar.png" class="img-fluid" alt="Specialist Administrator Image">
-      </div>
-    </nav>
-  </div>
-</nav>
+<div *ngIf="idioma === 'es-ES'">
+  <header class="header">
+      <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
+      <h1 class="title">Menú Paciente</h1>
+    </header>
+    
+    <nav class="containerBody">
+    <div class="container">
+      <nav class="pictureSpecialistAdministrator">
+        <div class="specialist-container" (click)="navigateSolicitud()">
+          <p class="magazine-style">Perfil</p>
+          <img src="calendario-paciente-ico.png" class="img-fluid"
+          alt="Specialist Administrator Image">
+        </div>
+        <div class="specialist-container" (click)="navigateAdministracionTurno()">
+          <p class="magazine-style">Turnos</p>
+          <img src="registe-ico.png" class="img-fluid" alt="Specialist Administrator Image">
+        </div>
+        <div class="specialist-container" (click)="navigateImpresionTurno()">
+          <p class="magazine-style">Impresion Historia</p>
+          <img src="pdfCambiar.png" class="img-fluid" alt="Specialist Administrator Image">
+        </div>
+      </nav>
+    </div>
+  </nav>
+</div>
+
+<div *ngIf="idioma === 'en-GB'">
+    <header class="header">
+      <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
+      <h1 class="title">Patient Menu</h1>
+    </header>
+    
+    <nav class="containerBody">
+    <div class="container">
+      <nav class="pictureSpecialistAdministrator">
+        <div class="specialist-container" (click)="navigateSolicitud()">
+          <p class="magazine-style">Profile</p>
+          <img src="calendario-paciente-ico.png" class="img-fluid"
+          alt="Specialist Administrator Image">
+        </div>
+        <div class="specialist-container" (click)="navigateAdministracionTurno()">
+          <p class="magazine-style">Appointment</p>
+          <img src="registe-ico.png" class="img-fluid" alt="Specialist Administrator Image">
+        </div>
+        <div class="specialist-container" (click)="navigateImpresionTurno()">
+          <p class="magazine-style">Print History</p>
+          <img src="pdfCambiar.png" class="img-fluid" alt="Specialist Administrator Image">
+        </div>
+      </nav>
+    </div>
+  </nav>
+</div>
+
+<div *ngIf="idioma === 'pt-BR'">
+    <header class="header">
+      <img src="logo_clinica.jpg" alt="Logo Clínica" class="logo">
+      <h1 class="title">Menu do Paciente</h1>
+    </header>
+    
+    <nav class="containerBody">
+    <div class="container">
+      <nav class="pictureSpecialistAdministrator">
+        <div class="specialist-container" (click)="navigateSolicitud()">
+          <p class="magazine-style">Perfil</p>
+          <img src="calendario-paciente-ico.png" class="img-fluid"
+          alt="Specialist Administrator Image">
+        </div>
+        <div class="specialist-container" (click)="navigateAdministracionTurno()">
+          <p class="magazine-style">Consultas</p>
+          <img src="registe-ico.png" class="img-fluid" alt="Specialist Administrator Image">
+        </div>
+        <div class="specialist-container" (click)="navigateImpresionTurno()">
+          <p class="magazine-style">Impressão de História</p>
+          <img src="pdfCambiar.png" class="img-fluid" alt="Specialist Administrator Image">
+        </div>
+      </nav>
+    </div>
+  </nav>
+</div>

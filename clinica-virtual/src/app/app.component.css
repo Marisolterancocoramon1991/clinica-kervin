@@ -1,0 +1,88 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espaciado entre botones */
+  padding: 20px;
+  background-color: #f8f9fa; /* Fondo claro */
+  border-radius: 8px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.language-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.language-button:hover {
+  background-color: #218838;
+}
+
+/* Contenedor del botón flotante */
+.button-container {
+  position: relative;
+}
+
+/* Botón principal (fab-button) */
+.fab-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fab-button:hover {
+  background-color: #218838;
+}
+
+/* Botones pequeños */
+.fab-button.small {
+  background-color: #343a40;
+  width: 40px;
+  height: 40px;
+  margin: 5px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fab-button.small img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+/* Menú flotante al lateral derecho */
+.fab-menu {
+  position: absolute;
+  top: 0; /* Alineado con el botón principal */
+  left: 70px; /* Botones aparecen a la derecha del botón principal */
+  display: flex;
+  flex-direction: row; /* Disposición horizontal */
+  align-items: center;
+  gap: 10px; /* Espaciado entre los botones */
+}

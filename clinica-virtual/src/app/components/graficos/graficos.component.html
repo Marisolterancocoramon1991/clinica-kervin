@@ -1,10 +1,21 @@
-<div class="grafico-container">
+<div>
+  <app-cabecera></app-cabecera>
+</div>
+<div class="grafico-container"> 
   <h3>Turnos por día</h3>
-  <button class="btn-download" >
+  <button 
+    class="btn-download" appTooltip="Descargar el reporte en PDF"
+    appDownloadChartPdf
+    [chartId]="'chartAccesos'"
+    [fileName]="'reporte-turnos-por-dia.pdf'"
+    [title]="'Turnos por Día'">
     <img src="download.png" alt="Descargar PDF" class="icon" />
   </button>
   <canvas
+    id="chartAccesos"
     #chartAccesos
+    appHighlightChart
+    [highlightColor]="'lightblue'" 
     baseChart
     [data]="barChartData"
     [options]="barChartOptions"
@@ -14,8 +25,19 @@
 
 <div class="grafico-container">
   <h3>Turnos por especialidad</h3>
+  <button 
+  class="btn-download" appTooltip="Descargar el reporte en PDF"
+  appDownloadChartPdf
+  [chartId]="'chartEspecialidades'"
+  [fileName]="'reporte-turnos-por-dia.pdf'"
+  [title]="'Turnos por Día'">
+  <img src="download.png" alt="Descargar PDF" class="icon" />
+</button>
   <canvas
+  id="chartEspecialidades"
     #chartEspecialidades
+    appHighlightChart
+    [highlightColor]="'lightblue'" 
     baseChart
     [data]="barChartDataEspecialidades"
     [options]="barChartOptions"
@@ -25,11 +47,19 @@
 
 <div class="grafico-container">
   <h3>Turnos por día</h3>
-  <button class="btn-download">
-    <img src="download.png" alt="Descargar PDF" class="icon" />
+  <button 
+  class="btn-download"  appTooltip="Descargar el reporte en PDF"
+  appDownloadChartPdf
+  [chartId]="'chartTurnosPorDia'"
+  [fileName]="'reporte-turnos-por-dia.pdf'"
+  [title]="'Turnos por Día'">
+  <img src="download.png" alt="Descargar PDF" class="icon" />
   </button>
   <canvas
+  id="chartTurnosPorDia"
     #chartTurnosPorDia
+    appHighlightChart
+    [highlightColor]="'lightblue'" 
     baseChart
     [data]="barChartDataTurnosPorDia"
     [options]="barChartOptions"
@@ -42,10 +72,55 @@
   <h3>Médicos disponibles</h3>
   <div class="medico-botones">
     <button 
-      *ngFor="let medico of medicos"
+      *ngFor="let medico of medicos | sort:'nombre':'asc'"
       class="btn-medico"
       (click)="seleccionarMedico(medico)">
-      {{ medico.nombre }} {{ medico.apellido }}
+      Nombre: {{ medico.nombre }} {{ medico.apellido }} 
+      Correo: {{ medico.mail | truncate:15 }}
     </button>
   </div>
+</div>
+
+<app-rango-fechas (rangoSeleccionado)="filtrarPorRango($event)"></app-rango-fechas>
+<div class="grafico-container">
+  <h3>Turnos por día</h3>
+  <button 
+  class="btn-download" appTooltip="Descargar el reporte en PDF"
+  appDownloadChartPdf
+  [chartId]="'chartTurnosPorDia'"
+  [fileName]="'reporte-turnos-por-dia.pdf'"
+  [title]="'Turnos por Día'">
+  <img src="download.png" alt="Descargar PDF" class="icon" />
+  </button>
+  <canvas
+  id="chartTurnosPorDia"
+    #chartTurnosPorDia
+    appHighlightChart
+    [highlightColor]="'lightblue'" 
+    baseChart
+    [data]="barChartDataCantidadMedicoRangoTiempo"
+    [options]="barChartOptions"
+    [type]="'bar'"
+  ></canvas>
+</div>
+<div class="grafico-container">
+  <h3>Turnos por día finalizados</h3>
+  <button 
+  class="btn-download" appTooltip="Descargar el reporte en PDF"
+  appDownloadChartPdf
+  [chartId]="'chartTurnosPorDia'"
+  [fileName]="'reporte-turnos-por-dia.pdf'"
+  [title]="'Turnos por Día'">
+  <img src="download.png" alt="Descargar PDF" class="icon" />
+  </button>
+  <canvas
+    id="chartTurnosPorDia"
+    #chartTurnosPorDia
+    appHighlightChart
+    [highlightColor]="'lightblue'" 
+    baseChart
+    [data]="barChartDataCantidadFinalizadosMedicoRangoTiempo"
+    [options]="barChartOptions"
+    [type]="'bar'"
+  ></canvas>
 </div>

@@ -18,7 +18,7 @@ export class PdfService {
     // Crea una instancia de jsPDF
     const doc = new jsPDF();
     const fechaArgentina = moment.tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
-
+    console.log("entro")
     // Ruta del logo   
     const logoUrl = 'logo_clinica.jpg'; // Asegúrate de que esta ruta sea correcta
 
@@ -129,7 +129,7 @@ export class PdfService {
       doc.save(`historia_clinica_${paciente.nombre}_${paciente.dni}_${historiaClinica.id}.pdf`);
     };
   }
-
+ 
   private createRoundedImage(image: HTMLImageElement): string {
     // Crear un canvas para redondear la imagen
     const canvas = document.createElement('canvas');

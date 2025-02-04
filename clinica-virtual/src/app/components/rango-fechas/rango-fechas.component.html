@@ -1,0 +1,15 @@
+<div class="rango-fechas-container">
+  <label for="fechaInicio">Fecha de inicio:</label>
+  <input 
+    id="fechaInicio" 
+    type="date" 
+    [(ngModel)]="fechaInicio" 
+    (change)="onFechaCambio()" />
+  
+  <label for="fechaFin">Fecha de fin:</label>
+  <input 
+    id="fechaFin" 
+    type="date" 
+    [(ngModel)]="fechaFin" 
+    (change)="onFechaCambio()" />
+</div>

@@ -15,6 +15,8 @@ import { Horario } from '../bibliotecas/horarioEspecialista.interface';
 import { ComentarioPaciente } from '../bibliotecas/comenatrioPaciente.interface';
 import { Calificacion } from '../bibliotecas/calificacion.interface';
 import { HistoriaClinica } from '../bibliotecas/historiaClinica.interface';
+import { CuestionarioPaciente } from '../bibliotecas/Cuestionario.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -325,6 +327,7 @@ export class AuthService {
         });
     });
   }
+  
 
   getUserRoleByUid(uid: string): Observable<string | null> {
     const userCollectionRef = collection(this.firestore, 'usuarios');
@@ -490,19 +493,45 @@ export class AuthService {
       })
     );
   }
+  getPacienteUid(uid: string): Observable<Paciente | null> {
+    const turnosCollectionRef = collection(this.firestore, 'usuarios');
+    const turnosQuery = query(turnosCollectionRef, where('uid', '==', uid));
+  
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        const doc = querySnapshot.docs[0];
+        return doc ? { ...doc.data() as Paciente, id: doc.id } : null;
+      })
+    );
+  }
 
   getIdPacientesTurnosRealizados(correoEspecialista: string): Observable<string[]> {
     const turnosCollectionRef = collection(this.firestore, 'turnos');
     const turnosQuery = query(turnosCollectionRef, 
       where('mailEspecialista', '==', correoEspecialista), 
       where('estado', '==', 'realizado')
-    );
-  
+    ); 
     return from(getDocs(turnosQuery)).pipe(
       map(querySnapshot => {
         return querySnapshot.docs.map(doc => {
           const turno = doc.data() as Turno;
           return turno.idPaciente;
+        });
+      })
+    );
+  }
+
+  getIdPacientesTurnosRealizados2(id: string): Observable<Turno[]> {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(turnosCollectionRef, 
+      where('idPaciente', '==', id), 
+      where('estado', '==', 'realizado')
+    ); 
+    return from(getDocs(turnosQuery)).pipe(
+      map(querySnapshot => {
+        return querySnapshot.docs.map(doc => {
+          const turno = doc.data() as Turno;
+          return turno;
         });
       })
     );
@@ -1071,6 +1100,7 @@ export class AuthService {
   }
   getHistoriaClinicaPorTurno(idTurno: string): Observable<HistoriaClinica[]> {
     const historiasClinicasCollectionRef = collection(this.firestore, 'historiaClinica');
+
     const historiasClinicasQuery = query(
       historiasClinicasCollectionRef,
       where('idTurno', '==', idTurno)
@@ -1086,6 +1116,29 @@ export class AuthService {
     );
   }
 
+  saveEncuesta(encuesta: CuestionarioPaciente): Observable<CuestionarioPaciente> {
+    const encuestasCollectionRef = collection(this.firestore, 'encuestas');
 
+    // Agregar el documento vacío primero
+    return from(addDoc(encuestasCollectionRef, {})).pipe(
+      switchMap((docRef: DocumentReference<DocumentData>) => {
+        // Crea la encuesta con el ID obtenido
+        const encuestaConId = { ...encuesta, id: docRef.id };
+        // Actualiza el documento con los datos de la encuesta y el ID
+        const encuestaDocRef = doc(this.firestore, `encuestas/${docRef.id}`);
+        return from(updateDoc(encuestaDocRef, encuestaConId)).pipe(
+          map(() => encuestaConId)
+        );
+      })
+    );
+  }
+  buscarEncuestaPorTurno(idTurno: string): Observable<boolean> {
+    const encuestasCollectionRef = collection(this.firestore, 'encuestas');
+    const encuestaQuery = query(encuestasCollectionRef, where('idTurno', '==', idTurno));
+
+    return from(getDocs(encuestaQuery)).pipe(
+      map(querySnapshot => querySnapshot.size > 0) // Devuelve true si se encuentra al menos una encuesta
+    );
+  }
 }
  

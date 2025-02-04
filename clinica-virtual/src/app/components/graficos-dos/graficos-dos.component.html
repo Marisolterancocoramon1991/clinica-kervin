@@ -1,0 +1,90 @@
+<div>
+    <app-cabecera></app-cabecera>
+  </div>
+  <div class="grafico-container">
+    <h3>cantidad de visitas</h3>
+    <button 
+        class="btn-download" appTooltip="Descargar el reporte en PDF"
+        appDownloadChartPdf
+        [chartId]="'chartAccesos'"
+        [fileName]="'reporte-turnos-por-dia.pdf'"
+        [title]="'cantidad de visitas'">
+        <img src="download.png" alt="Descargar PDF" class="icon" />
+    </button>
+    <canvas
+        id="chartAccesos"
+        #chartAccesos
+        appHighlightChart
+        [highlightColor]="'lightblue'" 
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [type]="'bar'"
+    ></canvas>
+    </div>
+
+    <div class="medicos-container">
+        <h3>Pacientes</h3>
+        <div class="medico-botones">
+          <button 
+            *ngFor="let paciente of pacientes | sort:'nombre':'asc'"
+            class="btn-medico"
+            (click)="seleccionarPaciente(paciente)">
+            Nombre: {{ paciente.nombre }} {{ paciente.apellido }} 
+            Correo: {{ paciente.mail | truncate:15 }}
+          </button>
+        </div>
+        <h3>Filtro Especialidades y Especialista</h3>
+        <app-filtro-turnos
+        (medicoSeleccionado)="recibirMedicoSeleccionado($event)"
+        (especialidadSeleccionada)="recibirEspecialidadSeleccionada($event)">
+      </app-filtro-turnos>
+          
+      </div>
+      <div class="grafico-container">
+      <h3>Todos los Turnos por Paciente</h3>
+      <button 
+          class="btn-download" appTooltip="Descargar el reporte en PDF"
+          appDownloadChartPdf
+          [chartId]="'chartVisitas'"
+          [fileName]="'reporte-cantidad-visitas.pdf'"
+          [title]="'Todos los Turnos por Paciente'">
+          <img src="download.png" alt="Descargar PDF" class="icon" />
+      </button>
+      
+      <canvas
+          id="chartVisitas"
+          #chartVisitas
+          appHighlightChart
+          [highlightColor]="'lightblue'" 
+          baseChart
+          [data]="pieChartData"
+          [options]="pieChartOptions"
+          [type]="'pie'"
+          style="width: 800px; height: 600px;">
+      </canvas>
+    </div>
+    <div class="grafico-container">
+      <h3>Cantidad de Medicos por Especialidad</h3>
+      <button 
+          class="btn-download" 
+          appTooltip="Descargar el reporte en PDF"
+          appDownloadChartPdf
+          [chartId]="'chartAccesos2'"
+          [fileName]="'reporte-turnos-por-dia.pdf'"
+          [title]="'Cantidad de Medicos por Especialidad'">
+          <img src="download.png" alt="Descargar PDF" class="icon" />
+      </button>
+      
+      <canvas
+          id="chartAccesos2"
+          #chartAccesos
+          appHighlightChart
+          [highlightColor]="'lightblue'" 
+          baseChart
+          [data]="barChartDataMedicoEspecialidad"
+          [options]="barChartOptionsMedicoEspecialidad"
+          [type]="'bar'">
+      </canvas>
+    </div>
+    

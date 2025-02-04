@@ -34,6 +34,8 @@ import { ListaImpresionEspecialistaComponent } from './components/lista-impresio
 import { SeccionUsuariosAdministradorComponent } from './components/seccion-usuarios-administrador/seccion-usuarios-administrador.component';
 import { MiPerfilPacienteSprint3Component } from './components/mi-perfil-paciente-sprint3/mi-perfil-paciente-sprint3.component';
 import { GraficosComponent } from './components/graficos/graficos.component';
+import { EncuestaSatisfaccionComponent } from './components/encuesta-satisfaccion/encuesta-satisfaccion.component';
+import { GraficosDosComponent } from './components/graficos-dos/graficos-dos.component';
 
 export const routes: Routes = [
    
@@ -119,7 +121,7 @@ export const routes: Routes = [
         component: SolicitudTurnoComponent,
         canActivate: [patientAuthGuard]
     },
-    {
+    { 
         path: 'paciente/impresion/busqueda/pdf',
         component: MiPerfilPacienteSprint3Component,
         canActivate: [patientAuthGuard]
@@ -174,10 +176,20 @@ export const routes: Routes = [
         component: GraficosComponent,
         canActivate: [adminGuard]
     },
-    
+    {
+        path: 'admin/grafico/segunda',
+        component: GraficosDosComponent,
+        canActivate: [adminGuard]
+    },
+    {
+        path: 'paciente/cuestionario',
+        component: EncuestaSatisfaccionComponent,
+        canActivate: [patientAuthGuard]
+    },
     {
         path: '**',
         component: BienvenidaComponent
     },
+    
 
 ];

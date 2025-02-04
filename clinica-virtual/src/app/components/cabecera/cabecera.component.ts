@@ -7,11 +7,12 @@ import { Observable, from } from 'rxjs';
 import { Medico } from '../../bibliotecas/medico.interface';
 import { Turno } from '../../bibliotecas/turno.interface';
 import { Administrador } from '../../bibliotecas/administrador.interface';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-cabecera',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CapitalizePipe],
   templateUrl: './cabecera.component.html',
   styleUrl: './cabecera.component.css'
 })

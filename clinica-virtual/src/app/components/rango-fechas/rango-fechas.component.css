@@ -1,0 +1,40 @@
+.rango-fechas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 400px;
+  background: linear-gradient(145deg, #f3ec78, #af4261);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+}
+
+.rango-fechas-container label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.rango-fechas-container input {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+.rango-fechas-container input:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.rango-fechas-container input:focus {
+  box-shadow: 0 0 8px #af4261;
+  background-color: #fff;
+}

@@ -1,0 +1,197 @@
+/* General */
+.encuesta-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Estilo de Estrellas */
+.estrellas {
+  display: flex;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 24px;
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+/* Radio Buttons */
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-label {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Rango */
+.form-range {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Botón */
+.form-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.form-button:hover:not(:disabled) {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* Estilo general para la cabecera */
+.header {
+  display: flex; /* Disposición en fila para el logo y el título */
+  align-items: center; /* Alinear verticalmente el logo y el título */
+  background-color: #003366; /* Fondo azul oscuro */
+  padding: 10px 20px; /* Espaciado interno de la cabecera */
+  border-bottom: 3px solid #4caf50; /* Línea decorativa verde en la parte inferior */
+}
+
+/* Estilo para el logo */
+.logo {
+  width: 50px; /* Ancho del logo */
+  height: 50px; /* Alto del logo */
+  border-radius: 50%; /* Bordes redondeados para hacer el logo circular */
+  margin-right: 15px; /* Espaciado entre el logo y el título */
+  object-fit: cover; /* Asegura que la imagen del logo no se distorsione */
+}
+
+/* Estilo para el título de la cabecera */
+.title {
+  color: #4caf50; /* Color del texto verde */
+  font-size: 24px; /* Tamaño de fuente para el título */
+  margin: 0; /* Eliminar márgenes por defecto */
+}
+
+.turnos-container {
+  background: #222;
+  color: #0f0;
+  padding: 20px;
+  border: 2px solid #0f0;
+  font-family: 'Press Start 2P', cursive;
+  text-align: center;
+}
+
+.turno-card {
+  background: #111;
+  border: 2px solid #0f0;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0px 0px 10px #0f0;
+  text-align: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.turno-card:hover {
+  transform: scale(1.05);
+}
+
+.estado {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.pendiente { color: yellow; }
+.confirmado { color: green; }
+.cancelado { color: red; }
+.realizado { color: cyan; }
+.rechazado { color: orange; }
+.aceptado { color: blue; }
+
+
+button {
+  width: 100%;
+  border-radius: 10px;
+  background: rgba(15, 15, 15, 0.9); /* Fondo ligeramente más claro */
+  border: 2px solid #0f0;
+  padding: 10px;
+  cursor: pointer;
+  color: #0f0; /* Texto verde brillante */
+  font-size: 16px;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button:hover {
+  background: rgba(0, 255, 0, 0.2); /* Fondo verde al pasar el ratón */
+  box-shadow: 0px 0px 15px #0f0; /* Efecto de brillo al pasar el ratón */
+}

@@ -1,4 +1,24 @@
-<button (click)="logout()" class="btn-logout">
-    Cerrar Sesión
-  </button>
+<div class="button-container">
+  <button class="btn login-button" (click)="logout()">Login</button>
+  <div class="button-container">
+    <!-- Botón principal flotante -->
+    <button class="fab-button" (click)="toggleIdiomas()">
+      🌍
+    </button>
+  
+    <!-- Botones de idiomas -->
+    <div class="fab-menu" *ngIf="mostrarIdiomas">
+      <button class="fab-button small" (click)="cambiarIdioma('es-ES')">
+        <img src="espana.png" alt="Español" />
+      </button>
+      <button class="fab-button small" (click)="cambiarIdioma('en-GB')">
+        <img src="reino-unido.png" alt="English" />
+      </button>
+      <button class="fab-button small" (click)="cambiarIdioma('pt-BR')">
+        <img src="portugal.png" alt="Português" />
+      </button>
+    </div>
+  </div>
+  
+</div>
 <router-outlet />

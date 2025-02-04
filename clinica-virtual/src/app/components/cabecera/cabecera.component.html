@@ -8,10 +8,10 @@
       </div>
     </div>
     <div class="user-info" *ngIf="currentUser">
-      <span class="blue-text">{{ administrador?.nombre }}</span><span class="separator"> | </span>
+      <span class="blue-text" [innerHTML]="(administrador?.nombre ?? '') | capitalize"></span><span class="separator"> | </span>
       <span class="blue-text">{{ administrador?.apellido }}</span><span class="separator"> | </span>
       <span class="blue-text">{{ administrador?.dni }}</span><span class="separator"> | </span>
-      <span class="blue-text">{{ administrador?.rol }}</span><span class="separator"> | </span>
+      <span class="blue-text" [innerHTML]="(administrador?.rol ?? '') | capitalize"></span><span class="separator"> | </span>
       <span class="blue-text">{{ administrador?.mail }}</span><span class="separator"> | </span>
       <div class="profile-picture">
         <img *ngIf="userProfile1ImageUrl" [src]="userProfile1ImageUrl" alt="Imagen de perfil 1" [style.width.px]="40" [style.height.px]="40">
