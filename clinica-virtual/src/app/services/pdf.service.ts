@@ -6,14 +6,17 @@ import { Medico } from '../bibliotecas/medico.interface';
 import { HistoriaClinica } from '../bibliotecas/historiaClinica.interface';
 import * as moment from 'moment-timezone';
 import { forkJoin } from 'rxjs'
+import { AuthService } from './auth.service';
+import { CuestionarioPaciente } from '../bibliotecas/Cuestionario.interface';
+import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PdfService {
-
-  constructor() { }
+  cuestionarios: CuestionarioPaciente [] =[];
+  constructor(private firestore: Firestore) { }
   generatePdf(paciente: Paciente, medico: Medico, historiaClinica: HistoriaClinica) {
     // Crea una instancia de jsPDF
     const doc = new jsPDF();
@@ -146,5 +149,121 @@ export class PdfService {
 
     return canvas.toDataURL('image/jpeg');
   }
+
+  async generarInformepdf() {
+    // Crear la instancia de jsPDF
+    const doc = new jsPDF();
+  
+    // Obtener la fecha y hora actual en Argentina
+    const fechaArgentina = moment.tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
+    console.log("entro");
+  
+    // Ruta del logo (verifica que la ruta sea correcta)
+    const logoUrl = 'logo_clinica.jpg';
+  
+    // Esperar a que la imagen se cargue utilizando una promesa
+    await new Promise<void>((resolve, reject) => {
+      const img = new Image();
+      img.src = logoUrl;
+      img.onload = () => {
+        // Posición y dimensiones del logo
+        const logoWidth = 50;
+        const logoHeight = 50;
+        const logoX = 10;
+        const logoY = 10;
+        doc.addImage(this.createRoundedImage(img), 'JPEG', logoX, logoY, logoWidth, logoHeight);
+  
+        // Obtener el ancho de la página
+        const pageWidth = (doc.internal.pageSize.getWidth)
+          ? doc.internal.pageSize.getWidth()
+          : doc.internal.pageSize.width;
+  
+        // Agregar el encabezado debajo del logo
+        // El logo ocupa hasta y = 10 + 50 = 60, por lo que ubicamos el título en y = 70
+        doc.setFontSize(18);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Cuestionarios del Paciente', pageWidth / 2, 70, { align: 'center' });
+  
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Fecha de emisión: ${fechaArgentina}`, pageWidth / 2, 80, { align: 'center' });
+        
+        resolve();
+      };
+      img.onerror = (err) => reject(err);
+    });
+  
+    // Obtener el arreglo de cuestionarios desde la colección "encuestas"
+    this.cuestionarios = await this.getAllDocument<CuestionarioPaciente>("encuestas");
+  
+    // Definir la posición vertical inicial para el contenido (por debajo del encabezado)
+    let yPosition = 100;
+  
+    // Verificar si existen cuestionarios
+    if (!this.cuestionarios || this.cuestionarios.length === 0) {
+      doc.setFontSize(12);
+      doc.text("No se encontraron cuestionarios.", 10, yPosition);
+    } else {
+      // Recorrer cada cuestionario e incluir su información en el PDF
+      this.cuestionarios.forEach((cuestionario, index) => {
+        // Título del cuestionario
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Cuestionario ${index + 1}:`, 10, yPosition);
+        yPosition += 8;
+  
+        // Información de cada campo del cuestionario
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+  
+        doc.text(`Comentarios: ${cuestionario.comentarios}`, 10, yPosition);
+        yPosition += 6;
+  
+        doc.text(`Calificación: ${cuestionario.calificacion}`, 10, yPosition);
+        yPosition += 6;
+  
+        doc.text(`Recomendación: ${cuestionario.recomendacion}`, 10, yPosition);
+        yPosition += 6;
+  
+        // Mostrar los aspectos seleccionados (solo las claves con valor true)
+        const aspectosSeleccionados = Object.keys(cuestionario.aspectos)
+          .filter(key => cuestionario.aspectos[key] === true);
+        if (aspectosSeleccionados.length > 0) {
+          doc.text(`Aspectos: ${aspectosSeleccionados.join(', ')}`, 10, yPosition);
+        } else {
+          doc.text(`Aspectos: Ninguno`, 10, yPosition);
+        }
+        yPosition += 6;
+  
+        doc.text(`Satisfacción: ${cuestionario.satisfaccion}`, 10, yPosition);
+        yPosition += 6;
+  
+        doc.text(`ID Turno: ${cuestionario.idTurno || 'N/A'}`, 10, yPosition);
+        yPosition += 10;
+  
+        // Si se acerca al final de la página, se agrega una nueva página
+        if (yPosition > (doc.internal.pageSize.height - 20)) {
+          doc.addPage();
+          yPosition = 20;
+        }
+      });
+    }
+  
+    // Guardar/descargar el PDF
+    doc.save('informe_cuestionarios.pdf');
+  }
+  
+  
+   async getAllDocument<T>(collectionName: string): Promise<T[]> {
+      const document: T[] = [];
+      const collRef = collection(this.firestore, collectionName);
+      const querySnapshot = await getDocs(collRef);
+  
+      querySnapshot.forEach((doc) => {
+        document.push(doc.data() as T);
+      });
+  
+      return document;
+    }
 }
 

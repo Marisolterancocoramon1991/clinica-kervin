@@ -17,6 +17,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { HistoriaClinica } from '../../bibliotecas/historiaClinica.interface';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 @Component({
   selector: 'app-paciente-especialista-sprint3',
@@ -30,6 +33,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatButtonToggleModule,
 
   ],
   templateUrl: './paciente-especialista-sprint3.component.html',
@@ -46,14 +50,31 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
   turnoSeleccionado: Turno| null = null; 
   pacienteSeleccionado: Paciente| null = null;
 
-  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder){
+  constructor(private sanitizer: DomSanitizer, private router: Router, private authService: AuthService, private fb: FormBuilder){
     this.historiaClinicaForm = this.fb.group({
-      altura: [''],
-      peso: [''],
-      temperatura: [''],
+      altura: ['', Validators.required],
+      peso: ['', Validators.required],
+      temperatura: ['', Validators.required],
       presion: ['', Validators.required],
-      datosDinamicos: this.fb.array([]) // Aquí se inicializa el campo de datos dinámicos
-    });
+      datosDinamicos: this.fb.array([]), // Para datos adicionales opcionales
+    
+      // Grupos fijos para datos dinámicos
+      rangoDin: this.fb.group({
+        clave: ['', Validators.required],
+        valor: [50, Validators.required] // Valor predeterminado para el range
+      }),
+      textoNumericoDin: this.fb.group({
+        clave: ['', Validators.required],
+        valor: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      }),
+      switchDin: this.fb.group({
+        clave: ['', Validators.required],
+        valor: ['', Validators.required]  // Se espera que este control reciba "Si" o "No"
+      })
+    });    
+  }
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(
@@ -168,7 +189,6 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
   }
   guardarHistoriaClinica() {
     if (!this.turnoSeleccionado) {
-      // Mostrar alerta de turno no seleccionado
       Swal.fire({
         icon: 'warning',
         title: 'Turno no seleccionado',
@@ -177,31 +197,56 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       });
       return;
     }
-   console.log("entrar 1");
+  
+    console.log("Iniciando guardado de historia clínica");
+  
     if (this.historiaClinicaForm.valid && this.pacienteSeleccionado && this.medicoEnTurno) {
       const formData = this.historiaClinicaForm.value;
-      console.log("entrar 2");
+      console.log("Valores del formulario:", formData);
+  
+      // Procesar datos del FormArray (datos adicionales opcionales)
+      const datosDinamicosPrevios = (formData.datosDinamicos || []).reduce((acc: { [clave: string]: any }, dato: any) => {
+        acc[dato.clave] = dato.valor;
+        return acc;
+      }, {});
+      console.log("Datos del FormArray (datosDinamicos):", datosDinamicosPrevios);
+  
+      // Procesar los datos fijos de los grupos
+      const fixedDynamicData: { [clave: string]: any } = {};
+  
+      if (formData.rangoDin && formData.rangoDin.clave) {
+        fixedDynamicData[formData.rangoDin.clave] = formData.rangoDin.valor;
+      }
+      if (formData.textoNumericoDin && formData.textoNumericoDin.clave) {
+        fixedDynamicData[formData.textoNumericoDin.clave] = formData.textoNumericoDin.valor;
+      }
+      if (formData.switchDin && formData.switchDin.clave) {
+        fixedDynamicData[formData.switchDin.clave] = formData.switchDin.valor;
+      }
+      console.log("Datos de los grupos fijos:", fixedDynamicData);
+  
+      // Fusionar ambos objetos de datos dinámicos
+      const datosDinamicosFinal = { ...datosDinamicosPrevios, ...fixedDynamicData };
+      console.log("Objeto final de datosDinamicos:", datosDinamicosFinal);
   
       const historiaClinica: HistoriaClinica = {
-        id: '', // Este será el ID generado automáticamente
+        id: '', // Se asignará automáticamente en el backend
         idPaciente: this.pacienteSeleccionado.uid,
         mailEspecialista: this.medicoEnTurno.mail,
-        idTurno: this.turnoSeleccionado.id, // Asigna el ID del turno seleccionado
+        idTurno: this.turnoSeleccionado.id,
         altura: formData.altura,
         peso: formData.peso,
         temperatura: formData.temperatura,
         presion: formData.presion,
-        datosDinamicos: formData.datosDinamicos.reduce((acc: { [clave: string]: any }, dato: any) => {
-          acc[dato.clave] = dato.valor;
-          return acc;
-        }, {})
+        datosDinamicos: datosDinamicosFinal
       };
+  
+      console.log("Objeto historiaClinica a guardar:", historiaClinica);
   
       this.authService.saveHistoriaClinica(historiaClinica).subscribe(
         (response) => {
           console.log('Historia Clínica guardada con éxito', response);
           this.router.navigate(['medico/menu']);
-          // Mostrar alerta de éxito
           Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
@@ -211,7 +256,6 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
         },
         (error) => {
           console.error('Error al guardar Historia Clínica', error);
-          // Mostrar alerta de error
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -221,8 +265,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
         }
       );
     } else {
-      console.log('El formulario no es válido. Por favor, complete todos los campos requeridos.');
-      // Mostrar alerta de formulario no válido
+      console.log('Formulario inválido o datos faltantes.');
       Swal.fire({
         icon: 'warning',
         title: 'Formulario inválido',
@@ -231,6 +274,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       });
     }
   }
+  
   seleccionarTurno(turno: Turno): void {
     this.turnoSeleccionado = turno;
   }

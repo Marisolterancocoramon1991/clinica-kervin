@@ -2,22 +2,21 @@
   <app-cabecera></app-cabecera>
 </div>
 
+<!-- Lista de pacientes -->
 <div class="pacientes-container">
   <div *ngIf="pacientes.length > 0">
     <div *ngFor="let paciente of pacientes" class="user-card" (click)="seleccionarPaciente(paciente)">
       <div class="user-card-inner">
         <div class="user-card-front">
-          <!-- Mostrar imagen de perfil si está disponible -->
           <img src="patient_ico_2.png" alt="Imagen de perfil" class="profile-image">
           <div class="info">
             <h3>{{ paciente.nombre }}</h3>
-            <p>apellido: {{ paciente.apellido }}</p>
+            <p>Apellido: {{ paciente.apellido }}</p>
             <p>DNI: {{ paciente.dni }}</p>
           </div>
         </div>
         <div class="user-card-back">
-          <h3>Seleccionar para crear historia clinica</h3>
-          <!-- Puedes agregar más información aquí -->
+          <h3>Seleccionar para crear historia clínica</h3>
         </div>
       </div>
     </div>
@@ -26,22 +25,18 @@
 
 <!-- Lista de turnos realizados -->
 <div class="turnos-container">
-  <!-- Lista de turnos realizados -->
   <div *ngIf="turnosRealizadosPacientes.length > 0" class="turnos-list">
     <h3>Lista de Turnos Realizados</h3>
     <ul>
-      <!-- Itera sobre el array de turnos y crea un elemento de lista para cada turno -->
       <li *ngFor="let turno of turnosRealizadosPacientes" class="turno-item">
-        <!-- Muestra la información del turno -->
-        <span>Especialidad: {{ turno.especialidad }} - Especialista: {{ turno.nombreEspecialista }} -  
-                Turno-ID: {{ turno.id }}</span>
-        <!-- Botón para seleccionar el turno -->
+        <span>
+          Especialidad: {{ turno.especialidad }} - Especialista: {{ turno.nombreEspecialista }} - Turno-ID: {{ turno.id }}
+        </span>
         <button mat-raised-button color="primary" (click)="seleccionarTurno(turno)">Seleccionar</button>
       </li>
     </ul>
   </div>
 
-  <!-- Mostrar información del turno seleccionado -->
   <div *ngIf="turnoSeleccionado" class="turno-seleccionado">
     <h4>Turno Seleccionado</h4>
     <p>Especialidad: {{ turnoSeleccionado.especialidad }}</p>
@@ -50,68 +45,141 @@
   </div>
 </div>
 
-
-<!-- formulario del historial medico -->
+<!-- Formulario del historial médico -->
 <div class="form-container">
-  <form [formGroup]="historiaClinicaForm" (ngSubmit)="onSubmit()">
+  <!-- Se recomienda usar (ngSubmit)="guardarHistoriaClinica()" en el form y eliminar el (click) en el botón -->
+  <form [formGroup]="historiaClinicaForm" (ngSubmit)="guardarHistoriaClinica()">
+    <!-- Campos fijos -->
     <div class="form-field">
       <mat-form-field appearance="fill">
         <mat-label>Altura (cm)</mat-label>
         <input matInput formControlName="altura" type="number">
-        <mat-error *ngIf="historiaClinicaForm.get('altura')?.hasError('required')">La altura es obligatoria.</mat-error>
-        <mat-error *ngIf="historiaClinicaForm.get('altura')?.hasError('min')">La altura debe ser un número positivo.</mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('altura')?.hasError('required')">
+          La altura es obligatoria.
+        </mat-error>
       </mat-form-field>
     </div>
-
     <div class="form-field">
       <mat-form-field appearance="fill">
         <mat-label>Peso (kg)</mat-label>
         <input matInput formControlName="peso" type="number">
-        <mat-error *ngIf="historiaClinicaForm.get('peso')?.hasError('required')">El peso es obligatorio.</mat-error>
-        <mat-error *ngIf="historiaClinicaForm.get('peso')?.hasError('min')">El peso debe ser un número positivo.</mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('peso')?.hasError('required')">
+          El peso es obligatorio.
+        </mat-error>
       </mat-form-field>
     </div>
-
     <div class="form-field">
       <mat-form-field appearance="fill">
         <mat-label>Temperatura (°C)</mat-label>
         <input matInput formControlName="temperatura" type="number">
-        <mat-error *ngIf="historiaClinicaForm.get('temperatura')?.hasError('required')">La temperatura es obligatoria.</mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('temperatura')?.hasError('required')">
+          La temperatura es obligatoria.
+        </mat-error>
       </mat-form-field>
     </div>
-
     <div class="form-field">
       <mat-form-field appearance="fill">
         <mat-label>Presión arterial</mat-label>
         <input matInput formControlName="presion">
-        <mat-error *ngIf="historiaClinicaForm.get('presion')?.hasError('required')">La presión arterial es obligatoria.</mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('presion')?.hasError('required')">
+          La presión arterial es obligatoria.
+        </mat-error>
       </mat-form-field>
     </div>
 
+    <!-- Datos Dinámicos Fijos -->
+
+    <!-- 1. Rango (Clave y Valor) -->
+    <div formGroupName="rangoDin" class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Clave para Control de Rango</mat-label>
+        <input matInput formControlName="clave">
+        <mat-error *ngIf="historiaClinicaForm.get('rangoDin.clave')?.hasError('required')">
+          La clave es obligatoria.
+        </mat-error>
+      </mat-form-field>
+      <div class="form-field">
+        <label>Control de Rango (0-100)</label>
+        <!-- Input tipo range sin matInput -->
+        <input type="range" formControlName="valor" min="0" max="100">
+        <span>{{ historiaClinicaForm.get('rangoDin.valor')?.value }}</span>
+        <mat-error *ngIf="historiaClinicaForm.get('rangoDin.valor')?.hasError('required')">
+          El valor es obligatorio.
+        </mat-error>
+      </div>
+    </div>
+
+    <!-- 2. Cuadro de Texto Numérico (Clave y Valor) -->
+    <div formGroupName="textoNumericoDin" class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Clave para Cuadro de Texto Numérico</mat-label>
+        <input matInput formControlName="clave">
+        <mat-error *ngIf="historiaClinicaForm.get('textoNumericoDin.clave')?.hasError('required')">
+          La clave es obligatoria.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Cuadro de Texto Numérico</mat-label>
+        <input matInput type="number" formControlName="valor">
+        <mat-error *ngIf="historiaClinicaForm.get('textoNumericoDin.valor')?.hasError('required')">
+          El valor es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="historiaClinicaForm.get('textoNumericoDin.valor')?.hasError('pattern')">
+          Debe ser un número.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- 3. Switch (Si/No) (Clave y Valor) -->
+    <div formGroupName="switchDin" class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Clave para Switch (Si/No)</mat-label>
+        <input matInput formControlName="clave">
+        <mat-error *ngIf="historiaClinicaForm.get('switchDin.clave')?.hasError('required')">
+          La clave es obligatoria.
+        </mat-error>
+      </mat-form-field>
+      <div class="form-field">
+        <!-- Grupo de botones toggle para seleccionar Si o No -->
+        <mat-button-toggle-group formControlName="valor" aria-label="Seleccionar Si o No">
+          <mat-button-toggle value="Si">Si</mat-button-toggle>
+          <mat-button-toggle value="No">No</mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-error *ngIf="historiaClinicaForm.get('switchDin.valor')?.hasError('required')">
+          El valor es obligatorio.
+        </mat-error>
+      </div>
+    </div>
+
+    <!-- FormArray para datos dinámicos adicionales (opcional) -->
     <div formArrayName="datosDinamicos">
       <div *ngFor="let dato of datosDinamicos.controls; let i = index" [formGroupName]="i" class="form-field">
         <mat-form-field appearance="fill">
           <mat-label>Clave</mat-label>
           <input matInput formControlName="clave">
-          <mat-error *ngIf="dato.get('clave')?.hasError('required')">La clave es obligatoria.</mat-error>
+          <mat-error *ngIf="dato.get('clave')?.hasError('required')">
+            La clave es obligatoria.
+          </mat-error>
         </mat-form-field>
-
         <mat-form-field appearance="fill">
           <mat-label>Valor</mat-label>
           <input matInput formControlName="valor">
-          <mat-error *ngIf="dato.get('valor')?.hasError('required')">El valor es obligatorio.</mat-error>
+          <mat-error *ngIf="dato.get('valor')?.hasError('required')">
+            El valor es obligatorio.
+          </mat-error>
         </mat-form-field>
-
         <button mat-icon-button (click)="removeDatosDinamicos(i)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
 
+    <!-- Botones de Acción -->
     <div class="form-actions">
-      <button mat-raised-button color="primary" (click)="addDatosDinamicos()">Agregar Especificación</button>
-      <button mat-raised-button color="primary" 
-      type="submit" (click)="guardarHistoriaClinica()">Actualizar Historia Clínica</button>
+      <button mat-raised-button color="primary" type="button" (click)="addDatosDinamicos()">Agregar Especificación</button>
+      <button mat-raised-button color="primary" type="submit">
+        Actualizar Historia Clínica
+      </button>
     </div>
   </form>
 </div>
