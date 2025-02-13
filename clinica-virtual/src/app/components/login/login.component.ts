@@ -24,11 +24,11 @@ export class LoginComponent {
 
   completeFieldsAdministrator()
   { 
-    this.email ="kervinstyle@gmail.com";
+    this.email ="marta@gmail.com";
     this.password="123456";
   }
 
-  completeFieldsPatient()
+  completeFieldsDoctor1()
   {
     this.email ="kervinstilver1991@gmail.com";
     this.password="123456";
@@ -42,13 +42,18 @@ export class LoginComponent {
 
   completeFieldsDoctor()
   {
-    this.email ="martalatra@gmail.com";
+    this.email ="k_e_iver@hotmail.com";
+    this.password="123456";
+  }
+
+  completeFieldsDoctor5(){
+    this.email ="vicentebriceno1212@gmail.com";
     this.password="123456";
   }
   
   completeFieldsPatientDOS()
   {
-    this.email = "marta@gmail.com";
+    this.email = "keiver.pasket@gmail.com";
     this.password="123456";
   }
 

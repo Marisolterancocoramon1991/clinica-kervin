@@ -6,7 +6,7 @@ import { IdiomaService } from '../../services/idioma.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
   
-
+//paciente/cuestionario
 @Component({
   selector: 'app-menu-paciente',
   standalone: true,
@@ -40,4 +40,9 @@ export class MenuPacienteComponent {
   {
     this.router.navigate(['paciente/impresion/busqueda/pdf']);
   }
+  navigateCuestionario()
+  {
+    this.router.navigate(['paciente/cuestionario']);
+  }
+  
 }
