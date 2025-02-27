@@ -126,8 +126,12 @@ Gráficos y Estadísticas: Informes para Administradores con opciones de descarg
 Captcha
 Implementación de Captcha en el registro de usuarios para mayor seguridad.
 
+Elementos graficos usados en las interfaces del proyecto la clinica.
+
 ![Logo de la Clínica](/clinica-virtual/public/logo_clinica.jpg)
 ![Logo de la Clínica](/clinica-virtual/public/SpecialistAdministrator.jpg)
 ![Logo de la Clínica](/clinica-virtual/public/SpecialistAdministrator2.jpg)
 ![Logo de la Clínica](/clinica-virtual/public/SpecialistAdministrator3.jpg)
+![Logo de la Clínica](/clinica-virtual/public/picture-spcialist-patient.jpg)
+
 
