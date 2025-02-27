@@ -19,6 +19,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent {
   mostrarBoton: boolean = false;
   motrarBotonIngresoGraficosDos: boolean = false;
+  mostrarLacabecera: boolean = false;
   mostrarBotonLogin: boolean = false;
   mostrarIdiomas: boolean = false; 
   mostrarBotonDescargaInformePDF: Boolean = false;
@@ -53,6 +54,13 @@ export class AppComponent {
         }else{
           this.mostrarBotonDescargaInformePDF = false;
         }
+      
+        if(event.url==="/login"  || event.url === '/home' || event.url === ''){
+          this.mostrarLacabecera = false;
+        }else{
+          this.mostrarLacabecera = true;
+        }
+
       });
       this.AuthService.getCurrentUser().subscribe({
         next: (user) => {

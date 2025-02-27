@@ -70,7 +70,7 @@ export class LoginComponent {
     this.router.navigateByUrl('**')
   }
 
-
+ 
   goToPag() {
     this.authService.login(this.email, this.password).then(() => {
       this.authService.getCurrentUser().subscribe(

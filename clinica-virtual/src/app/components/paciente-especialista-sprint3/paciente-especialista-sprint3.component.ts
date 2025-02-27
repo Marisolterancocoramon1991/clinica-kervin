@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges  } from '@angular/core';
 import {  User } from '@angular/fire/auth';
 import { AuthService } from '../../services/auth.service';
 import { Medico } from '../../bibliotecas/medico.interface';
@@ -39,16 +39,17 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   templateUrl: './paciente-especialista-sprint3.component.html',
   styleUrl: './paciente-especialista-sprint3.component.css'
 })
-export class PacienteEspecialistaSprint3Component implements OnInit{
-  currentUser: User | null = null;
+export class PacienteEspecialistaSprint3Component implements OnInit {
   medicoEnTurno: Medico | null = null; 
-  pacientes: Paciente[] = [];
-  correoEspecialista: string = "";
-  UIDPaciente: string[] = [];
-  turnosRealizadosPacientes: Turno[] = [];
+  correoEspecialista: string | null= "";
+  
   historiaClinicaForm: FormGroup;
   turnoSeleccionado: Turno| null = null; 
   pacienteSeleccionado: Paciente| null = null;
+  @Input() paciente: Paciente | null = null;
+  @Input() medicoLogueado: Medico | null = null;
+  @Input() especialidad: string = "";
+  @Input() turnos: Turno | null = null;
 
   constructor(private sanitizer: DomSanitizer, private router: Router, private authService: AuthService, private fb: FormBuilder){
     this.historiaClinicaForm = this.fb.group({
@@ -72,99 +73,20 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
         valor: ['', Validators.required]  // Se espera que este control reciba "Si" o "No"
       })
     });    
-  }
+  } 
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
   ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe(
-      user => {
-        if (user) {
-          this.currentUser = user;
-          console.log('Usuario actual:', this.currentUser);
-  
-          if (user.email) {
-            this.authService.getMedicosByMail(user.email).subscribe(
-              medico => {
-                if (medico.length > 0) {
-                  this.medicoEnTurno = medico[0]; // Si esperas un solo médico, toma el primero de la lista   
-                  this.correoEspecialista = this.medicoEnTurno.mail;     
-                  console.log('Correo del especialista:', this.correoEspecialista);
-                  console.log('Datos del médico obtenidos:', this.medicoEnTurno);
-                  // Ahora que tenemos el correo del especialista, obtenemos los IDs de pacientes
-                  this.authService.getIdPacientesTurnosRealizados(this.correoEspecialista).subscribe({
-                    next: (idPacientes) => {
-                      // Asignar los IDs de pacientes a la variable UIDPaciente
-                      this.UIDPaciente = idPacientes;
-              
-                      // Crear un array de observables para obtener la información de cada paciente
-                      const pacienteRequests = this.UIDPaciente.map(uid => 
-                        this.authService.GetPacientePorUID(uid)
-                      );
-              
-                      // Ejecutar todas las solicitudes y esperar a que todas se completen
-                      forkJoin(pacienteRequests).subscribe({
-                        next: (pacientes) => {
-                          // Filtrar los pacientes nulos y asignar los datos a la variable pacientes
-                          this.pacientes = pacientes.filter(paciente => paciente !== null) as Paciente[];
-                          this.pacientes = pacientes
-  .filter((paciente): paciente is Paciente => paciente !== null) // Filtrar valores null con type guard
-  .filter((paciente, index, self) =>
-    index === self.findIndex(p => p !== null && p.uid === paciente.uid) // Filtrar duplicados por uid
-  );
-
-              
-                          // Opcional: Puedes realizar otras acciones con los datos de los pacientes aquí
-                          console.log('Datos de pacientes:', this.pacientes);
-                        },
-                        error: (error) => {
-                          console.error('Error al obtener la información de pacientes:', error);
-                        }
-                      });
-                    },
-                    error: (error) => {
-                      console.error('Error al obtener IDs de pacientes:', error);
-                    }
-                  });
-  
-                } else {
-                  console.log('No se encontraron datos de médico para el email:', user.email);
-                }
-              },
-              error => {
-                console.error('Error al obtener datos del médico:', error);
-              }
-            );
-          } else {
-            console.log('El usuario actual no tiene un email asociado.');
-          }
-        } else {
-          console.log('No hay usuario autenticado.');
-        }
-      },
-      error => {
-        console.error('Error al obtener usuario actual:', error);
-      }
-    );
+    if(this.paciente)
+    this.pacienteSeleccionado = this.paciente;
+    if(this.medicoLogueado)
+    this.correoEspecialista = this.medicoLogueado?.mail
+    this.turnoSeleccionado = this.turnos
+    this.medicoEnTurno = this.medicoLogueado;
     
   }
   
-  seleccionarPaciente(paciente: Paciente): void {
-    console.log('Paciente seleccionado:', paciente);
-    this.pacienteSeleccionado = paciente;
-     
-    // Llamar a la función para obtener los turnos realizados por el paciente
-    this.authService.getTurnosPorPacienteId(paciente.uid).subscribe({
-      next: (turnos) => {
-        // Asignar los turnos obtenidos al array `turnosRealizadosPacientes`
-        this.turnosRealizadosPacientes = turnos;
-        console.log('Turnos realizados para el paciente:', this.turnosRealizadosPacientes);
-      },
-      error: (error) => {
-        console.error('Error al obtener turnos realizados:', error);
-      }
-    });
-  }
    get datosDinamicos() {
     return this.historiaClinicaForm.get('datosDinamicos') as FormArray;
   }
@@ -175,6 +97,7 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       valor: ['', Validators.required]
     });
     this.datosDinamicos.push(datoGroup);
+    console.log('Nuevo dato dinámico agregado. Total:', this.datosDinamicos.length);
   }
 
   removeDatosDinamicos(index: number) {
@@ -199,6 +122,11 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
     }
   
     console.log("Iniciando guardado de historia clínica");
+    if(this.pacienteSeleccionado)
+      console.log("este paciente")
+
+    if(this.medicoEnTurno)
+      console.log("este medico");
   
     if (this.historiaClinicaForm.valid && this.pacienteSeleccionado && this.medicoEnTurno) {
       const formData = this.historiaClinicaForm.value;
@@ -228,7 +156,6 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       // Fusionar ambos objetos de datos dinámicos
       const datosDinamicosFinal = { ...datosDinamicosPrevios, ...fixedDynamicData };
       console.log("Objeto final de datosDinamicos:", datosDinamicosFinal);
-  
       const historiaClinica: HistoriaClinica = {
         id: '', // Se asignará automáticamente en el backend
         idPaciente: this.pacienteSeleccionado.uid,
@@ -246,7 +173,14 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
       this.authService.saveHistoriaClinica(historiaClinica).subscribe(
         (response) => {
           console.log('Historia Clínica guardada con éxito', response);
-          this.router.navigate(['medico/menu']);
+          if(this.turnoSeleccionado)
+          this.authService.updateTurnoHistoriaCargada(this.turnoSeleccionado).subscribe(
+              (response) => {
+                console.log("turno seleccionado ha cambiado de estado a cargado el historial");
+              }
+          );
+        console.log(this.turnoSeleccionado?.id);
+          //this.router.navigate(['medico/menu']);                           dddddddddddddddddddddddddddddddddddd
           Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
@@ -273,9 +207,5 @@ export class PacienteEspecialistaSprint3Component implements OnInit{
         showConfirmButton: true
       });
     }
-  }
-  
-  seleccionarTurno(turno: Turno): void {
-    this.turnoSeleccionado = turno;
   }
 }

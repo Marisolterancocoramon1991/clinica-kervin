@@ -16,7 +16,7 @@ import { PdfService } from '../../services/pdf.service';
 import { forkJoin } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-
+ 
 @Component({
   selector: 'app-mi-perfil-paciente-sprint3',
   standalone: true,

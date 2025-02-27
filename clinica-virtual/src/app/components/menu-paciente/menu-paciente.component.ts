@@ -12,10 +12,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CabeceraComponent, CommonModule
-
   ],
   templateUrl: './menu-paciente.component.html',
-  styleUrl: './menu-paciente.component.css'
+  styleUrl: './menu-paciente.component.css' 
 })
 export class MenuPacienteComponent {
   idioma: string = ''; // Idioma actual

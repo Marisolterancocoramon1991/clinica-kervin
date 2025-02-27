@@ -31,8 +31,7 @@ export class CasaComponent implements OnInit{
       // Lógica para generar un código CAPTCHA (por ejemplo, aleatorio)
       this.captchaCode = this.generateRandomCode(6);
       console.log(this.captchaCode);
-      this.captchaImage = `https://via.placeholder.com/150?text=${this.captchaCode}`;
-      
+      this.captchaImage = `https://dummyimage.com/150x50/000/fff&text=${encodeURIComponent(this.captchaCode)}`;
       this.loading = false; // Desactivar el estado de carga
     }, 1000); // Simular un retardo de 2 segundos para la generación del CAPTCHA
   }
@@ -68,6 +67,15 @@ export class CasaComponent implements OnInit{
     }
     // Emitir el resultado del CAPTCHA
     this.captchaValidated.emit(isValid);
+  }
+
+  cargaAutomatica():void{
+    Swal.fire({
+      title: '¡ Se ha esquivado el capchat!',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    });
+    this.captchaValidated.emit(true);
   }
 
   refreshComponent(): void {

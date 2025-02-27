@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CuestionarioPaciente } from '../../bibliotecas/Cuestionario.interface'; 
 import { CommonModule } from '@angular/common';
@@ -24,6 +24,10 @@ export class EncuestaSatisfaccionComponent implements OnInit {
   pacienteActual: Paciente | null = null;
   turnosPaciente: Turno[] = [];
   turnoSeleccionado: Turno | null = null;
+  @Input() turno: Turno | null = null;
+  @Input() Paciente: Paciente | null = null;
+  @Output() encuestaCargada: EventEmitter<any> = new EventEmitter<any>();
+
 
 
   constructor(private router: Router, private fb: FormBuilder,private authService: AuthService) {
@@ -41,39 +45,13 @@ export class EncuestaSatisfaccionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe(
-      user => {
-        if (user && user.email) {
-          this.authService.getPacienteUid(user.uid).subscribe(
-            paciente => {
-              if (paciente) {
-                this.pacienteActual = paciente;
-                console.log("id paciente " + this.pacienteActual.uid);
-                this.authService.getIdPacientesTurnosRealizados2(paciente.uid).subscribe({
-                  next: (turnos) => {
-                    this.turnosPaciente = turnos;
-                    console.log('Turnos del paciente:', this.turnosPaciente);
-                  },
-                  error: (error) => {
-                    console.error('Error al obtener los turnos del paciente:', error);
-                  }
-                });
-              } else {
-                console.log('No se encontró información del paciente.');
-              }
-            },
-            error => {
-              console.error('Error al obtener datos del paciente:', error);
-            }
-          );
-        } else {
-          console.log('No hay usuario autenticado o no tiene email.');
-        }
-      },
-      error => {
-        console.error('Error al obtener usuario actual:', error);
-      }
-    );
+    console.log("entra");
+      this.turnoSeleccionado = this.turno;
+      this.pacienteActual= this.Paciente;
+      console.log( this.turnoSeleccionado +"se ha cargadpd  de forma correcta el turno");
+      console.log( this.pacienteActual +"se ha cargadpd  de forma correcta el paciente");
+    
+
   }
 
   calificar(estrellas: number) {
@@ -112,16 +90,18 @@ export class EncuestaSatisfaccionComponent implements OnInit {
             title: 'Encuesta ya registrada',
             text: 'Ya existe una encuesta para este turno.',
           });
+          this.encuestaCargada.emit(true);
         } else {
           if(this.cuestionario)
           this.authService.saveEncuesta(this.cuestionario).subscribe({
             next: () => {
+              this.encuestaCargada.emit(true);
               Swal.fire({
                 icon: 'success',
                 title: '¡Encuesta enviada!',
                 text: '¡Gracias por completar la encuesta!'
               });
-              this.router.navigate(['menu/paciente']);
+              
             },
             error: (error) => {
               Swal.fire({

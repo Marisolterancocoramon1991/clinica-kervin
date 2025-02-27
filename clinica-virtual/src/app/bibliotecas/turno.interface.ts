@@ -6,5 +6,5 @@ export interface Turno {
     mailEspecialista: string;
     nombreEspecialista: string;
     comentario: string;
-    estado: 'pendiente' | 'confirmado' | 'cancelado' | 'realizado' | 'rechazado'| 'aceptado' ; // Ejemplo de estados de turno
+    estado: 'pendiente' | 'confirmado' | 'cancelado' | 'realizado' | 'rechazado'| 'aceptado' | 'Cargahistorial'; // Ejemplo de estados de turno
   }

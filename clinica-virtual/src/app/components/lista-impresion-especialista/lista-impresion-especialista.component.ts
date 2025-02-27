@@ -117,7 +117,7 @@ export class ListaImpresionEspecialistaComponent {
         next: (historias) => {
           this.historiasClinicas = historias;
           console.log('Historiales clínicos obtenidos:', this.historiasClinicas);
-
+ 
           if ( this.medicoEnTurno) {
             this.historiasClinicas.forEach(historia => {
               if(this.pacienteSeleccionado)

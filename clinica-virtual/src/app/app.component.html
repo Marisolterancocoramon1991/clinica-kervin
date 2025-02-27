@@ -1,5 +1,5 @@
-<div class="button-container">
-  <button class="btn login-button" (click)="logout()" *ngIf="mostrarBotonLogin">Login</button>
+<div class="button-container" *ngIf="mostrarLacabecera"  >
+  <button class="btn login-button" (click)="logout()" *ngIf="mostrarBotonLogin">Cerrar sesión</button>
   <button class="btn login-button" *ngIf="mostrarBoton" (click)="volver()">Atrás</button>
   <button class="btn login-button" *ngIf="motrarBotonIngresoGraficosDos" 
   (click)="irGraficosDos()">Graficos Dos</button>

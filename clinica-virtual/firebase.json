@@ -10,7 +10,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "y",
+    "public": "dist/clinica-virtual/browser",
     "ignore": [
       "firebase.json",
       "**/.*",

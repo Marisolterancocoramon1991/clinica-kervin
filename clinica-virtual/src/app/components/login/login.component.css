@@ -1,64 +1,248 @@
-.fullBody {
-  background-color: #5ff07c; /* Color de fondo verde claro */
-  height: 100%;
+/* 
+   =======================================
+   1. Layout Principal (dos columnas)
+   2. Estilos de la Columna Izquierda
+   3. Estilos de la Columna Derecha
+   4. Formulario y Campos
+   5. Botones y Enlaces
+   6. Responsividad básica (opcional)
+   =======================================
+*/
+
+/* 1. LAYOUT PRINCIPAL (DOS COLUMNAS) */
+/* ------------------------------------ */
+.login-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Para que en pantallas pequeñas se ajuste */
+  width: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.container {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.login-container {
-  background-color: #f8f9fa;
-  background-image: url('../../../../public/fondo-clinic.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  max-width: 400px;
-  width: 100%; /* Asegúrate de que ocupe todo el ancho disponible */
-  padding: 20px;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+/* 2. COLUMNA IZQUIERDA (FORMULARIO) */
+/* ------------------------------------ */
+.login-left {
+  flex: 1 1 50%; /* Toma la mitad del espacio en pantallas grandes */
+  background-color: #fff; /* Fondo blanco */
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Centra verticalmente el contenido */
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.login-title {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #000;
+}
+
+.login-subtitle {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #666;
+  max-width: 80%;
+}
+
+/* 3. COLUMNA DERECHA (BOTONES DE ROLES) */
+/* ------------------------------------ */
+.login-right {
+  flex: 1 1 50%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrado vertical */
+  align-items: center;     /* Centrado horizontal */
+  padding: 40px;
+  box-sizing: border-box;
+
+  /* Fondo eléctrico con degradado animado */
+  background: linear-gradient(45deg, #00bfff, #1e90ff, #00bfff);
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.roles-title {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.roles-subtitle {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #f0f0f0;
+  text-align: center;
+  max-width: 80%;
+}
+
+/* 4. FORMULARIO Y CAMPOS */
+/* ------------------------------------ */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #000; /* Texto negro en la columna izquierda */
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #000;
+  box-sizing: border-box;
+}
+
+/* 5. BOTONES Y ENLACES */
+/* ------------------------------------ */
+/* Botón principal (Login) */
+.btn-login {
+  background-color: #1e90ff;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-login:hover {
+  background-color: #00bfff;
+  transform: translateY(-2px);
+}
+
+/* Botones de rol (columna derecha) */
+.btn-rol {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  color: #000;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 300px; /* Para que no se hagan demasiado anchos */
   justify-content: center;
 }
 
-.button-container {
-  justify-content: center;
-  margin-top: 15px;
+.btn-rol:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.2);
 }
 
-.button-container .btn-block {
-  background-color: #007bff;
-  color: white;
-  transition: transform 0.2s; /* Suaviza la transición de movimiento */
+/* Imagen de perfil en los botones */
+.perfil-img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 50%;
 }
 
-.btn-block {
-  margin: 5px;
-  background-color: #007bff;
-  color: white;
-  transition: transform 0.2s; /* Suaviza la transición de movimiento */
-}
-
-.btn-block:hover {
-  background-color: #0056b3;
-}
-
-.btn-block:active {
-  transform: translateY(4px); /* Mueve el botón hacia abajo cuando se hace clic */
-}
-
-/* Asegúrate de que los botones tengan un espacio entre ellos */
-button + button {
+/* Enlaces extra */
+.extra-links {
   margin-top: 10px;
+}
+
+.extra-links a {
+  font-size: 14px;
+  color: #1e90ff;
+  text-decoration: none;
+}
+
+.extra-links a:hover {
+  text-decoration: underline;
+}
+
+/* Texto de registro */
+.register-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #000;
+}
+
+.register-text a {
+  color: #1e90ff;
+  text-decoration: none;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
+
+/* 6. RESPONSIVIDAD BÁSICA (OPCIONAL) */
+/* ------------------------------------ */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column; /* Las columnas se apilan en vertical */
+  }
+  .login-left,
+  .login-right {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .login-left,
+  .login-right {
+    padding: 20px;
+  }
+}
+
+
+.btn-regresar {
+  background-color: #28a745; /* Verde */
+  color: #fff;             /* Texto blanco */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;       /* Centrado horizontal */
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-regresar:hover {
+  background-color: #218838; /* Verde un poco más oscuro al pasar el mouse */
+}
+
+.logo-clinnica-img {
+  width: 100px;             /* Tamaño grande */
+  height: 100px;            /* Asegura que sea cuadrada */
+  border-radius: 50%;       /* La hace circular */
+  object-fit: cover;        /* Ajusta la imagen sin distorsión */
+  border: 3px solid #1e90ff; /* Borde moderno en azul */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;           /* Para que se pueda centrar */
+  margin: 0 auto;           /* Centrado horizontal */
+}
+
+.logo-clinnica-img:hover {
+  transform: scale(1.1);              /* Aumenta ligeramente al pasar el cursor */
+  box-shadow: 0 0 15px rgba(30, 144, 255, 0.6); /* Efecto resplandor */
 }

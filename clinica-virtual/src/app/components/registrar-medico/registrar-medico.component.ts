@@ -62,7 +62,7 @@ export class RegistrarMedicoComponent {
       nombreRegister: ['', Validators.required],
       apellidoRegister: ['', Validators.required],
       emailRegister: ['', [Validators.required, Validators.email]],
-      passwordRegister: ['', Validators.required],
+      passwordRegister: ['', [Validators.required, Validators.minLength(6)]],
       dniRegister: ['', [Validators.required, dniValidator()]], // Validador personalizado para DNI
       edadRegister: ['', [Validators.required, edadValidator()]],
       archivoRegister: ['', Validators.required],
@@ -91,12 +91,14 @@ export class RegistrarMedicoComponent {
   }
 
   addCustomEspecialidad(): void {
-    if (this.customEspecialidad.trim() !== '') {
-      this.especialidades.push(this.customEspecialidad.trim()); // Add custom especialidad to array
-      this.customEspecialidad = ''; // Clear input field
+    const trimmedValue = this.customEspecialidad.trim();
+    console.log(trimmedValue);
+    if (trimmedValue !== '') {
+      this.especialidades.push(trimmedValue);
+      this.customEspecialidad = ''; // Limpiar el input
     }
   }
-
+  
 
   onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;

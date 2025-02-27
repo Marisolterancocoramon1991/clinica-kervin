@@ -1,49 +1,5 @@
-<div>
-  <app-cabecera></app-cabecera>
-</div>
 
-<!-- Lista de pacientes -->
-<div class="pacientes-container">
-  <div *ngIf="pacientes.length > 0">
-    <div *ngFor="let paciente of pacientes" class="user-card" (click)="seleccionarPaciente(paciente)">
-      <div class="user-card-inner">
-        <div class="user-card-front">
-          <img src="patient_ico_2.png" alt="Imagen de perfil" class="profile-image">
-          <div class="info">
-            <h3>{{ paciente.nombre }}</h3>
-            <p>Apellido: {{ paciente.apellido }}</p>
-            <p>DNI: {{ paciente.dni }}</p>
-          </div>
-        </div>
-        <div class="user-card-back">
-          <h3>Seleccionar para crear historia clínica</h3>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Lista de turnos realizados -->
-<div class="turnos-container">
-  <div *ngIf="turnosRealizadosPacientes.length > 0" class="turnos-list">
-    <h3>Lista de Turnos Realizados</h3>
-    <ul>
-      <li *ngFor="let turno of turnosRealizadosPacientes" class="turno-item">
-        <span>
-          Especialidad: {{ turno.especialidad }} - Especialista: {{ turno.nombreEspecialista }} - Turno-ID: {{ turno.id }}
-        </span>
-        <button mat-raised-button color="primary" (click)="seleccionarTurno(turno)">Seleccionar</button>
-      </li>
-    </ul>
-  </div>
-
-  <div *ngIf="turnoSeleccionado" class="turno-seleccionado">
-    <h4>Turno Seleccionado</h4>
-    <p>Especialidad: {{ turnoSeleccionado.especialidad }}</p>
-    <p>Especialista: {{ turnoSeleccionado.nombreEspecialista }}</p>
-    <p>ID Paciente: {{ turnoSeleccionado.idPaciente }}</p>
-  </div>
-</div>
 
 <!-- Formulario del historial médico -->
 <div class="form-container">
@@ -106,7 +62,7 @@
         <mat-error *ngIf="historiaClinicaForm.get('rangoDin.valor')?.hasError('required')">
           El valor es obligatorio.
         </mat-error>
-      </div>
+      </div> 
     </div>
 
     <!-- 2. Cuadro de Texto Numérico (Clave y Valor) -->

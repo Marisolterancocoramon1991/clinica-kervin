@@ -9,6 +9,7 @@
       <input type="text" [(ngModel)]="userInput" placeholder="Ingrese el código aquí">
       <button (click)="submitCaptcha()" [disabled]="loading">Enviar</button>
       <button (click)="refreshComponent()" [disabled]="loading">Refrescar</button>
+      <button (click)="cargaAutomatica()" [disabled]="loading">No Cargar CAPTCHA</button>
     </div>
   </div>
   

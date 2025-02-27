@@ -5,7 +5,7 @@
     
     <h1>Medico</h1>
     
-    <form [formGroup]="registerForm" (ngSubmit)="registrarMedico()" class="row justify-content-center mt-4">
+    <form [formGroup]="registerForm"  class="row justify-content-center mt-4">
         <div class="col-md-5 mb-3">
             <input formControlName="nombreRegister" type="text" id="nombre" class="form-control mb-3" placeholder="Nombre...">
             <div *ngIf="registerForm.get('nombreRegister')?.invalid && registerForm.get('nombreRegister')?.touched">
@@ -33,12 +33,12 @@
             </div>
             </div>
 
-            <button class="btn btn-dark mt-3" (click)="toggleCustomEspecialidadInput()">Más</button>
+            <button class="btn btn-dark mt-3" type="button" (click)="toggleCustomEspecialidadInput()">Más</button>
             
             <div *ngIf="showCustomEspecialidadInput" class="mt-3">
-                <input formControlName="customEspecialidad" type="text" class="form-control mb-3" placeholder="Escribe tu especialidad...">
-                <button class="btn btn-dark" (click)="addCustomEspecialidad()">Agregar</button>
-                <button class="btn btn-light ml-2" (click)="clearCustomEspecialidadInput()">Cancelar</button>
+                <input [(ngModel)]="customEspecialidad" [ngModelOptions]="{standalone: true}" name="customEspecialidad" type="text" class="form-control mb-3" placeholder="Escribe tu especialidad...">
+                <button class="btn btn-dark"  type="button" (click)="addCustomEspecialidad()">Agregar</button>
+                <button class="btn btn-light ml-2" type="button" (click)="clearCustomEspecialidadInput()">Cancelar</button>
             </div>
 
             <div *ngFor="let especialidad of especialidades; let i = index" class="mt-2">
@@ -52,16 +52,20 @@
                 <span class="help-block text-danger">Apellido Requerido</span>
             </div>
             
-            <input formControlName="passwordRegister" type="password" id="password" class="form-control mb-3" placeholder="Contraseña...">
-            <div *ngIf="registerForm.get('passwordRegister')?.invalid && (registerForm.get('passwordRegister')?.dirty || registerForm.get('passwordRegister')?.touched)">
-                <span class="help-block text-danger">Contraseña Requerida</span>
-            </div>
-            
             <input formControlName="edadRegister" type="number" id="edad" class="form-control mb-3" placeholder="Edad...">
             <div *ngIf="registerForm.get('edadRegister')?.invalid && (registerForm.get('edadRegister')?.dirty || registerForm.get('edadRegister')?.touched)">
                 <span class="help-block text-danger">Edad Requerida</span>
             </div>
+            <input formControlName="passwordRegister" type="password" id="password" class="form-control mb-3" placeholder="Contraseña...">
             
+            <div *ngIf="registerForm.get('passwordRegister')?.invalid && (registerForm.get('passwordRegister')?.dirty || registerForm.get('passwordRegister')?.touched)">
+                <span class="help-block text-danger" *ngIf="registerForm.get('passwordRegister')?.hasError('required')">
+                    Contraseña Requerida
+                </span>
+                <span class="help-block text-danger" *ngIf="registerForm.get('passwordRegister')?.hasError('minlength')">
+                    La contraseña debe tener al menos 6 caracteres
+                </span>
+            </div>
             <label for="archivoPerfil" class="form-label">Seleccione una imagen para su Perfil</label>
             <input formControlName="archivoRegister" type="file" id="archivoPerfil" class="form-control mb-3" (change)="onFileChange($event)">
             <div *ngIf="registerForm.get('archivoRegister')?.invalid && registerForm.get('archivoRegister')?.touched">

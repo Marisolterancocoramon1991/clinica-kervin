@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit} from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, Input} from '@angular/core';
 import { CabeceraComponent } from '../cabecera/cabecera.component';
 import { AuthService } from '../../services/auth.service';
 import { Paciente } from '../../bibliotecas/paciente.interface';
@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 import { ListaPacienteComponent } from '../lista-paciente/lista-paciente.component';
 import { Turno } from '../../bibliotecas/turno.interface';
 import Swal from 'sweetalert2';
+import { PacienteEspecialistaSprint3Component } from '../paciente-especialista-sprint3/paciente-especialista-sprint3.component';
+import { HistoriaClinica } from '../../bibliotecas/historiaClinica.interface';
+import { PdfService } from '../../services/pdf.service';
 
 @Component({
   selector: 'app-administrador-especialista-turno',
@@ -17,8 +20,9 @@ import Swal from 'sweetalert2';
   imports: [
     CabeceraComponent,
     CommonModule,
-    ListaPacienteComponent
-
+    ListaPacienteComponent,
+    PacienteEspecialistaSprint3Component
+ 
   ],
   templateUrl: './administrador-especialista-turno.component.html',
   styleUrl: './administrador-especialista-turno.component.css'
@@ -31,10 +35,13 @@ export class AdministradorEspecialistaTurnoComponent implements OnInit {
   especialidades: string[] = [];
   especialidad: string ="";
   turnos: Turno[] = [];
+  cargaHistorialClinica: boolean = false;
+  turnoSeleccionado: Turno | null = null;
+  historiasClinicas: HistoriaClinica | null = null;
 
   constructor(private authService: AuthService,
     private imagenesEspecialidadService: ImagenesEspecialidadService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef, private pdfService: PdfService
   ){}
   
   recibirPaciente(paciente: Paciente) {
@@ -270,7 +277,29 @@ export class AdministradorEspecialistaTurnoComponent implements OnInit {
       }
     });
   }
+  cargarturno(turno: Turno){
+    this.cargaHistorialClinica = !this.cargaHistorialClinica;
+    this.turnoSeleccionado = turno;
+  }
   
-
-
+  guardarHistoriaClinica(turno: Turno){
+    const idTurno = turno.id
+    this.authService.getHistoriaClinicaPorIdTurno(idTurno)
+        .subscribe(
+          (historia) => {
+            if (historia) {
+              this.historiasClinicas = historia;
+              if(this.paciente && this.medicoLogueado)
+              this.pdfService.generatePdf(this.paciente, this.medicoLogueado, this.historiasClinicas);
+              console.log('Historia clínica encontrada:', historia);
+            } else {
+              console.log('No se encontró historia clínica para el turno.');
+            }
+          },
+          (error) => {
+            console.error('Error al obtener la historia clínica:', error);
+          }
+        );
+  }
 }
+ 

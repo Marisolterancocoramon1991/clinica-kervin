@@ -243,8 +243,6 @@ export class AuthService {
           });
           break;
         case 'admin':
-          this.router.navigate(["/administrador"]);
-
           await this.add("entradaUsuario", {
             user: {
               fullName: user.displayName,
@@ -356,7 +354,6 @@ export class AuthService {
         });
         return;
       }
-      this.router.navigate(["/paciente"]);
     } catch (error) {
       console.error('Login error:', error);
       Swal.fire({
@@ -376,8 +373,6 @@ export class AuthService {
           text: 'Tu Cuenta todavia no fue Verificada por Nuestro Equipo.',
         });
         await signOut(this.authF);
-      } else {
-        this.router.navigate(["/especialista"]);
       }
     } catch (error) {
       console.error('Error checking approval status:', error);
@@ -975,6 +970,19 @@ export class AuthService {
         });
     });
   }
+  updateTurnoHistoriaCargada(turno: Turno): Observable<void> {
+    const turnoDocRef = doc(this.firestore, `turnos/${turno.id}`);
+    return new Observable<void>((observer) => {
+      updateDoc(turnoDocRef, { estado: 'Cargahistorial' })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
 
    getTurnosPorParametros(mailEspecialista: string, especialidad: string, idPaciente: string): Observable<Turno[]> {
     const turnosCollectionRef = collection(this.firestore, 'turnos');
@@ -1047,7 +1055,7 @@ export class AuthService {
         );
       })
     );
-  }
+  } 
   saveHistoriaClinica(historiaClinica: HistoriaClinica): Observable<HistoriaClinica> {
     const historiaClinicaCollectionRef = collection(this.firestore, 'historiaClinica');
 
@@ -1064,6 +1072,7 @@ export class AuthService {
       })
     );
   }
+
 
   saveCalificacion(calificacion: Calificacion): Observable<Calificacion> {
     const calificacionesCollectionRef = collection(this.firestore, 'calificaciones');
@@ -1098,6 +1107,21 @@ export class AuthService {
       })
     );
   }
+  getHistoriaClinicaPorIdTurno(idPaciente: string): Observable<HistoriaClinica | null> {
+    const historiasClinicasCollectionRef = collection(this.firestore, 'historiaClinica');
+    const historiasClinicasQuery = query(
+      historiasClinicasCollectionRef,
+      where('idTurno', '==', idPaciente)
+    );
+  
+    return from(getDocs(historiasClinicasQuery)).pipe(
+      map(querySnapshot => {
+        const doc = querySnapshot.docs[0]; // Tomamos el primer documento
+        return doc ? { ...doc.data() as HistoriaClinica, id: doc.id } : null;
+      })
+    );
+  }
+  
   getHistoriaClinicaPorTurno(idTurno: string): Observable<HistoriaClinica[]> {
     const historiasClinicasCollectionRef = collection(this.firestore, 'historiaClinica');
 

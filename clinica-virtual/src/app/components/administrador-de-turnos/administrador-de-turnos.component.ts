@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
     FiltroTurnosComponent,
     CommonModule,
 
-    
+     
   ],
   templateUrl: './administrador-de-turnos.component.html',
   styleUrl: './administrador-de-turnos.component.css'
@@ -44,8 +44,8 @@ export class AdministradorDeTurnosComponent {
   }
   recibirEspecialidadSeleccionada(especialidad: any): void {
     this.especialidad = especialidad;
-  }
-
+  } 
+/*
   obtenerTurnos(): void {
     if (this.mailEspecialista) {
       this.authService.getTurnosPorMailEspecialista(this.mailEspecialista).subscribe({
@@ -57,7 +57,42 @@ export class AdministradorDeTurnosComponent {
         }
       });
     }
-  }
+  }*/
+    obtenerTurnos(): void {
+      if (this.mailEspecialista) {
+        this.authService.getTurnosPorMailEspecialista(this.mailEspecialista).subscribe({
+          next: (turnos) => {
+            if (turnos && turnos.length > 0) {
+              this.turnosPorEspecialista = turnos;
+            } else {
+              // Si el arreglo está vacío, no se encontraron turnos asociados al correo
+              Swal.fire(
+                'No encontrado',
+                `No se encontró ningún turno para el especialista: ${this.nombreEspecialista}, con la especialidad de 
+                ${this.especialidad}. Por favor, vuelva a intenat con una especialidad o especialista que tenga turno.`,
+                'info'
+              );
+            }
+          },
+          error: (error) => {
+            // Manejo de error al obtener los turnos
+            Swal.fire(
+              'Error',
+              'No se pudieron cargar los turnos. Puede que no se encuentre registrado el correo o se haya producido un error en el servidor.',
+              'error'
+            );
+          }
+        });
+      } else {
+        Swal.fire(
+          'Advertencia',
+          'No se ha seleccionado un correo de especialista. Por favor, seleccione un especialista para continuar.',
+          'warning'
+        );
+      }
+    }
+
+    
   seleccionarTurno(turno: Turno): void {
     Swal.fire({
       title: 'Detalles del Turno',

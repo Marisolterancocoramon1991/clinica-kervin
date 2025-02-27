@@ -121,9 +121,19 @@ export class PdfService {
       yPosition += 5;
 
       // Datos dinámicos de la historia clínica
-      const datosDinamicos = historiaClinica.datosDinamicos ?? [];
-      if (datosDinamicos.length > 0) {
-        doc.text(`Datos variables: ${datosDinamicos.join(', ')}`, 10, yPosition);
+      const datosDinamicosObj = historiaClinica.datosDinamicos ?? {};
+
+// Con Object.entries convertimos el objeto a un array de pares [clave, valor]
+      const entries = Object.entries(datosDinamicosObj);
+
+      // entries podría verse así: [["222", "Si"], ["2222", 222]]
+      if (entries.length > 0) {
+        // Creamos un string que muestre clave: valor
+        const datosString = entries
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(', ');
+
+        doc.text(`Datos variables: ${datosString}`, 10, yPosition);
       } else {
         doc.text(`Datos variables: No disponibles`, 10, yPosition);
       }

@@ -11,19 +11,23 @@ import { Calificacion } from '../../bibliotecas/calificacion.interface';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { ComentarioPaciente } from '../../bibliotecas/comenatrioPaciente.interface';
-
+import { of, forkJoin } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { PdfService } from '../../services/pdf.service';
+import { HistoriaClinica } from '../../bibliotecas/historiaClinica.interface';
+import { EncuestaSatisfaccionComponent } from '../encuesta-satisfaccion/encuesta-satisfaccion.component';
+ 
 @Component({
   selector: 'app-administracion-turno-paciente',
   standalone: true,
   imports: [
     FiltroTurnosComponent,
     CommonModule,
-
-
+    EncuestaSatisfaccionComponent
   ],
   templateUrl: './administracion-turno-paciente.component.html',
   styleUrl: './administracion-turno-paciente.component.css'
-})
+}) 
 export class AdministracionTurnoPacienteComponent implements OnInit{
   medicoSeleccionado: Medico | null = null;
   especialidad: string = '';
@@ -33,7 +37,10 @@ export class AdministracionTurnoPacienteComponent implements OnInit{
   turnos: Turno[] = [];
   currentUser: User | null = null;
   rating: number = 0;
-  constructor(private authService: AuthService){}
+  historiaClinicaSeleccionada: HistoriaClinica[] | null = null;
+  encuesta: boolean = false;
+  turnoSeleccionado: Turno | null = null;
+  constructor(private authService: AuthService, private pdfService: PdfService ){}
 
   ngOnInit(): void {
     this.authService.getCurrentUser().pipe(
@@ -208,6 +215,44 @@ export class AdministracionTurnoPacienteComponent implements OnInit{
         console.error('Error al enviar la calificación:', error);
       }
     );
+  }
+  obtenerTurnosYGenerarPdf(turno: Turno): void {
+    // Validar que toda la información esté presente
+    if (!this.paciente || !this.medicoSeleccionado || !this.especialidad) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Información incompleta',
+        text: 'No se puede obtener turnos, falta información requerida.',
+      });
+      return;
+    }
+  
+    // Obtener la historia clínica asociada al turno y generar el PDF al obtener la respuesta
+    this.authService.getHistoriaClinicaPorTurno(turno.id).subscribe({
+      next: (historiaClinica) => {
+        this.historiaClinicaSeleccionada = historiaClinica;
+        // Generar PDF usando los datos obtenidos
+        if ( this.paciente && this.medicoSeleccionado && this.historiaClinicaSeleccionada)
+        this.pdfService.generatePdf(this.paciente, this.medicoSeleccionado,   this.historiaClinicaSeleccionada[0]);
+      },
+      error: (error) => {
+        console.error('Error al obtener la historia clínica:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo obtener la historia clínica.',
+        });
+      }
+    });
+  }
+  cargarEncuesta(turno: Turno){
+    this.encuesta = !this.encuesta; 
+    this.turnoSeleccionado = turno;
+  }
+  onEncuestaCargada(event: any): void {
+    console.log('Evento recibido del hijo: ', event);
+    this.encuesta = false;
+    this.ngOnInit();
   }
   
 }

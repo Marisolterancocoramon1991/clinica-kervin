@@ -12,7 +12,7 @@
       </button>
     </div>
   </div>
-
+ 
   <!-- administrador-especialista-turno.component.html -->
 
 <div *ngIf="turnos.length > 0; else noTurnos">
@@ -20,6 +20,7 @@
     <h3>Nombre del Especialista: {{ turno.nombreEspecialista }}</h3>
     <p>Nombre del Paciente: {{ paciente?.nombre }}</p>
     <p>Estado del Turno: {{ turno.estado }}</p>
+    <p>Especialidad del Turno: {{ turno.especialidad }}</p>
     
     <div class="button-container">
       <!-- Botón Cancelar -->
@@ -29,12 +30,28 @@
       <!-- Botón Rechazar Turno -->
       <button *ngIf="turno.estado === 'pendiente' || turno.estado === 'cancelado'" 
       (click)="rechazarTurno(turno)">Rechazar Turno</button>
-      
+      <button *ngIf="turno.estado === 'Cargahistorial'" 
+      (click)="guardarHistoriaClinica(turno)">Descargar Pdf</button>
       <!-- Botón Aceptar -->
       <button *ngIf="turno.estado === 'pendiente'" 
       (click)="aceptarTurno(turno)">Aceptar</button>
       <button *ngIf="turno.estado === 'aceptado'" 
       (click)="finalizarTurno(turno)">finalizar</button>
+      <div *ngIf="turno.estado === 'realizado'">
+        <button (click)="cargarturno(turno)">
+          Cargar Historial
+        </button>
+        <div  class="modal-overlay" *ngIf="cargaHistorialClinica && turnoSeleccionado === turno">
+            <app-paciente-especialista-sprint3   
+            [paciente]="paciente" 
+            [medicoLogueado]="medicoLogueado" 
+            [especialidad]="especialidad" 
+            [turnos]="turno">
+          </app-paciente-especialista-sprint3>
+        </div>
+         
+       </div>
+     
     </div>
   </div>
 </div>

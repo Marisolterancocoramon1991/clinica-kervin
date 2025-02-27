@@ -28,7 +28,11 @@
         <!-- Botón Aceptar -->
         <button *ngIf=" turno.estado === 'realizado' " 
         (click)="dejarResenia(turno)">Dejar reseña</button> <!-- && turno.comentario !== 'Comentario opcional' -->
-
+        <button *ngIf=" turno.estado === 'realizado' || turno.estado === 'Cargahistorial'" 
+        (click)="cargarEncuesta(turno)">Cargar encuesta</button>
+        <button *ngIf="turno.estado === 'Cargahistorial'" (click)="obtenerTurnosYGenerarPdf(turno)">
+          Descargar Historial Clínico en PDF
+        </button>
         <!-- Botón Aceptar -->
         <div class="rating-container">
           <div class="stars">
@@ -40,6 +44,11 @@
             />
           </div>
             <!--<button (click)="submitRating()">Enviar Reseña</button>-->
+            <app-encuesta-satisfaccion *ngIf="encuesta && turnoSeleccionado === turno" 
+                [turno]="turnoSeleccionado" 
+                [Paciente]="paciente"
+                (encuestaCargada)="onEncuestaCargada($event)">
+            </app-encuesta-satisfaccion>
         </div>
       </div>
     </div>

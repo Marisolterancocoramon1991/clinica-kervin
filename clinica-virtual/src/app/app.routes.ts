@@ -36,12 +36,15 @@ import { MiPerfilPacienteSprint3Component } from './components/mi-perfil-pacient
 import { GraficosComponent } from './components/graficos/graficos.component';
 import { EncuestaSatisfaccionComponent } from './components/encuesta-satisfaccion/encuesta-satisfaccion.component';
 import { GraficosDosComponent } from './components/graficos-dos/graficos-dos.component';
+import { roleBasedRedirectGuard } from './guards/role-based-redirect.guard';
+import { MPerfilesMedicosComponent } from './components/m-perfiles-medicos/m-perfiles-medicos.component';
 
 export const routes: Routes = [
    
     {
        path: 'bienvenida',
-      component: BienvenidaComponent
+      component: BienvenidaComponent,
+    
     },
     {
         path: 'registrar',
@@ -110,7 +113,7 @@ export const routes: Routes = [
         component: SeccionUsuariosAdministradorComponent,
         canActivate: [adminGuard]
     },
-    {//
+    {// 
         path: 'medico/listar/paciente/historialclinico',
         component: ListaImpresionEspecialistaComponent,
         canActivate: [especialistaGuard]
@@ -132,7 +135,7 @@ export const routes: Routes = [
         canActivate: [patientAuthGuard]
     },
     { 
-        path: 'medico/miperfil',
+        path: 'medico/horarios',
         component: MiPerfilComponent,
         canActivate: [especialistaGuard]
       
@@ -161,11 +164,7 @@ export const routes: Routes = [
         component: ListaPacienteComponent
 
     },
-    { 
-        path: 'cabecera',
-        component: CabeceraComponent
-      // canActivate: [patientAuthGuard]
-    },
+   
     {
         path: 'administrador/solicitud',
         component: SolicitudTurnoAdministradorComponent,
@@ -187,9 +186,14 @@ export const routes: Routes = [
         canActivate: [patientAuthGuard]
     },
     {
-        path: '**',
-        component: BienvenidaComponent
+        path: 'medico/perfilMedico',
+        component: MPerfilesMedicosComponent,
+        canActivate: [especialistaGuard]
     },
-    
 
+    {
+        path: '**',
+        component: BienvenidaComponent,
+        //canActivate: [roleBasedRedirectGuard],
+    },
 ];

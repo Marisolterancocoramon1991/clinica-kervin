@@ -125,3 +125,5 @@ Historia Clínica: Carga y visualización de historia clínica.
 Gráficos y Estadísticas: Informes para Administradores con opciones de descarga.
 Captcha
 Implementación de Captcha en el registro de usuarios para mayor seguridad.
+
+![Logo de la Clínica](logo_clinica.jpg)

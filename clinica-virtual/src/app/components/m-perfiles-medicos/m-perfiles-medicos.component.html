@@ -1,0 +1,69 @@
+<!-- Si no hay médico, mostramos un mensaje alternativo -->
+<div *ngIf="medico; else sinMedico" class="profile-container">
+  <!-- IMAGEN / AVATAR A LA IZQUIERDA -->
+  <div class="profile-image">
+    <img
+      *ngIf="medico.profileImage"
+      [src]="medico.profileImage"
+      alt="Foto de Dr. {{ medico.nombre }}"
+      class="avatar"
+    />
+    <!-- Si no hay imagen, podrías usar una predeterminada -->
+    <img
+      *ngIf="!medico.profileImage"
+      src="default.png"
+      alt="Foto predeterminada"
+      class="avatar"
+    />
+  </div>
+
+  <!-- INFORMACIÓN DEL MÉDICO A LA DERECHA -->
+  <div class="profile-info">
+    <h1 class="title-name">
+      <span [innerHTML]="('Dr. ' + medico.nombre + ' ' + medico.apellido) | capitalize"></span>
+    </h1>
+    <h2 class="subtitle-role">
+      Especialista en {{ medico.especialidades.join(', ') }}
+    </h2>
+
+    <!-- Pequeña descripción "Acerca de Mí" -->
+    <p class="description">
+      Soy un profesional con amplia experiencia en el cuidado de la salud.
+      Me apasiona brindar atención de calidad a mis pacientes y mantenerme
+      actualizado en las últimas tendencias médicas.
+    </p>
+
+    <!-- Sección de datos clave (email, edad, DNI, etc.) -->
+    <div class="info-grid">
+      <div>
+        <strong>Correo:</strong>
+        <span>{{ medico.mail | truncate:15 }}</span>
+      </div>
+      <div>
+        <strong>Edad:</strong>
+        <span>{{ medico.edad }}</span>
+      </div>
+      <div>
+        <strong>DNI:</strong>
+        <span>{{ medico.dni }}</span>
+      </div>
+      <div>
+        <strong>Rol:</strong>
+        <span>{{ medico.rol }}</span>
+      </div>
+      <div>
+        <strong>Aprobado por Admin:</strong>
+        <span>{{ medico.aprobadaPorAdmin ? 'Sí' : 'No' }}</span>
+      </div>
+      <div>
+        <strong>UID:</strong>
+        <span>{{ medico.uid | truncate:15 }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mensaje en caso de no tener datos de médico -->
+<ng-template #sinMedico>
+  <p>No se encontró información del médico.</p>
+</ng-template>

@@ -146,7 +146,7 @@ export class FiltroTurnosComponent implements OnInit{
       this.mostrarMedicos = false;
       this.mostrarEspecialidades = true;
     } else {
-      this.mostrarMedicos = false;
+      this.mostrarMedicos = true;
       this.mostrarEspecialidades = false;
     }
   }

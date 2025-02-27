@@ -27,7 +27,11 @@ export class MenuEspecialistaComponent {
     });
   }
   navigateMiPerfil() {
-    this.router.navigate(['/medico/miperfil']);
+    this.router.navigate(['medico/horarios']);
+  }
+
+  navigateMiPerfil2(){
+    this.router.navigate(['medico/perfilMedico']);
   }
   navigateAdministradorEspecial()
   {

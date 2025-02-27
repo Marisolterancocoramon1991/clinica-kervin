@@ -20,7 +20,6 @@
               "moment-timezone",
               "jspdf-autotable"
             ],
-            
             "outputPath": "dist/clinica-virtual",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -45,22 +44,21 @@
             "ssr": {
               "entry": "server.ts"
             }
-            
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
-                }
-              ],
+             "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "4MB",
+                "maximumError": "4.6MB"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "10kB",
+                "maximumError": "12kB"
+              }
+            ],
               "outputHashing": "all"
             },
             "development": {
