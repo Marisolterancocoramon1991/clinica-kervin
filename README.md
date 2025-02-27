@@ -126,4 +126,8 @@ Gráficos y Estadísticas: Informes para Administradores con opciones de descarg
 Captcha
 Implementación de Captcha en el registro de usuarios para mayor seguridad.
 
-![Logo de la Clínica](logo_clinica.jpg)
+![Logo de la Clínica](/clinica-virtual/public/logo_clinica.jpg)
+![Logo de la Clínica](/clinica-virtual/public/SpecialistAdministrator.jpg)
+![Logo de la Clínica](/clinica-virtual/public/SpecialistAdministrator2.jpg)
+![Logo de la Clínica](/clinica-virtual/public/SpecialistAdministrator3.jpg)
+
